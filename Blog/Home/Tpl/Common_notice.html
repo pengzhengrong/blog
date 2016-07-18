@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>提示界面</title>
+    <link rel="stylesheet" type="text/css" href="/Blog/Home/Tpl/notice.css">
+    <link href="/Public/Common/css/common.css" rel="stylesheet" type="text/css"> 
+</head>
+<body>
+    <div class="system-message">
+          <h4><span  class="iconfont">&#xe611;</span>系统提示</h4>
+        <div class="jump">
+           <p class="detail"> <?php echo($msg); ?></p>
+            <a  class="btn" href="javascript:void()" onclick="history.go(-1)" >返回</a> 
+            <a id="href" class="btn" href="<?php echo  $jumpUrl.'/_notice_/1'; ?>">确认</a> 
+            <hr>
+            <?php  
+                if( $waitSecond ){
+                       echo ('<b id="wait">'.$waitSecond.'</b> 秒后页面将自动跳转');
+                }
+              ?>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+(function(){
+ var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+ var operator = '<?php echo($operator); ?>';
+ var interval = setInterval(function(){
+        var time = --wait.innerHTML;
+        if(time <= 0) {
+
+          if( operator == 'delete' )
+                  location.href = history.go(-1);
+          else
+                  location.href = href;
+           
+            
+            clearInterval(interval);
+        };
+     }, 1000);
+  window.stop = function (){
+            clearInterval(interval);
+ }
+})();
+</script>
+</html>

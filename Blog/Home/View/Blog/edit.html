@@ -1,0 +1,131 @@
+<include file="Blog/Home/View/Common/html_head.html" title="{$rest.title}" />
+<!-- iCheck-->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/icheck/css/_all.css">
+
+
+</head>
+
+<body>
+    <section id="container">
+
+        <!--main content start-->
+        <section class="main-content-wrapper">
+            <section id="main-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--breadcrumbs start -->
+                        <ul class="breadcrumb">
+                           <foreach name="navigation" item="v">
+                            <li><a href="/{$v.m}/{$v.c}/{$v.a}">{$v.title}</a></li>
+                        </foreach>
+                    </ul>
+                    <!--breadcrumbs end -->
+                    <!-- <h1 class="h1">Form Validation</h1> -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">修改博客</h3>
+                            <div class="actions pull-right">
+                                <i class="fa fa-chevron-down"></i>
+                                <i class="fa fa-times"></i>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal form-border" id="form">
+                                <input type="hidden" id="id" value="{$rest.id}" />
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">标题</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" value="{$rest.title}" name="title" id="title" required="" placeholder="Required input">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">点击次数</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" value="{$rest.click}" name="click" id="click" required="" placeholder="Required input">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">正文</h3>
+                                            <div class="actions pull-right">
+                                                <i class="fa fa-chevron-down"></i>
+                                                <i class="fa fa-times"></i>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <textarea name="content" id="content" rows="10" cols="80">
+                                                {$rest.content}
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">是否显示</label>
+                                    <div class="col-sm-2">
+                                        <select name="isdisplay" id="isdisplay" class="form-control">
+                                            <option value="0" {$rest['isdisplay']==0?'selected':''}>是</option>
+                                            <option value="1" {$rest['isdisplay']?'selected':''}>否</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                <div class="col-md-4">
+                                        <div class="panel-body">
+                                            <button type="button" id="saveModify" class="btn btn-success btn-block">保存</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="panel-body">
+                                            <button type="button" id="cancle" class="btn btn-default btn-block">取消</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</section>
+<!--main content end-->
+</section>
+
+<include file="Blog/Home/View/Common/js.html" />
+<script type="text/javascript" src="__PUBLIC__/Home/js/project/blog.js"></script>
+<!--Page Level JS-->
+<script src="__PUBLIC__/Home/plugins/icheck/js/icheck.min.js"></script>
+<script src="__PUBLIC__/Home/plugins/validation/js/jquery.validate.min.js"></script>
+<script src="__PUBLIC__/Home/plugins/validation/js/jquery.validate.min.js"></script>
+
+
+<!--Page Level JS-->
+<script src="__PUBLIC__/Home/plugins/bootstrap-wysihtml5/js/wysihtml5-0.3.0.js"></script>
+<script src="__PUBLIC__/Home/plugins/bootstrap-wysihtml5/js/bootstrap3-wysihtml5.js"></script>
+<script src="__PUBLIC__/Home/plugins/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.textarea').wysihtml5();
+
+        CKEDITOR.replace('content');
+    });
+</script>
+
+
+</body>
+
+</html>

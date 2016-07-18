@@ -1,0 +1,34 @@
+<include file="Blog/Admin/View/Common/header.html" title="COMMENT" />
+</head>
+<style type="text/css">
+	.iconfont{
+		cursor: pointer;
+	}
+	ul li{
+		list-style-type: none;
+		margin-left: 0px;
+	}
+	ul span{
+		padding: 5px 5px;
+		font-size: 14px;
+	}
+</style>
+<body>
+	<div>
+		<font color="{:fontColor()}">总共评论{:count($comment)}</font>
+		<ul id="ul_id">
+			{:W('Comment/unlimitComments',array($comment))}
+		</ul>
+	</div>
+</body>
+
+<script type="text/javascript">
+	var url_obj = {
+		'vote_url':'{:U(MODULE_NAME.'/Comment/vote','','')}',
+		'add_url':'{:U(MODULE_NAME.'/Comment/add','','')}'
+	};
+// var blog_id = {$blog['id']?$blog['id']:0};
+var blog_id = {$blog_id};
+</script>
+<script type="text/javascript" src="__PUBLIC__/{$module_name}/Js/comment.js"></script>
+</html>

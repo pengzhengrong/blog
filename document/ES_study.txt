@@ -1,0 +1,15 @@
+搜索的过程主要在于构建查询,查询的种类总共大致可分为30大类.
+
+1. 简单查询
+curl -XGET localhost:9200/index_name/type_name/_search?q=field:search_key&pretty
+(1) pretty: 输出格式化
+(2) index_name: 索引名称
+(3) type_name: 类型名称
+(4) field:search_key 表示字段和搜索关键词
+这种请求方式类似于:
+curl -XGET localhost:9200/index_name/type_name/_search -d '{
+  "query":{
+     "query_string":{"query":"field:search_key"}
+  }
+}'
+

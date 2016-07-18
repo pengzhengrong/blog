@@ -1,0 +1,58 @@
+<include file="Blog/Home/View/Common/html_head.html" title="Home" />
+<!-- Vector Map  -->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/jvectormap/css/jquery-jvectormap-1.2.2.css">
+<!-- ToDos  -->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/todo/css/todos.css">
+<!-- Morris  -->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/morris/css/morris.css">
+
+<base target="iframe"/>
+</head>
+
+<body>
+    <section id="container">
+
+        <include file="Blog/Home/View/Common/header.html" />
+        <!--sidebar left start-->
+
+        <!-- <include file="Blog/Home/View/Common/sidebar.html" /> -->
+        <aside class="sidebar">
+            <div id="leftside-navigation" class="nano">
+                <ul class="nano-content">
+                <foreach name="rest" item="v" >
+                    <li class="sub-menu">
+                        <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>{$v.title}</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+                            <foreach name="v.child" item="vv" >
+                                <li><a href="/{$vv.m}/{$vv.c}/{$vv.a}.html">{$vv.title}</a>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </li>
+                </foreach>
+                <!-- <li class="sub-menu">
+                    <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>菜单管理</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                    <ul>
+                        <li><a href="/Home/Nav/index">菜单管理</a>
+                        </li>
+                    </li> -->
+                </ul>
+            </div>
+        </aside>
+        <!--sidebar left end-->
+        <iframe  style="border: none;width: 100%;min-height:1000px;" name="iframe" src=""></iframe>
+        <!--sidebar right start-->
+        <include file="Blog/Home/View/rightBar.html" />
+        <!--sidebar right end-->
+    </section>
+    <!--Global JS-->
+    <script src="__PUBLIC__/Home/js/jquery-1.10.2.min.js"></script>
+    <script src="__PUBLIC__/Home/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/Home/plugins/waypoints/waypoints.min.js"></script>
+    <script src="__PUBLIC__/Home/js/application.js"></script>
+    <!--Page Level JS-->
+    <script src="__PUBLIC__/Home/plugins/countTo/jquery.countTo.js"></script>
+    <script src="__PUBLIC__/Home/plugins/weather/js/skycons.js"></script>   
+</body>
+
+</html>

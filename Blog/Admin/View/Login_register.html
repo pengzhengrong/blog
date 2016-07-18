@@ -1,0 +1,52 @@
+<include file="Blog/Admin/View/Common/header.html" title="BLOG" />
+		<link rel="stylesheet" href="__PUBLIC__/Common/css/login.css?version={:C('CSS_VERSION')}" />
+		<script type="text/javascript" src="__PUBLIC__/Common/js/login.js"></script>
+		<script type="text/javascript">
+			var code_url = "{:U(MODULE_NAME.'/Login/verify','','')}";
+		</script>
+		{:baiduAccount()}
+	</head>
+	<body>
+		<div id="top">
+
+		</div>
+		<div class="login">	
+			<form action="{:U(MODULE_NAME.'/Login/register')}" method="post" id="login">
+			<div class="title">
+				PengZR | 登录后台
+			</div>
+			<table border="1" width="100%">
+				<tr>
+					<th>帐号:</th>
+					<td>
+						<input type="username" name="username" class="len250"/>
+					</td>
+				</tr>
+				<tr>
+					<th>密码:</th>
+					<td>
+						<input type="password" class="len250" name="passwd"/>
+					</td>
+				</tr>
+				<tr>
+					<th>验证码:</th>
+					<td>
+						<input type="code" class="len250" name="code"/> 
+						<img src="{:U(MODULE_NAME.'/Login/verify')}" id="code" />
+						 <a href="javascript:void();"  onclick="change_code(this)">看不清</a>
+					</td>
+				</tr>
+				<tr >
+					<td colspan="2" style="padding-left:160px;" > <input type="submit" class="submit" value="提交"/>
+					<input type="button" id="regiseter" class="submit" value="返回"/></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<script type="text/javascript">
+		$('#regiseter').click(function(){
+			history.go(-1);
+		});
+	</script>
+	</body>
+</html>

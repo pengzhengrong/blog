@@ -1,0 +1,22 @@
+﻿<link href="__PUBLIC__/{$module_name}/Css/font-awesome.css" rel="stylesheet">
+<script type="text/javascript" src="__PUBLIC__/{$module_name}/Js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/{$module_name}/Js/google-maps.js"></script>
+<script>$(document).ready(function(){$(".vertical-nav").verticalnav({speed: 400,align: "left"});});</script>
+<ul class="vertical-nav dark red">
+	<foreach name="cate"  item="v">
+	<li><a href="http://www.internetke.com/">{$v.title}
+		<span class="submenu-icon"></span></a>
+		<ul>
+			<foreach name="v.child" item="vv">
+				<li><a href="http://www.internetke.com/">{$vv.title}<span class="submenu-icon"></span></a>
+				<ul>
+				<foreach name="vv.child" item="vvv">
+					<li><a href="http://www.internetke.com/">{$vvv.title}</a></li>
+				</foreach>
+				</ul>
+				</li>
+			</foreach>
+		</ul>
+	</li>
+	</foreach>
+</ul>

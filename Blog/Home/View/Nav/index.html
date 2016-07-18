@@ -1,0 +1,98 @@
+<include file="Blog/Home/View/Common/html_head.html" title="博客菜单" />
+<!-- Custom styles for this theme -->
+<link rel="stylesheet" href="__PUBLIC__/Home/css/main.css">
+<!-- DataTables-->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/dataTables/css/dataTables.css">
+<style type="text/css">
+    table tbody tr:hover{
+        background: #fbffe4;
+    }
+</style>
+</head>
+
+<body>
+    <section id="container">
+        <!--main content start-->
+        <section class="main-content-wrapper">
+            <section id="main-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--breadcrumbs start -->
+                        <ul class="breadcrumb">
+                           <foreach name="navigation" item="v">
+                                <li><a href="/{$v.m}/{$v.c}/{$v.a}">{$v.title}</a></li>
+                            </foreach>
+                        </ul>
+                        <!--breadcrumbs end -->
+                        <!-- <h1 class="h1">Date Tables</h1> -->
+                    </div>
+
+                    <div class="col-md-6">
+                        <button type="button" id="add" class="btn btn-default" style="float:right;">添加菜单</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                        <form action="/Home/Nav/index.html" method="post" id="form">
+                                <div class="col-sm-2">
+                                    <!-- 开始使用select标签 -->
+                                    <taglib name="html" />
+                                    <html:select name="id" id="id" first="全部菜单" selected="selected" style="form-control" options="options" change="optionsChange(this)" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">菜单列表</h3>
+                                <div class="actions pull-right">
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table id="example" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">排序</th>
+                                            <th width="10%">id</th>
+                                            <th>菜单名称</th>
+                                            <th width="20%">操作管理</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <foreach name="rest" item="v">
+                                            <tr>
+                                                <td>{$v.sort}</td>
+                                                <td>{$v.id}</td>
+                                                <td>{$v.title}</td>
+                                                <td>
+                                                    <a href="javascript:" onclick="add({$v.id});" >添加子菜单</a>
+                                                    <a href="javascript:" onclick="modify({$v.id});" >修改</a>
+                                                    <a href="javascript:" onclick="del({$v.id})">删除</a>
+                                                </td>
+                                            </tr>
+                                        </foreach>
+                                    </tbody>
+                                </table>
+                                {$page}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <!--main content end-->
+    </section>
+    <include file="Blog/Home/View/Common/js.html" />
+    <script type="text/javascript" src="__PUBLIC__/Home/js/project/nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<include file="Blog/Home/View/Common/html_head.html" title="博客" />
+<!-- Custom styles for this theme -->
+<link rel="stylesheet" href="__PUBLIC__/Home/css/main.css">
+<!-- DataTables-->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/dataTables/css/dataTables.css">
+
+</head>
+
+<body>
+  <section id="container">
+    <!--main content start-->
+    <section class="main-content-wrapper">
+      <section id="main-content">
+        <div class="row">
+          <div class="col-md-6">
+            <!--breadcrumbs start -->
+            <ul class="breadcrumb">
+              <foreach name="navigation" item="v">
+              <li><a href="/{$v.m}/{$v.c}/{$v.a}">{$v.title}</a></li>
+              </foreach>
+          </ul>
+          <!--breadcrumbs end -->
+          <!-- <h1 class="h1">Date Tables</h1> -->
+      </div>
+
+      <div class="col-md-6">
+        <button type="button" id="add" class="btn btn-default" style="float:right;">添加文章</button>
+    </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">博客列表</h3>
+        <div class="actions pull-right">
+          <i class="fa fa-chevron-down"></i>
+          <i class="fa fa-times"></i>
+      </div>
+  </div>
+  <div class="panel-body">
+    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>名称</th>
+          <th>点击量</th>
+          <th>发布时间</th>
+          <th>修改时间</th>
+          <!-- <th>SORT</th> -->
+          <!-- <th>ATTR</th> -->
+          <th>上级目录</th>
+          <th>操作管理</th>
+      </tr>
+  </thead>
+
+  <tbody>
+    <foreach name="rest" item="v">
+      <tr>
+        <td>{$v.id}</td>
+        <td>{$v.title}</td>
+        <td>{$v.click}</td>
+        <td>{$v.created|date='Y-m-d H:i',###}</td>
+        <td>{$v.update_time|date='Y-m-d H:i',###}</td>
+        <!-- <td>{$v.sort}</td> -->
+                           <!--  <td>
+                            <foreach name="v.attr" item="attr">
+                              <font color="{$attr.color}">{$attr.title}</font>&nbsp;&nbsp;
+                            </foreach>
+                        </td> -->
+                        <td>
+                            {:W('Blog/ParentDir',array($v['cat_id']))}
+                        </td>
+                        <td>
+                            <if condition="$gc">
+                              <a href="javascript:" onclick="handle({$v.id},'reback');" >恢复</a>
+                              <a href="javascript:" onclick="handle({$v.id},'delete')">删除</a>
+                              <else/>
+                              <a href="javascript:" onclick="modify({$v.id})">修改</a>
+                              <a href="javascript:" onclick="handle({$v.id},'');">删除</a>
+                          </if>
+                      </td>
+                  </tr>
+              </foreach>
+          </tbody>
+      </table>
+      {$page}
+  </div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<!--main content end-->
+</section>
+<include file="Blog/Home/View/Common/js.html" />
+<script type="text/javascript" src="__PUBLIC__/Home/js/project/blog.js"></script>
+</body>
+
+</html>

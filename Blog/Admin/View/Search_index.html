@@ -1,0 +1,26 @@
+<include file="Blog/Admin/View/Common/header.html" title="SEARCH" />
+	<link rel="stylesheet" href="__PUBLIC__/{$module_name}/Css/search.css" />
+	{:baiduAccount()}
+</head>
+<body>
+	<h3>We’ve found {:count($rest)} repository results</h3>
+	<ul>
+		<foreach name="rest" item="v" >
+
+			<li>
+			<a href="content_{$v.cat_id}">
+				<span style="color: black;">{$v.title}</span><br>
+				<span>
+				<foreach name="v.highlight" item="h" >
+					<foreach name="h" item="high" key="k"  >
+						{:cutHighlightContent($high)}<br>
+					</foreach>
+				</foreach>
+				</span>
+			</a>
+			</li>
+		</foreach>
+	</ul>
+</body>
+
+</html>

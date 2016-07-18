@@ -1,0 +1,63 @@
+{include file="Common/header.html" title="blog"}
+</head>
+<body>
+{include file="Common/loader.html"}
+<div class="all-elements">
+{include file="Common/left.html"}
+
+    <div class="header">
+        <a href="#" class="main-logo"></a>
+        <a href="#" class="open-menu"><i class="fa fa-navicon"></i></a>
+        <a href="#" class="open-call"><i class="fa fa-phone"></i></a>
+        <a href="#" class="open-mail"><i class="fa fa-envelope-o"></i></a>
+    </div>
+
+    <a href="#" class="footer-ball"><i class="fa fa-navicon"></i></a>
+
+    <!-- Page Content-->
+    <div id="content" class="snap-content">
+        <div class="header-clear"></div>
+        <div class="content">
+
+            <div class="blog-posts">
+            {foreach $rest as $v}
+                <div class="blog-post">
+                    <!-- <a class="blog-post-image" href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/3ww.jpg" alt="img"></a> -->
+                    <h3 class="blog-post-title">{$v['title']}</h3>
+                    <p class="blog-post-text">
+                    {foreach $v['highlight']['content'] as $k=>$content}
+                        {if $k==2}{break}{/if}
+                       {$content|truncate:80:'...':true}<br>
+                    {/foreach}
+                    </p>
+                    <p class="blog-post-date"><i class="fa fa-calendar"></i>{$v['created']|date_format:"
+%m/%d/%G %T"}</p>
+                    <p class="blog-post-more"><a href="/blog_{$v['id']}">Read More<i class="fa fa-angle-right"></i></a></p>
+                </div>
+                <div class="decoration"></div>
+            {/foreach}
+            {$show}
+            </div>
+
+            
+            {include file="Common/search.html"}
+               <!--  <div class="widget container">
+                    <h4>Recent Works</h4>
+                    <p>
+                        You can link this to be a gallery or link it to act like a normal anchor
+                        to redirect your users to the specific post you want.
+                    </p>
+                    <ul class="gallery square-thumb blog-gallery">
+                        <li><a href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/1s.jpg" alt="img"/></a></li>
+                        <li><a href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/2s.jpg" alt="img"/></a></li>
+                        <li><a href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/3s.jpg" alt="img"/></a></li>
+                        <li><a href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/4s.jpg" alt="img"/></a></li>
+                    </ul>
+                </div> -->
+
+               <!-- category -->
+               {W('Cate/cate',array($cate))}
+        <!-- Page Footer-->
+    {include file="Common/footer.html"}
+</body>
+

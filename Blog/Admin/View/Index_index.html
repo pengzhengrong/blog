@@ -1,0 +1,54 @@
+<include file="Blog/Admin/View/Common/header.html" title="BLOG" />
+<base target="iframe"/>
+</head>
+<body>
+	<div id="top">
+		<div class="menu">
+			<foreach name="rest" item="v">
+				<a target="_self"  href="{:C('URL_ROUTER_ON')?'blog_'.$v['id']:U(MODULE_NAME.'/Index/index',array('id'=>$v['id']))}" >{$v.title}</a>
+			</foreach>
+		</div>
+		<div>
+			<form action="/search" method="post" >
+			<input name="search_key" placeholder="关键词" />
+			<input type="submit" value="搜索" />
+			</form>
+		</div>
+		<div class="exit">
+			{:session('username')==null
+			?'<a href="/blogin"  target="_self">登入</a>'
+			:'<a href="/blogout"  target="_self" >退出</a>'}
+
+			<a href="#" target="_blank">获得帮助</a>
+			<a href="#" target="_blank">blog</a>
+		</div>
+	</div>
+	<div id="left">
+		{:W('Cat/unlimitLayer',array($cate))}
+	</div>
+	<div id="right">
+		<iframe name="iframe" src="{:U(MODULE_NAME.'/Index/content',array('id'=>$id))}"></iframe>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+
+		$('#left').on( 'click' , '.showDl' , showDl );
+		function showDl(event){
+			$(event.currentTarget).parent().find('dd').toggle();
+		}
+		$('#logout').click(function(){
+			$.ajax({
+				url: '{:U(MODULE_NAME.'/Login/logout','','')}',
+				dataType: 'text',
+				success: function(data){
+					if(data){
+						alert('LOGOUT SUCCESS');
+						window.location.reload();
+					}
+				}
+			});
+		})
+	})
+</script>
+</html>

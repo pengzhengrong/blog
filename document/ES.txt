@@ -1,0 +1,181 @@
+#######################
+#    old elastic not used                    #
+#######################
+// create index test_v1
+ curl -XPOST http://localhost:9200/test_v1 -d '{
+    "mappings":{
+        "think_blog":{
+            "properties":{
+                "id":{"type":"integer","store":"yes"},
+                "title":{"type":"string","store":"yes"},
+                "content":{"type":"string","store":"yes","index_options":"offsets"},
+                "status":{"type":"integer","store":"yes","index":"not_analyzed"},
+                "created":{"type":"integer","store":"yes","index":"analyzed"}
+            }
+        }
+    }}'
+//
+--------------------------------------------------------------------------
+// add all content and then stop
+  
+   curl -XPUT 'http://localhost:9200/_river/think_blog/_meta' -d '{
+    "type": "jdbc",
+    "jdbc": {
+        "driver": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://127.0.0.1:3306/test",
+        "user": "root",
+        "password": "",
+        "sql": "select cat_id as _id,title,content,status from think_blog",
+        "index": "test_v1",
+        "type": "think_blog",
+        "bulk_size": 100,
+        "max_bulk_requests": 30,
+        "bulk_timeout": "60s",
+        "flush_interval": "60s",
+         "schedule": "0/60 * * * * ?"
+    }
+}'  
+ curl -XDELETE localhost:9202/_river
+--------------------------------------------------------------------------
+
+// add new content and exec  every 1m
+   curl -XPUT 'http://localhost:9202/_river/think_blog/_meta' -d '{
+    "type": "jdbc",
+    "jdbc": {
+        "driver": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://127.0.0.1:3306/test",
+        "user": "root",
+        "password": "",
+        "sql": "select cat_id as _id,title,content,status from think_blog where status=0 and created > (unix_timestamp(now())-60 )",
+        "index": "test_v1",
+        "type": "think_blog",
+        "bulk_size": 100,
+        "max_bulk_requests": 30,
+        "bulk_timeout": "70s",
+        "flush_interval": "60s",
+        "schedule": "0/60 * * * * ?"
+    }
+}'  
+//使用jdbc插件的时候,会定期检索数据库然后同步ES.那么就会定期的查询sql,无论数据是否有改动.
+//在一个就是在周期性的同步的时候,会发现每条数据的_version 一直在递增.因此版本在一直改变.
+//如果数据库发生了改变再来进行同步ES,会更好一点.
+curl -XDELETE localhost:9202/_river
+--------------------------------------------------------------------------
+//update index 
+curl -XPOST localhost:9202/_aliases -d '
+{
+    "actions": [
+        { "add": {
+            "alias": "test",
+            "index": "test_v1"
+        }}
+    ]
+}'
+
+--------------------------------------------------------------------------
+//以上第一步操作已经完成,如果需要修改字段,那么该如何处理呢?
+curl -XPUT localhost:9202/test_v1/think_blog/_mapping -d '{
+    "think_blog": {
+        "properties": {
+            "cat_id": {"type":   "multi_field","store":"yes","index":"not_analyzed"}
+            }
+        }
+    }
+}'
+//查看类型的字段
+curl -XGET localhost:9202/test_v1/think_blog
+//发现并没有增加字段
+第二种方法:平滑过度修改索引
+ curl -XPOST http://localhost:9202/test_v2 -d '{
+    "mappings":{
+        "think_blog":{
+            "properties":{
+                "id":{"type":"integer","store":"yes"},
+                "title":{"type":"string","store":"yes"},
+                "content":{"type":"string","store":"yes","index_options":"offsets"},
+                "status":{"type":"integer","store":"yes","index":"not_analyzed"}
+            }
+        }
+    }}'
+//新建索引test_v2,然后依次执行以上的同步操作.
+//执行别名
+curl -XPOST localhost:9202/_aliases -d '
+{
+    "actions": [
+        { "remove": {
+            "alias": "test",
+            "index": "test_v1"
+        }},
+        { "add": {
+            "alias": "test",
+            "index": "test_v2"
+        }}
+    ]
+}'
+//除了可以通过jdbc插件同步ES之外,还可以通过ES api同步
+--------------------------------------------------------------------------
+
+
+
+
+//{{ delete index
+    curl -XDELETE localhost:9202/test
+    curl -XDELETE localhost:9202/test_v1/think_blog
+
+//}}
+   
+
+"status": {  
+    "type":  "string", //字符串类型  
+    "index": "analyzed"//分词，不分词是：not_analyzed ，设置成no，字段将不会被索引  
+    "analyzer":"ik"//指定分词器  
+    "boost":1.23//字段级别的分数加权  
+    "doc_values":false//对not_analyzed字段，默认都是开启，分词字段不能使用，对排序和聚合能提升较大性能，节约内存  
+    "fielddata":{"format":"disabled"}//针对分词字段，参与排序或聚合时能提高性能，不分词字段统一建议使用doc_value  
+    "fields":{"raw":{"type":"string","index":"not_analyzed"}} //可以对一个字段提供多种索引模式，同一个字段的值，一个分词，一个不分词  
+    "ignore_above":100 //超过100个字符的文本，将会被忽略，不被索引  
+    "include_in_all":ture//设置是否此字段包含在_all字段中，默认是true，除非index设置成no选项  
+    "index_options":"docs"//4个可选参数docs（索引文档号） ,freqs（文档号+词频），positions（文档号+词频+位置，通常用来距离查询），offsets（文档号+词频+位置+偏移量，通常被使用在高亮字段）分词字段默认是position，其他的默认是docs  
+    "norms":{"enable":true,"loading":"lazy"}//分词字段默认配置，不分词字段：默认{"enable":false}，存储长度因子和索引时boost，建议对需要参与评分字段使用 ，会额外增加内存消耗量  
+    "null_value":"NULL"//设置一些缺失字段的初始化值，只有string可以使用，分词字段的null值也会被分词  
+    "position_increament_gap":0//影响距离查询或近似查询，可以设置在多值字段的数据上火分词字段上，查询时可指定slop间隔，默认值是100  
+    "store":false//是否单独设置此字段的是否存储而从_source字段中分离，默认是false，只能搜索，不能获取值  
+    "search_analyzer":"ik"//设置搜索时的分词器，默认跟ananlyzer是一致的，比如index时用standard+ngram，搜索时用standard用来完成自动提示功能  
+    "similarity":"BM25"//默认是TF/IDF算法，指定一个字段评分策略，仅仅对字符串型和分词类型有效  
+    "term_vector":"no"//默认不存储向量信息，支持参数yes（term存储），with_positions（term+位置）,with_offsets（term+偏移量），with_positions_offsets(term+位置+偏移量) 对快速高亮fast vector highlighter能提升性能，但开启又会加大索引体积，不适合大数据量用  
+}  
+
+curl -XGET localhost:9200/test/_search?pretty -d '{
+    "query":{
+        "match_all":{}
+    }
+}'
+
+curl -XGET localhost:9200/test/_search?pretty&scroll=5m -d  '{"size":5, "query":{ "match_all":{}    }}'
+
+curl -XGET localhost:9200/test/_search?pretty&scroll=5m&scroll_id=XXX -d '{
+    "query":{
+        "match_all":{}
+    }
+}'
+
+select * from test limit 10,10; 
+
+select * from (select id from test where id>10 limit 10) b ,test a where a.id=b.id;
+
+curl -XGET 'localhost:9200/test/think_blog/_search?pretty&scroll=5m' -d '{
+    "query":{
+    "match_all":{}
+    }
+}'
+
+curl -XGET 'localhost:9200/_search/scroll?pretty&scroll=5m&scroll_id=cXVlcnlUaGVuRmV0Y2g7NTsxMzE6bEhEc3pIQVdTVmVvQTduY3ZFNXF1QTsxMzI6bEhEc3pIQVdTVmVvQTduY3ZFNXF1QTsxMzM6bEhEc3pIQVdTVmVvQTduY3ZFNXF1QTsxMzQ6bEhEc3pIQVdTVmVvQTduY3ZFNXF1QTsxMzU6bEhEc3pIQVdTVmVvQTduY3ZFNXF1QTswOw=='
+
+curl -XGET localhost:9200/test/_search?pretty -d '{
+    'query':{
+        'query_string':{
+            'operator':'and'
+
+        }
+    }
+}'

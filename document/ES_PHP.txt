@@ -1,0 +1,59 @@
+ curl -XDELETE http://localhost:9203/test_v1
+ --------------------------------------------------------------------------
+ curl -XPOST http://localhost:9200/test_v1 -d '{
+    "mappings":{
+        "think_blog":{
+            "properties":{
+                "cat_id":{"type":"integer","store":"yes","index":"not_analyzed"},
+                "title":{"type":"string","store":"yes"},
+                "content":{"type":"string","store":"yes","index_options":"offsets"},
+                "status":{"type":"integer","store":"yes","index":"not_analyzed"},
+                "created":{"type":"integer","store":"yes","index":"analyzed"}
+            }
+        }
+    }}'
+ --------------------------------------------------------------------------
+curl -XPOST localhost:9200/_aliases -d '
+{
+    "actions": [
+        { "add": {
+            "alias": "test",
+            "index": "test_v1"
+        }}
+    ]
+}'
+--------------------------------------------------------------------------
+curl -XPOST localhost:9203/test/think_blog/22/_update -d '{
+    "script":"ctx._source.content=\"this is a test\""
+}'
+--------------------------------------------------------------------------
+curl -XGET localhost:9203/test/_search?pretty -d '{
+        "fields":["_id","title","cat_id"],
+        "query":{
+            "match_phrase_prefix":{
+                "title":{
+                    "query":"php",
+                    "slop":1,
+                    "max_expansions":20
+                },
+                  "content":{
+                    "query":"php",
+                    "slop":1,
+                    "max_expansions":20
+                }
+            }
+        }
+    }'
+
+    curl -XGET localhost:9203/test/_search?pretty -d '{
+        "fields":["_id","title","cat_id"],
+        "query":{
+            "match_phrase_prefix":{
+                "title":{
+                    "query":"php",
+                    "slop":1,
+                    "max_expansions":20
+                }
+            }
+        }
+    }'
