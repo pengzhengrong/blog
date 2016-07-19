@@ -111,6 +111,67 @@ function tree($rest , $pid=0) {
 	return $arr;
 }
 
+function tree2($rest , $pid=0 , $checkbox=false , $node_ids = array() ) {
+	static $arr = array();
+	static $count=0; //当前遍历树的深度
+	static $depth = 0; //树的最大深度
+	static $node = 0; //子节点的个数
+	static $node_temp = 0; //在子节点的个数设置为0前，临时存储子节点的个数
+	$space = str_repeat('&nbsp;',6);
+	foreach ($rest as $value) {
+		if( $value['pid'] == $pid) {
+			if( in_array( $value['id'] , $node_ids) ) {
+				$checked = 'checked';
+			} else {
+				$checked = '';
+			}
+			if( $pid == 0 ) {
+				$count = 0;
+				$depth = 0;
+				if( $checkbox ) {
+					$value['title'] = '<input type="checkbox" '.$checked.' level='.$count.' name="node_id[]" value="'.$value['id'].'" />'.$value['title'];
+				}
+			} else {
+				$count++;
+				$depth = $count;
+				$title = str_repeat($space.'│',$count-1);
+				if( $checkbox ) {
+					$value['title'] = '<input type="checkbox" '.$checked.' level='.$count.' name="node_id[]" value="'.$value['id'].'" />'.$value['title'];
+				}
+				$title .= $space.'├─ '.$value['title'];
+				$value['title'] = $title;
+			}
+			$arr[] = $value;
+			tree2( $rest , $value['id'] ,$checkbox , $node_ids );
+		}
+	}
+	// 替换中间节点的树枝
+	if( $depth-1 == $count && $count >= 0 ) {
+		$len = count($arr);
+		$arr[$len-1]['title'] = str_replace('├─', '└─', $arr[$len-1]['title']);
+	}
+
+	if( $depth == $count ) {
+		$node++;
+		$node_temp = $node;
+	} else {
+		$node = 0;
+	}
+	// echo $depth.'_'.$count.'_'.$node_temp.' ';
+	//替换最后节点上的树枝
+	if( $count == 0 && $depth > 0 ) {
+		$len = count($arr);
+		// echo $len;
+		for( $i=0;$i<$node_temp;$i++ ) {
+			$arr[$len-1-$i]['title'] = str_replace('│', ' ', $arr[$len-1-$i]['title']);
+		}
+		if( $len-1-$node_temp >= 0  )
+			$arr[$len-1-$node_temp]['title'] = str_replace('├─', '└─', $arr[$len-1-$node_temp]['title']);
+	}
+	$count--;
+	return $arr;
+}
+
 /*从数组中获取select标签的选项*/
 function options($rest , $key='id', $value='title' , $filter_key='',$filter_value='') {
 	if( !empty($filter_key) && $filter_value != '' ) {

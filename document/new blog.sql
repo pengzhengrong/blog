@@ -11,7 +11,6 @@ create  table `think_blog` (
   `time` int(11) not null default 0,
   `status` tinyint(1) not null default 0,
   `isdisplay` tinyint(1) not null default 0,
-  `content` text ,
   primary key(`id`),
   key(`title`) ,
   key(`cat_id`),
@@ -64,6 +63,56 @@ CREATE TABLE think_session (
        UNIQUE KEY `session_id` (`session_id`)
      )engine=myisam default charset=utf8 ;
 
+create table `think_user`(
+  `id` int(11) unsigned auto_increment primary key,
+  `username` varchar(20) not null default '',
+  `password` varchar(100) not null default '',
+  -- `last_login` int(11) not null default 0,
+  -- `last_ip` varchar(16) not null default '',
+  `extra` text ,
+  `status` tinyint(1) not null default 0,
+  `role` varchar(50) not null default '',
+  `role_id` int(11) not null default 0,
+  `created` int(11) not null default 0,
+  key(`username`,`password`)
+)engine=myisam default charset=utf8;
+
+CREATE TABLE IF NOT EXISTS `think_role` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `pid` smallint(6) DEFAULT NULL,
+  `status` tinyint(1) unsigned DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pid` (`pid`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
+CREATE TABLE IF NOT EXISTS `think_role_user` (
+  `role_id` mediumint(9) unsigned DEFAULT NULL,
+  `user_id` char(32) DEFAULT NULL,
+  KEY `group_id` (`role_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `think_access` (
+  `role_id` smallint(6) unsigned NOT NULL,
+  `node_id` smallint(6) unsigned NOT NULL,
+  `level` tinyint(1) NOT NULL,
+  `module` varchar(50) DEFAULT NULL,
+  KEY `groupId` (`role_id`),
+  KEY `nodeId` (`node_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `think_access` (
   `role_id` smallint(6) unsigned NOT NULL,
   `node_id` smallint(6) unsigned NOT NULL,

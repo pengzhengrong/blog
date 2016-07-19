@@ -1,0 +1,72 @@
+<include file="Blog/Home/View/Common/html_head.html" title="添加用户" />
+<!-- iCheck-->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/icheck/css/_all.css">
+</head>
+
+<body>
+    <section id="login-container">
+
+        <div class="row">
+            <div class="col-md-3" id="login-wrapper">
+                <div class="panel panel-primary animated flipInY">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                         修改口令：{$rest.username}
+                     </h3>
+                 </div>
+                 <div class="panel-body">
+                     <div class="col-md-12">
+                        <!--breadcrumbs start -->
+                        <ul class="breadcrumb">
+                            <foreach name="navigation" item="v">
+                                <li><a href="/{$v.m}/{$v.c}/{$v.a}">{$v.title}</a></li>
+                            </foreach>
+                        </ul>
+                    </div>
+                    <form role="form">
+                        <input type="hidden" name="id" id="id" value="{$rest.id}" />
+                        <div class="form-group">
+                            <label for="old_password">Old Password</label>
+                            <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Old Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">New Password</label>
+                            <input type="password" class="form-control" id="new_password" name="new_password" placeholder="New Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Retype Password</label>
+                            <input type="password" class="form-control" id="re_password" name="re_password" placeholder="Retype your password">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="col-md-6">
+                                        <div class="panel-body">
+                                        <button type="button" id="saveCard" class="btn btn-success btn-block">保存</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel-body">
+                                            <button type="button" id="cancle" class="btn btn-default btn-block">取消</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</section>
+<!--Global JS-->
+<include file="Blog/Home/View/Common/js.html" />
+<script type="text/javascript" src="__PUBLIC__/Home/js/project/user.js"></script>
+
+</body>
+
+</html>

@@ -3,85 +3,71 @@ namespace Home\Controller;
 use Think\Controller;
 Class UserController extends CommonController {
 
-	public  function index() {
-		// $this->rest = M('user')->select();
-		$this->rest = D('UserRelation')->relation( true )->select();
-		// my_log( 'sql', D('UserRelation')->relation( true )->getlastsql() );
-		// p( $this->rest ); die;
+	Public function index() {
+		$field = array('id','username','status','role','extra');
+		$this->rest = M('user')->field($field)->fetchSql(false)->select();
 		$this->display();
 	}
 
-	public function  add() {
-		// p($_POST); exit;
+	Public function add() {
 		if( IS_POST ) {
-			$login_ip = get_client_ip();
-			// p( $login_ip );die;
-			$login_time = time();
-			$data = array(
-				'username' => I('username'),
-				'password' => I('passwd','','md5'),
-				'login_ip' => $login_ip,
-				'login_time' => $login_time
-				);
-			$rest = M('user')->data( $data )->add();
-			$rest || $this->error('INSERT FAILED');
-			$this->success('INSERT SUCCESS',MODULE_NAME.'/User/index');
+			$data = I('post.');
+			$data['created'] = time();
+			$data['password'] = '123456';
+			$data['extra'] = json_encode( $data['extra'] );
+			$rest = M('user')->add($data);
+			$this->ajaxReturn( setAjaxReturn( $rest ) );
 		}
+		//角色选项
+		$role = M('role')->field( array('id','name') )->where('status=0')->order('id')->select();
+		$this->options = options($role, 'id', 'name');
 		$this->display();
 	}
 
-	public function edit() {
-		$user_id = I('uid');
-		if( IS_POST ){
-			// p( I('post.') ); die;
+	Public function edit() {
+		if( IS_POST ) {
+			$data = I('post.');
+			$data['extra'] = json_encode( $data['extra'] );
+			$rest = M('user')->save($data);
+			$this->ajaxReturn( setAjaxReturn( $rest ) );
+		}
+		$field = array('id','username','extra','status','role');
+		$this->rest  = M('user')->field($field)->find(I('id'));
+		$this->extra = json_decode($this->rest['extra'],true);
+		$this->selected = $this->rest['role_id'];
+		//角色选项
+		$role = M('role')->field( array('id','name') )->where('status=0')->order('id')->select();
+		$this->options = options($role, 'id', 'name');
+		$this->display();
+	}
+
+	Public function delete() {
+		$rest = M('user')->delete(I('id'));
+		$this->ajaxReturn( setAjaxReturn( $rest ) );
+	}
+
+	//修改口令
+	Public function card() {
+		if( IS_POST ) {
 			$data = array(
-				'id'=>I('uid',0,'intval'),
-				'lock' => I('lock')
+				'password' => I('new_password'),
+				'id' => I('id')
 				);
-			if( I('passwd') != null ){
-				$data['passwd'] = I('passwd',0,'md5');
+			$where = array(
+				'password' => I('old_password'),
+				'id' => I('id')
+				);
+			$rest = M('user')->where($where)->fetchSql(false)->find();
+			//验证原始密码
+			if( $rest ) {
+				$rest = M('user')->save($data);
+				$this->ajaxReturn( setAjaxReturn( $rest ) );
+			} else {
+				$this->ajaxReturn( setAjaxReturn( $rest, '原始密码输入有误！' ) );
 			}
-			$rest = M('user')->data( $data )->save();
-			$rest || $this->error('UPDATE FAILED');
-			$this->success('UPDATE SUCCESS',U(MODULE_NAME.'/User/index'));
-			return;
 		}
-		$this->rest = M('user')->find( $user_id );
+		$this->rest = M('user')->field(array('id','username'))->find();
 		$this->display();
 	}
-
-	public function user_role() {
-		$this->user_id = I('uid',0,'intval');
-		$rest = M('role')->select();
-		$user = M('role_user')->where('user_id='.$this->user_id)->getField('role_id',true);
-		// p( $user ); die;
-		$this->rest = node_merge( $rest , $user );
-		$this->display();
-	}
-
-	public function user_role_add() {
-		$role_ids = I('role_id');
-		$user_id = I('user_id');
-		$values = array();
-		foreach ($role_ids as $key => $value) {
-			$values[] = "({$user_id},{$value})";
-		}
-		$sql = 'insert into '.C('DB_NAME').'.think_role_user(`user_id`,`role_id`) values'.implode(',', $values);
-		// p($sql); exit;
-		M('role_user')->where('user_id='.$user_id)->delete();
-		$rest = M('role_user')->query( $sql );
-		// $rest || $this->error('INSERT ERROR');
-		$this->redirect( 'index' );
-	}
-
-	public function delete(){
-		$uid = I('uid');
-		D('UserRelation')->relation(true)->delete( $uid );
-		// D('UserRelation')->relation(true)->where(array('user_id'=>$uid))->delete();
-		// echo D('UserRelation')->relation(true)->getlastsql();
-		$this->redirect( 'index' );
-	}
-
-
 }
 

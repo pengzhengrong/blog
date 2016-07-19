@@ -81,7 +81,7 @@ function saveModify() {
 		click : $("#click").val(),
 		content : content
 	};
-	// console.log(pars);
+	console.log(pars);
 	$.post(url, pars, function(data) {
 		if ( data.code != 200 ) {
 			$.showTips(data.msg, "提示");
@@ -108,9 +108,16 @@ function modify(id) {
 	window.location = '/Home/Blog/edit.html?id='+id;
 }
 /*删除操作*/
-function del(id) {
+function handle(id,type) {
+	var msg = '删除';
+	if( type=='delete' ) {
+		msg = '彻底删除';
+	}
+	if( type=='reback' ) {
+		msg = '恢复删除';
+	}
 	$.showDialog({
-		"msgContent":"请确认是否删除该记录？",
+		"msgContent":"请确认是否"+msg+"该记录？",
 		"btns":[
 		{text:"确认",className:"",act: function(){
 				// 隐藏提示框
@@ -118,14 +125,15 @@ function del(id) {
 				$(".dialog-mask").css("display", "none");
 				var url = '/Home/Blog/delete.html';
 				var pars = {
-					id: id
+					id: id,
+					type:type
 				};
 				$.post(url, pars, function(data) {
 					if (data.code != 200) {
 						$.showTips(data.msg,"提示");
 					} else {
-						$.showTips("删除完成","提示");
-						window.location = "/Home/Blog/index.html";
+						$.showTips(msg+"完成","提示");
+						window.location.reload() ;
 					}
 				});
 			}},

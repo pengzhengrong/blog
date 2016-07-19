@@ -8,26 +8,17 @@ Class RbacController extends CommonController {
 
 	}
 
-	Public function role () { 
-		$rest = M('role')->select();
-		// p( $rest ); die;
-		$this->rest = node_merge( $rest );
-		// p($this->rest); exit;
+	//权限设置  > 角色模块
+	Public function role () {
+		$this->rest = M('role')->field(array('id','name','status','remark'))->order('id')->select();
 		$this->display();
 	}
 
 	Public function role_add () {
 		$this->pid = I('pid',0,'intval');
 		if( IS_POST ){
-			$data = array(
-				'name' => I('name'),
-				'pid' => I('pid',0,'intval') ,
-				'status' => 1,
-				'remark' => I('remark')
-				);
-			$rest = M('role')->data( $data )->add();
-			$rest || $this->error( 'add failed' );
-			$this->redirect('role');
+			$rest = M('role')->data( I('post.') )->add();
+			$this->ajaxReturn( setAjaxReturn( $rest ) );
 		}
 		$this->display();
 	}
@@ -35,65 +26,56 @@ Class RbacController extends CommonController {
 	public function role_edit() {
 		if( IS_POST ){
 			$rest = M('role')->save(I('post.'));
-			$rest || $this->error('Update Failed');
-			$this->redirect('role');
+			$this->ajaxReturn( setAjaxReturn( $rest ) );
 		}
-		$this->rest = M('role')->find(I('id'));
+		$this->rest = M('role')->field(array('id','name','status','remark'))->find(I('id'));
 		$this->display();
 	}
 
 	Public function role_delete() {
 		$id = I('id' ,0 ,'intval');
 		$rest = M('role')->delete( $id );
-		$rest || $this->error("delete failed");
-		$this->redirect( 'role' );
+		$this->ajaxReturn( setAjaxReturn( $rest ) );
 	}
 
+	//权限设置  > 角色绑定节点模块
 	Public function access () {
-		$rest = M('role')->select();
-		$this->rest = node_merge( $rest );
-		// p( $rest ); exit;
-		$this->display();
-	}
-
-	public function _before_access(){
-		//@error_log("\n this is RbacAction._before_access method",3,'/tmp/pzrlog.log');
-	}
-
-	public function _after_access() {
-		//@error_log("\n this is RbacAction._after_access method",3,'/tmp/pzrlog.log');
-	}
-
-	Public function access_add () {
-		$role_id = I('role_id' , 0 ,'intval');
-		$node_ids = I('node_id');
-		// p( $node_id ); exit;
-		// p( array_map( 'explode_arr' , $node_ids) ); exit;
-		$temp = array_map( 'explode_arr', $node_ids);
-		$values = array();
-		foreach ($temp as $key => $value) {
-			$values[] = "({$role_id},{$value[0]},{$value[1]})";
+		/*条件搜索*/
+		if( IS_POST ) {
+			$where = array('status'=>0);
+			$rest = A('Nav')->getCache();
+			//只显示根菜单
+			// $this->options = options( $rest , 'id', 'title', 'pid', '0');
+			// $this->selected = I('id');
+			$this->rest = tree2($rest,I('id',0,'intval'),true);
+			$this->display();
+			exit;
 		}
-		$sql = 'insert into '.C('DB_NAME').'.think_access(`role_id`,`node_id`,`level`) values'.implode(',', $values);
-		// p($sql); exit;
-		// p($role_id); die;
-		M('access')->where( 'role_id='.$role_id)->delete();
-		$rest = M('access')->query( $sql );
-		// p( $rest );echo $rest; exit;
-		// $rest || $this->error( 'INSERT FAILED' );
-		// $this->success('INSERT SUCCESS' );
-		$this->redirect( 'access' );
+
+		$node_ids = M('access')->field(array('node_id'))->where('role_id='.I('id'))->select();
+		$node_ids = array_column($node_ids,'node_id');
+		// P($node_ids);die;
+		//获取菜单列表
+		$this->role_id = I('id');
+		$nav = A('Nav')->getCache();
+		$this->rest = tree2($nav,0,true,$node_ids);
+		// $this->options = options($this->rest, 'id', 'title', 'pid', '0');
+
+		$this->display();
 	}
 
 	Public function access_node() {
-		$this->role_id = I('id',0,'intval');
-		$access = M('access')->where('role_id='.$this->role_id)->getField( 'node_id',true );
-		// p( $access); exit;
-		$field = array('id','name','remark','pid','level');
-		$rest = M('node')->field( $field )->select();
-		$this->rest = node_merge( $rest , $access );
-		// p( $this->rest ); exit;
-		$this->display();
+		$values = array();
+		$node_id = I('node_id');
+		$role_id = I('role_id');
+		foreach ($node_id as $v ) {
+			$values[] = "({$role_id},{$v})";
+		}
+		$rest = M('access')->where('role_id='.$role_id)->delete();
+		$sql = "insert into think_access(`role_id`,`node_id`) values ".implode(',', $values);
+		$rest = M('access')->execute($sql);
+		// logger( json_encode($sql) );
+		$this->ajaxReturn( setAjaxReturn( $rest ) );
 	}
 
 	Public function node () {
@@ -129,7 +111,7 @@ Class RbacController extends CommonController {
 				$type = 'METHOD';
 				break;
 			default:
-				$type = 'MODULE'; 
+				$type = 'MODULE';
 				break;
 		}
 		$this->type = $type;
@@ -160,7 +142,7 @@ Class RbacController extends CommonController {
 				$type = 'METHOD';
 				break;
 			default:
-				$type = 'MODULE'; 
+				$type = 'MODULE';
 				break;
 		}
 		$this->type = $type;

@@ -43,4 +43,11 @@ function dataclean( $data ){
 		return $temp;
 	}
 
+function status( $status) {
+	if( $status == 1 ) {
+		return '<li class="fa fa-times">';
+	} else {
+		return '<li class="fa fa-check">';
+	}
+}
 

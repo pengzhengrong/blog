@@ -32,6 +32,7 @@ Class BlogController extends CommonController {
 			}
 			$this->ajaxReturn( setAjaxReturn($rest) );
 		}
+		//博客栏目
 		$cat = A('Cat')->getCache();
 		$this->category = tree($cat);
 		$this->options = options( $this->category);
@@ -43,16 +44,24 @@ Class BlogController extends CommonController {
 			$data = $_POST;
 			$data['update_time'] = time();
 			$rest = M('blog')->save($data);
-			$rest = M('blog_data')->save($data);
-			if( !$rest ) {
-				$rest = M('blog_data')->add($data);
-			}
-			$this->ajaxReturn( setAjaxReturn($rest) );
+			$blog_data = array(
+				'id' => $data['id'],
+				'content' => $data['content']
+				);
+			$rest2 = M('blog_data')->save($blog_data);
+			logger($rest.'_'.$rest2);
+			$rest =  ($rest||$rest2);
+			$this->ajaxReturn( setAjaxReturn( $rest ));
 		}
 		$rest = M('blog')->find(I('id'));
 		$blog_data = M('blog_data')->find(I('id'));
 		$rest['content'] = $blog_data['content'];
 		$this->rest = $rest;
+		//博客栏目
+		$cat = A('Cat')->getCache();
+		$this->category = tree($cat);
+		$this->options = options( $this->category);
+
 		$this->display();
 	}
 
@@ -68,11 +77,11 @@ Class BlogController extends CommonController {
 		}
 		//恢复删除
 		if( I('type') == 'reback' ){
-			$rest = M('blog')->save( array('id'=>I('id'),'status'=>0,'update_time'=>time()) );
+			$rest = M('blog')->save( array('id'=>I('id'),'status'=>0,'time'=>time()) );
 			$this->ajaxReturn( setAjaxReturn($rest) );
 		}
 		//逻辑删除
-		$rest = M('blog')->save( array('id'=>I('id'),'status'=>1,'update_time'=>time()) );
+		$rest = M('blog')->save( array('id'=>I('id'),'status'=>1,'time'=>time()) );
 		$this->ajaxReturn( setAjaxReturn($rest) );
 	}
 
@@ -84,7 +93,6 @@ Class BlogController extends CommonController {
 		$limit = $page->firstRow.','.$page->listRows;
 		$this->rest = M('blog')->field($field)->where($where)->order('created desc')->limit($limit)->select();
 		$this->page = $page->showPage();
-		$this->gc = true;
 		$this->display();
 	}
 

@@ -64,8 +64,8 @@
                             {:W('Blog/ParentDir',array($v['cat_id']))}
                           </td>
                           <td>
-                            <a href="javascript:" onclick="modify({$v.id})">修改</a>
-                            <a href="javascript:" onclick="handle({$v.id});">删除</a>
+                            <a href="javascript:" onclick="handle({$v.id},'reback')">恢复</a>
+                            <a href="javascript:" onclick="handle({$v.id},'delete');">删除</a>
                           </td>
                         </tr>
                       </foreach>

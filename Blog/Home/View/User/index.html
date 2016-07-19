@@ -1,4 +1,4 @@
-<include file="Blog/Home/View/Common/html_head.html" title="博客" />
+<include file="Blog/Home/View/Common/html_head.html" title="用户" />
 <!-- Custom styles for this theme -->
 <link rel="stylesheet" href="__PUBLIC__/Home/css/main.css">
 <!-- DataTables-->
@@ -24,7 +24,7 @@
           </div>
 
           <div class="col-md-6">
-            <button type="button" id="add" class="btn btn-default" style="float:right;">添加文章</button>
+            <button type="button" id="add" class="btn btn-default" style="float:right;">添加用户</button>
           </div>
         </div>
 
@@ -32,7 +32,7 @@
           <div class="col-md-12">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">博客列表</h3>
+                <h3 class="panel-title">用户列表</h3>
                 <div class="actions pull-right">
                   <i class="fa fa-chevron-down"></i>
                   <i class="fa fa-times"></i>
@@ -43,29 +43,33 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>名称</th>
-                      <th>点击量</th>
-                      <th>发布时间</th>
-                      <th>修改时间</th>
-                      <th>所属栏目</th>
+                      <th>用户名称</th>
+                      <th>所属角色</th>
+                      <th>最后登入时间</th>
+                      <th>最后登入IP</th>
+                      <th>真实姓名</th>
+                      <th>E-mail</th>
+                      <th>状态</th>
                       <th>操作管理</th>
                     </tr>
                   </thead>
 
                   <tbody>
                     <foreach name="rest" item="v">
+                    <php>$extra = json_decode( $v['extra'] ,true );</php>
                       <tr>
                         <td>{$v.id}</td>
-                        <td>{$v.title}</td>
-                        <td>{$v.click}</td>
-                        <td>{$v.created|date='Y-m-d H:i',###}</td>
-                        <td>{$v.update_time|date='Y-m-d H:i',###}</td>
-                          <td>
-                            {:W('Blog/ParentDir',array($v['cat_id']))}
-                          </td>
+                        <td>{$v.username}</td>
+                        <td>{$v.role}</td>
+                        <td>{$v.last_login|date='Y-m-d H:i',###}</td>
+                        <td>{$extra.last_ip}</td>
+                          <td>{$extra.name}</td>
+                          <td>{$extra.email}</td>
+                          <td>{:status($v['status'])}</td>
                           <td>
                             <a href="javascript:" onclick="modify({$v.id})">修改</a>
-                            <a href="javascript:" onclick="handle({$v.id});">删除</a>
+                            <a href="javascript:" onclick="del({$v.id});">删除</a>
+                            <a href="javascript:" onclick="card({$v.id});">口令</a>
                           </td>
                         </tr>
                       </foreach>
@@ -81,7 +85,7 @@
       <!--main content end-->
     </section>
     <include file="Blog/Home/View/Common/js.html" />
-    <script type="text/javascript" src="__PUBLIC__/Home/js/project/blog.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/project/user.js"></script>
   </body>
 
   </html>

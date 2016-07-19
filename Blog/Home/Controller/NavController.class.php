@@ -10,6 +10,7 @@ Class NavController extends CommonController {
 		if( IS_POST ) {
 			$where = array('status'=>0);
 			$rest = $this->getCache();
+			//只显示根菜单
 			$this->options = options( $rest , 'id', 'title', 'pid', '0');
 			$this->selected = I('id');
 			$this->rest = tree($rest,I('id',0,'intval'));
@@ -17,7 +18,8 @@ Class NavController extends CommonController {
 			exit;
 		}
 		$rest = $this->getCache();
-		$this->options = options( $rest);
+		//只显示根菜单
+		$this->options = options( $rest , 'id', 'title', 'pid', '0');
 		$this->rest = tree($rest);
 		// p($this->rest); die;
 		$this->display();
@@ -35,12 +37,13 @@ Class NavController extends CommonController {
 		}
 		/*添加子菜单*/
 		if( I('id') ) {
-			$field = array('id','title','m','c');
+			$field = array('id','m','c');
 			$this->rest = M('navigation')->field($field)->/*where('status=0')->*/find(I('id'));
 		}
 		/*添加一级菜单*/
 		$nav = $this->getCache();
 		$nav = tree($nav);
+		//树菜单选项
 		$this->options = options($nav);
 		$this->display();
 	}
@@ -58,7 +61,7 @@ Class NavController extends CommonController {
 		$nav = $this->getCache();
 		$this->rest = tree($nav);
 		$this->options = options($this->rest);
-		$field = array('pid','id','title','m','c','a','status');
+		$field = array('pid','id','title','m','c','a','status','sort');
 		$this->rest = M('navigation')->field($field)->find( I('id') );
 		$this->display();
 	}

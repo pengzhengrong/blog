@@ -1,4 +1,4 @@
-<include file="Blog/Home/View/Common/html_head.html" title="{$rest.title}" />
+<include file="Blog/Home/View/Common/html_head.html" title="添加用户" />
 <!-- iCheck-->
 <link rel="stylesheet" href="__PUBLIC__/Home/plugins/icheck/css/_all.css">
 
@@ -27,7 +27,7 @@
 					<div class="col-md-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h3 class="panel-title">添加博客</h3>
+								<h3 class="panel-title">添加用户</h3>
 								<div class="actions pull-right">
 									<i class="fa fa-chevron-down"></i>
 									<i class="fa fa-times"></i>
@@ -36,44 +36,35 @@
 							<div class="panel-body">
 								<form class="form-horizontal form-border" id="form">
 									<div class="form-group">
-										<label class="col-sm-3 control-label">栏目</label>
-										<div class="col-sm-4">
+										<label class="col-sm-3 control-label">所属角色</label>
+										<div class="col-sm-2">
 											<!-- 开始使用select标签 -->
 											<taglib name="html" />
-											<html:select name="cat_id" id="cat_id" style="form-control" options="options" />
+											<html:select name="role" id="role" style="form-control" options="options" />
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label">标题</label>
-										<div class="col-sm-6">
-											<input type="text" class="form-control" name="title" id="title" required="" placeholder="Required input">
+										<label class="col-sm-3 control-label">用户名称</label>
+										<div class="col-sm-4">
+											<input type="text" class="form-control" name="username" id="username" required="" placeholder="Required input">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label">点击次数</label>
-										<div class="col-sm-6">
-											<input type="text" class="form-control"  name="click" id="click" required="" placeholder="Required input">
+										<label class="col-sm-3 control-label">真实姓名</label>
+										<div class="col-sm-4">
+											<input type="text" class="form-control"  name="name" id="name" required="" placeholder="Required input">
 										</div>
 									</div>
-									<div class="col-md-12">
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												<h3 class="panel-title">正文</h3>
-												<div class="actions pull-right">
-													<i class="fa fa-chevron-down"></i>
-													<i class="fa fa-times"></i>
+											<div class="form-group">
+												<label class="col-sm-3 control-label">邮件地址</label>
+												<div class="col-sm-4">
+													<input type="email" class="form-control"  name="email" id="email" required="" placeholder="Email">
 												</div>
 											</div>
-											<div class="panel-body">
-												<textarea name="content" id="content" rows="10" cols="80">
-												</textarea>
-											</div>
-										</div>
-									</div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label">是否显示</label>
+										<label class="col-sm-3 control-label">是否有效</label>
 										<div class="col-sm-2">
-											<select name="isdisplay" id="isdisplay" class="form-control">
+											<select name="status" id="status" class="form-control">
 												<option value="0">是</option>
 												<option value="1">否</option>
 											</select>
@@ -114,24 +105,11 @@
 </section>
 
 <include file="Blog/Home/View/Common/js.html" />
-<script type="text/javascript" src="__PUBLIC__/Home/js/project/blog.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/project/user.js"></script>
 <!--Page Level JS-->
 <script src="__PUBLIC__/Home/plugins/icheck/js/icheck.min.js"></script>
 <script src="__PUBLIC__/Home/plugins/validation/js/jquery.validate.min.js"></script>
 <script src="__PUBLIC__/Home/plugins/validation/js/jquery.validate.min.js"></script>
-
-
-<!--Page Level JS-->
-<script src="__PUBLIC__/Home/plugins/bootstrap-wysihtml5/js/wysihtml5-0.3.0.js"></script>
-<script src="__PUBLIC__/Home/plugins/bootstrap-wysihtml5/js/bootstrap3-wysihtml5.js"></script>
-<script src="__PUBLIC__/Home/plugins/ckeditor/ckeditor.js"></script>
-<script>
-	$(document).ready(function() {
-		$('.textarea').wysihtml5();
-
-		CKEDITOR.replace('content');
-	});
-</script>
 </body>
 
 </html>
