@@ -16,7 +16,7 @@ class IndexController extends CommonController {
 			'prefix'=>'App_',
 			'expire'=>60
 			)
-		);*/
+			);*/
 		/*S(array(
 			'type'=>'redis',
 			'host'=>'127.0.0.1',
@@ -24,37 +24,41 @@ class IndexController extends CommonController {
 			'prefix'=>'App_',
 			'expire'=>60
 			)
-		);*/
-		$this->cate = $this->getCategory();
-	}
-
-	Public function page_blog() {
-		$where = array(
-			'status' => 0,
-			);
-		$fields = array('id','title','created');
-
-		$count = M('blog')->where($where)->fetchSql(false)->count();
-		$pageSize = I('size',C('PAGE_SIZE'),'intval');
-		$url = '/'.ACTION_NAME.'?p='.urlencode('[PAGE]');
-		$limit = $this->page($count,$pageSize,$url);
-
-		$rest = M('blog')->cache(false,C('CACHE_TIME'))->field($fields)->where($where)->order('created desc')->limit($limit)->fetchSql(false)->select();
-		$this->rest = $this->getContent($rest);
-		cookie('READ_BLOG_TYPE',null);
-		$this->display();
-	}
-
-	Public function getContent( $rest ) {
-		$databack = array();
-		foreach ($rest as $v) {
-			$content = M('blog_data')->where('id='.$v['id'])->fetchSql(false)->getField('content');
-			// P($content);
-			$v['content'] = $content;
-			$databack[] = $v;
+			);*/
+			$this->cate = $this->getCategory();
 		}
-		return $databack;
-	}
+
+		Public function page_blog() {
+			$where = array(
+				'status' => 0,
+				);
+			$fields = array('id','title','created');
+
+			$count = M('blog')->where($where)->fetchSql(false)->count();
+			$pageSize = I('size',C('PAGE_SIZE'),'intval');
+			$url = '/'.ACTION_NAME.'?p='.urlencode('[PAGE]');
+			$limit = $this->page($count,$pageSize,$url);
+
+			$rest = M('blog')->cache(false,C('CACHE_TIME'))->field($fields)->where($where)->order('created desc')->limit($limit)->fetchSql(false)->select();
+			$this->rest = $this->getContent($rest);
+			cookie('READ_BLOG_TYPE',null);
+			$this->display();
+		}
+
+		Public function getContent( $rest , $flag=false ) {
+			if( $flag ) {
+				$content = M('blog_data')->where('id='.$rest['id'])->fetchSql(false)->getField('content');
+				$rest['content'] = $content;
+				return $rest;
+			}
+			$databack = array();
+			foreach ($rest as $v) {
+				$content = M('blog_data')->where('id='.$v['id'])->fetchSql(false)->getField('content');
+				$v['content'] = $content;
+				$databack[] = $v;
+			}
+			return $databack;
+		}
 
 	 /**
 	  * 栏目列表
@@ -70,7 +74,7 @@ class IndexController extends CommonController {
 	 	$count = M('blog')->where("status=0 AND cat_id in ($ids)")->count();
 	 	$pageSize = I('size',C('PAGE_SIZE'),'intval');
 	 	$url = '/'.ACTION_NAME."_$id".'?p='.urlencode('[PAGE]');
-		$limit = $this->page($count ,$pageSize, $url);
+	 	$limit = $this->page($count ,$pageSize, $url);
 
 	 	$rest = M('blog')->cache(true,C('CACHE_TIME'))->field(array('id','title','created'))->where("status=0 AND cat_id in ($ids)")->order('created desc')->limit($limit)->select();
 	 	$this->rest = $this->getContent($rest);
@@ -81,7 +85,8 @@ class IndexController extends CommonController {
 
 	 Public function blog() {
 	 	$id = I('id',0,'intval');
-	 	$this->rest = M('blog')->find($id);
+	 	$rest = M('blog')->find($id);
+	 	$this->rest = $this->getContent($rest, true);
 	 	$cacheKey = "BLOG_ID_{$id}";
 	 	S($cacheKey,S($cacheKey)+1,24*3600);
 	 	$this->get_next_prev($id , cookie('READ_BLOG_TYPE'));
