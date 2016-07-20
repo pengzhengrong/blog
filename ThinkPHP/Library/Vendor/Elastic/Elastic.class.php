@@ -124,7 +124,7 @@ Class Elastic {
 				); */
 			$params['index'] = empty($index)?C('DEFAULT_INDEX'):$index;
 			$params['type'] = empty($type)?C('DEFAULT_TYPE'):$type;
-			P($params); 
+			// P($params); 
 		//Document will be indexed to log_index/log_type/autogenerate_id
 			logger('sync blog id:'.$params['id'],'blog_click.log');
 			$this->client->index($params);

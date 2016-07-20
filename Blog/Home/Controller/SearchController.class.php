@@ -64,8 +64,8 @@ Class SearchController extends Controller {
 			$temp = $this->dataclean( $rest[$i]['content'] );
 			$rest[$i]['content'] = $temp;
 		}
-		p($rest);die;
-		$fields[] = 'contnet';
+		// p($rest);die;
+		$fields[] = 'content';
 		$this->elastic->create_index_by_rest( $rest , $fields );
 	}
 
@@ -78,7 +78,7 @@ Class SearchController extends Controller {
 			$rest[$i]['content'] = $temp;
 		}
 		// p($rest);die;
-		$fields[] = 'contnet';
+		$fields[] = 'content';
 		$this->elastic->create_index_by_rest( $rest , $fields );
 	}
 
