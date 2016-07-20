@@ -31,7 +31,7 @@ Class UserController extends CommonController {
 			$rest = M('user')->save($data);
 			$this->ajaxReturn( setAjaxReturn( $rest ) );
 		}
-		$field = array('id','username','extra','status','role');
+		$field = array('id','username','extra','status','role_id');
 		$this->rest  = M('user')->field($field)->find(I('id'));
 		$this->extra = json_decode($this->rest['extra'],true);
 		$this->selected = $this->rest['role_id'];

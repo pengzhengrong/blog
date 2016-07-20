@@ -1,8 +1,9 @@
 <header id="header">
             <!--logo start-->
             <div class="brand">
-                <a href="index.html" class="logo">
-                    <span>Space</span>Lab</a>
+                <a href="/admin.html" target="_self" class="logo">
+                    <span>DayDay</span>Blog</a>
+                    <font color="#fff" style="font-size: 10px;margin-left: 69px;">天天博客：hello2world.top</font>
             </div>
             <!--logo end-->
             <div class="toggle-navigation toggle-left">
@@ -95,11 +96,11 @@
                     </li>
                     <li class="dropdown settings">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                      Mike Adams <i class="fa fa-angle-down"></i>
+                      {:session('username')} <i class="fa fa-angle-down"></i>
                     </a>
                         <ul class="dropdown-menu animated fadeInDown">
                             <li>
-                                <a href="#"><i class="fa fa-user"></i> Profile</a>
+                                <a href="/Home/User/profile.html"><i class="fa fa-user"></i> Profile</a>
                             </li>
                             <li>
                                 <a href="#"><i class="fa fa-calendar"></i> Calendar</a>
@@ -108,7 +109,7 @@
                                 <a href="#"><i class="fa fa-envelope"></i> Inbox <span class="badge badge-danager" id="user-inbox">5</span></a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-power-off"></i> Logout</a>
+                                <a href="javascript:" id="logout"><i class="fa fa-power-off"></i> Logout</a>
                             </li>
                         </ul>
                     </li>
@@ -123,3 +124,4 @@
                 </ul>
             </div>
         </header>
+        

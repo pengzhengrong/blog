@@ -26,6 +26,10 @@ return array(
 		'/^blogout$/' => 'Admin/Login/logout',
 		'/^search$/' => 'Admin/Search/index',
 		'/^page_error$/'=> 'Home/Index/page_error',*/
+		'/^login$/' => 'Home/Login/index',
+		'/^logout$/' => 'Home/Login/logout',
+		'/^admin$/' => 'Home/Index/index',
+		'/^404$/' => 'Home/Index/404',
 		'/^admin$/' => 'Home/Index/index',
 		// '/^([0-9a-zA-Z_-]+)$/' => 'Home/Index/:1',
 		),
@@ -41,7 +45,7 @@ return array(
 	'DB_SQL_BUILD_CACHE' => true,
 	'DB_SQL_BUILD_QUEUE' => 'xcache',
 	'DB_SQL_BUILD_LENGTH' => 20, // SQL缓存的队列长度
-	'ERROR_PAGE' => 'http://'.HTTP_HOST.'/page_error.html',
+	'ERROR_PAGE' => 'http://'.HTTP_HOST.'/404.html',
 	// 'HTML_CACHE_ON'     =>    true, // 开启静态缓存
 	// 'HTML_CACHE_TIME'   =>    60,   // 全局静态缓存有效期（秒）
 	// 'HTML_FILE_SUFFIX'  =>    '.shtml', // 设置静态缓存文件后缀

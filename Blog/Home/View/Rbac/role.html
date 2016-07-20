@@ -57,12 +57,21 @@
         <td>{$v.name}</td>
         <td>{$v.remark}</td>
         <td>{:status($v['status'])}</td>
-        <td>
-          <a href="javascript:" onclick="role({$v.id},'{$v.name}')">权限设置</a>
-          <a href="javascript:" onclick="user({$v.id})">成员管理</a>
-          <a href="javascript:" onclick="modify({$v.id})">修改</a>
-          <a href="javascript:" onclick="del({$v.id});">删除</a>
-      </td>
+        <if condition="$v['id']==C('ADMIN_AUTH_ID')" >
+             <td>
+              <font color="#cccccc">权限设置</font>
+                <a href="javascript:" onclick="user({$v.id})">成员管理</a>
+                <font color="#cccccc">修改</font>
+                <font color="#cccccc">删除</font>
+            </td>
+            <else/>
+             <td>
+                <a href="javascript:" onclick="role({$v.id},'{$v.name}')">权限设置</a>
+                <a href="javascript:" onclick="user({$v.id})">成员管理</a>
+                <a href="javascript:" onclick="modify({$v.id})">修改</a>
+                <a href="javascript:" onclick="del({$v.id});">删除</a>
+            </td>
+        </if>
   </tr>
 </foreach>
 </tbody>
@@ -77,9 +86,10 @@
 <!--main content end-->
 </section>
 <include file="Blog/Home/View/Common/js.html" />
-<script type="text/javascript" src="__PUBLIC__/Home/js/project/role.js"></script>
 <script type="text/javascript" src="__PUBLIC__/Home/js/project/dialog.js"></script>
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/project/dialog.css">
+<script type="text/javascript" src="__PUBLIC__/Home/js/project/role.js"></script>
+
 </body>
 
 </html>

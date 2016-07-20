@@ -4,7 +4,15 @@ use Think\Controller;
 class IndexController extends CommonController {
 	public function index() {
 		$field = array('id','pid','title','m','c','a');
-		$rest = M('navigation')->cache(true,60)->field($field)->where('status=0')->order('sort')->select();
+		$where = array(
+			'status' => 0
+			);
+		//如果用户不是超级用户，那么只显示对用的模块功能
+		if( session('role_id') != C('ADMIN_AUTH_ID') ) {
+			$where['id'] = array( 'in',session('node_ids') );
+		}
+		logger( json_encode($where) );
+		$rest = M('navigation')->cache(true,60)->field($field)->where($where)->order('sort')->fetchSql(false)->select();
 		$this->rest = node_merge( $rest );
 		$this->display();
 	}
