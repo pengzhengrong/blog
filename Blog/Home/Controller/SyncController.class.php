@@ -5,14 +5,14 @@ Class SyncController extends Controller{
 
 
 	Public function _initialize() {
-		S(array(
+		/*S(array(
 			'type'=>'redis',
 			'host'=>'127.0.0.1',
 			'port'=>'6379',
 			'prefix'=>'App_',
 			'expire'=>60
 			)
-		);
+		);*/
 		// $Log = new \Think\Log();
 		// $config = array(
 		// 	'log_path' => '/home/pzr/workspace/blog/log/blog_click.log',

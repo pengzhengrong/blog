@@ -57,26 +57,46 @@ Class SearchController extends Controller {
 	}*/
 
 	public function create(){
-		$fields = array('id','cat_id','status','title','content','created');
+		$fields = array('id','cat_id','status','title','created');
 		$rest = M('blog')->field($fields)->where('status=0')->select();
+		$rest = $this->getContent($rest);
 		for( $i=0;$i<count($rest);$i++ ){
 			$temp = $this->dataclean( $rest[$i]['content'] );
 			$rest[$i]['content'] = $temp;
 		}
-		// p($rest);die;
+		p($rest);die;
+		$fields[] = 'contnet';
 		$this->elastic->create_index_by_rest( $rest , $fields );
 	}
 
 	public function syncBlog(){
-		$fields = array('id','cat_id','status','title','content','created');
+		$fields = array('id','cat_id','status','title','created');
 		$rest = M('blog')->field($fields)->where('status=0')->select();
+		$rest = $this->getContent($rest);
 		for( $i=0;$i<count($rest);$i++ ){
 			$temp = dataclean( $rest[$i]['content'] );
 			$rest[$i]['content'] = $temp;
 		}
 		// p($rest);die;
+		$fields[] = 'contnet';
 		$this->elastic->create_index_by_rest( $rest , $fields );
 	}
+
+	Public function getContent( $rest , $flag=false ) {
+		if( $flag ) {
+			$content = M('blog_data')->where('id='.$rest['id'])->fetchSql(false)->getField('content');
+			$rest['content'] = $content;
+			return $rest;
+		}
+		$databack = array();
+		foreach ($rest as $v) {
+			$content = M('blog_data')->where('id='.$v['id'])->fetchSql(false)->getField('content');
+			$v['content'] = $content;
+			$databack[] = $v;
+		}
+		return $databack;
+	}
+
 
 	private function dataclean( $data ){
 		//trim &nbsp;
