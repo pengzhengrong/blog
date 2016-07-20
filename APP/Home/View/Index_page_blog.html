@@ -25,7 +25,7 @@
                         <!-- <a class="blog-post-image" href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/3ww.jpg" alt="img"></a> -->
                         <h3 class="blog-post-title">{$v['title']}</h3>
                         <p class="blog-post-text">
-                           {$v['content']|strip_tags|truncate:100:'...':true}
+                           {$v['content']|replace:'&amp;nbsp':''|strip_tags|truncate:100:'...':true}
                        </p>
                        <p class="blog-post-date"><i class="fa fa-calendar"></i>{$v['created']|date_format:"
                         %m/%d/%G %T"}</p>

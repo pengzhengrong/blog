@@ -17,7 +17,7 @@ return array(
 	'DB_HOST' => '127.0.0.1',
 	'DB_USER' => 'root',
 	'DB_PWD' => '',
-	'DB_NAME' => 'test',
+	'DB_NAME' => 'blog',
 	'DB_TYPE' => 'mysqli',
 	'DB_PREFIX' => 'think_',
 
