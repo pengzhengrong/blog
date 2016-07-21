@@ -6,6 +6,7 @@
 </head>
 
 <body>
+<php>$extra = json_decode($rest['extra'],true);</php>
 	<section id="container">
 
 		<!--main content start-->
@@ -36,30 +37,32 @@
 							</div>
 							<div class="panel-body">
 								<section class="fuelux">
-									<div id="MyWizard" class="wizard">
-										<ul class="steps">
-											<li data-target="#step1" class="active">
-												<span class="badge badge-info">1</span>Step 1
-												<span class="chevron"></span>
-											</li>
-											<li data-target="#step2">
-												<span class="badge">2</span>Step 2
-												<span class="chevron"></span>
-											</li>
-											<li data-target="#step3">
-												<span class="badge">3</span>Step 3
-												<span class="chevron"></span>
-											</li>
-										</ul>
-										<div class="actions">
-											<button type="button" class="btn btn-default btn-mini btn-prev"> <i class="fa fa-chevron-left"></i> Prev</button>
-											<button type="button" class="btn btn-primary btn-mini btn-next" data-last="Finish">Next <i class="fa fa-chevron-right"></i>
-											</button>
+									<form class="form-horizontal">
+									<input type="hidden" name="id" value="{$rest.id}" id="id"  />
+										<div id="MyWizard" class="wizard">
+											<ul class="steps">
+												<li data-target="#step1" class="active">
+													<span class="badge badge-info">1</span>Step 1
+													<span class="chevron"></span>
+												</li>
+												<li data-target="#step2">
+													<span class="badge">2</span>Step 2
+													<span class="chevron"></span>
+												</li>
+												<li data-target="#step3">
+													<span class="badge">3</span>Step 3
+													<span class="chevron"></span>
+												</li>
+											</ul>
+											<div class="actions">
+												<button type="button" class="btn btn-default btn-mini btn-prev"> <i class="fa fa-chevron-left"></i> Prev</button>
+												<button type="button" class="btn btn-primary btn-mini btn-next" data-last="Finish">Next <i class="fa fa-chevron-right"></i>
+												</button>
+											</div>
 										</div>
-									</div>
-									<div class="step-content">
-										<div class="step-pane active" id="step1">
-											<form class="form-horizontal">
+										<div class="step-content">
+											<div class="step-pane active" id="step1">
+												<!-- <form class="form-horizontal"> -->
 												<div class="form-group">
 													<div class="col-sm-3">
 														<h2 class="title">基本信息</h2>
@@ -68,13 +71,13 @@
 												<div class="form-group">
 													<label class="col-sm-3 control-label">真实姓名</label>
 													<div class="col-sm-6">
-														<input id="name" name="name" type="text" class="form-control">
+														<input id="name" value="{$extra.name}" name="name" type="text" class="form-control">
 													</div>
 												</div>
 												<div class="form-group">
 													<label class="col-sm-3 control-label">邮箱地址</label>
 													<div class="col-sm-6">
-														<input type="email" name="email" id="email" class="form-control">
+														<input type="email" value="{$extra.email}" name="email" id="email" class="form-control">
 													</div>
 												</div>
 												<div class="form-group">
@@ -86,37 +89,37 @@
 											</form>
 										</div>
 										<div class="step-pane" id="step2">
-											<form class="form-horizontal">
-												<div class="form-group">
-													<div class="col-sm-3">
-														<h2 class="title">所住地址</h2>
-													</div>
+											<!-- <form class="form-horizontal"> -->
+											<div class="form-group">
+												<div class="col-sm-3">
+													<h2 class="title">所住地址</h2>
 												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label">详细地址</label>
-													<div class="col-sm-6">
-														<input type="text" name="address" id="address" class="form-control">
-													</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label">详细地址</label>
+												<div class="col-sm-6">
+													<input type="text" value="{$extra.address}" name="address" id="address" class="form-control">
 												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label">国家</label>
-													<div class="col-sm-6">
-														<input type="text" name="country" id="country" class="form-control">
-													</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label">国家</label>
+												<div class="col-sm-6">
+													<input type="text" value="{$extra.country}" name="country" id="country" class="form-control">
 												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label">省份</label>
-													<div class="col-sm-6">
-														<input type="text" name="state" id="state" class="form-control">
-													</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label">省份</label>
+												<div class="col-sm-6">
+													<input type="text" value="{$extra.state}" name="state" id="state" class="form-control">
 												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label">城市</label>
-													<div class="col-sm-6">
-														<input type="text" name="city" id="city" class="form-control">
-													</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label">城市</label>
+												<div class="col-sm-6">
+													<input type="text" value="{$extra.city}" name="city" id="city" class="form-control">
 												</div>
-											</form>
+											</div>
+											<!-- </form> -->
 										</div>
 										<div class="step-pane" id="step3">
 											<form class="form-horizontal">
@@ -129,14 +132,26 @@
 													<label class="col-sm-3 control-label">头像设置</label>
 													<div class="col-sm-6">
 														<div class="row_input">
-															<div class="upload_div" id="uploadPic">点击上传</div>
-															<input type="hidden" name="pic" id="pics" value=""/>
+															<div class="upload_div" id="uploadPic">
+															<if condition="$extra['photo']">
+																<img style="width: 160px;/*height: 160px;*/" class="img-circle" src="{$extra.photo}" />
+															<else/>
+															点击上传
+															</if>
+															</div>
+															<input type="hidden" name="pics" id="pics" value="{$extra.photo}"/>
 														</div>
 													</div>
 												</div>
-											</form>
+												<div class="form-group">
+													<label class="col-sm-3 control-label">城市</label>
+													<div class="col-sm-6">
+														<button type="button" id="saveUserinfo" class="btn btn-success btn-block">保存</button>
+													</div>
+												</div>
+											</div>
 										</div>
-									</div>
+									</form>
 								</section>
 							</div>
 
@@ -159,6 +174,7 @@
 <!--Page Level JS-->
 <script src="__PUBLIC__/Home/plugins/dropzone/js/dropzone.min.js"></script>
 <script src="__PUBLIC__/Home/js/project/upload.js"></script>
+<script src="__PUBLIC__/Home/js/project/user.js"></script>
 <script src="__PUBLIC__/Home/plugins/wizard/js/loader.min.js"></script>
 <script>
 	$(document).ready(function() {

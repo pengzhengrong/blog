@@ -7,6 +7,10 @@ $(function() {
 	$("#save").click(function() {
 		save();
 	});
+	/*保存用户设置信息*/
+	$("#saveUserinfo").click(function() {
+		saveUserinfo();
+	});
 	/*保存口令内容*/
 	$("#saveCard").click(function() {
 		saveCard();
@@ -169,6 +173,36 @@ function saveCard() {
 	});
 
 };
+
+/*保存用户设置信息*/
+function saveUserinfo() {
+	var url = '/Home/User/profile.html';
+	var id = $('#id').val();
+	var pars = {
+		id:id,
+		password:$('#password').val(),
+		extra:{
+			name:$('#name').val(),
+			email:$('#email').val(),
+			address:$('#address').val(),
+			country:$('#country').val(),
+			state:$('#state').val(),
+			city:$('#city').val(),
+			photo:$('#pics').val()
+		}
+	};
+	// console.log(pars);
+	$.post(url, pars, function(data){
+		if ( data.code != 200 ) {
+			$.showTips(data.msg, "提示");
+		} else {
+			$.showTips("个人信息设置完成", "提示");
+			setTimeout(function() {
+				window.location = "/Home/User/profile.html?id="+id;
+			}, 1000);
+		}
+	});
+}
 
 /*添加页面*/
 function addPage() {

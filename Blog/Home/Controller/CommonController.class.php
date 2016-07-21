@@ -4,6 +4,8 @@ use Think\Controller;
 class CommonController extends Controller {
 
 	Public function _initialize () {
+		//校验登入
+		$this->isLogin();
 		//校验权限
 		$auth = $this->authPrivilege();
 		if( !$auth ) {
@@ -34,13 +36,12 @@ class CommonController extends Controller {
 		$not_auth_page = $this->notAuthPage();
 		$node_ids = M('access')->field('node_id')->where('role_id='.$role_id)->select();
 		$node_ids = array_column( $node_ids , 'node_id' );
+		//模块功能的过滤条件
+		session( 'node_ids', $node_ids );
 		//无需验证页面
 		if( $not_auth_page ) {
 			return $not_auth_page;
 		}
-
-		//模块功能的过滤条件
-		session( 'node_ids', $node_ids );
 		logger( json_encode($node_ids) );
 		$where = array(
 			'm' => MODULE_NAME,
@@ -63,6 +64,13 @@ class CommonController extends Controller {
 			return true;
 		}
 		return false;
+	}
+
+	Public function isLogin() {
+		logger(session('user_id'));
+		if( session('user_id') == null ) {
+			redirect('/login.html');
+		}
 	}
 
 

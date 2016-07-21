@@ -2,15 +2,15 @@
             <!--logo start-->
             <div class="brand">
                 <a href="/admin.html" target="_self" class="logo">
-                    <span>DayDay</span>Blog</a>
+                    <span>DD-</span>Blog</a>
                     <font color="#fff" style="font-size: 10px;margin-left: 69px;">天天博客：hello2world.top</font>
             </div>
             <!--logo end-->
-            <div class="toggle-navigation toggle-left">
+           <!--  <div class="toggle-navigation toggle-left">
                 <button type="button" class="btn btn-default" id="toggle-left" data-toggle="tooltip" data-placement="right" title="Toggle Navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-            </div>
+            </div> -->
             <div class="user-nav">
                 <ul>
                     <li class="dropdown messages">
@@ -52,7 +52,7 @@
                             <li>
                                 <a href="#">
                                     <div class="profile-photo">
-                                        <img src="__PUBLIC__/Home/img/avatar2.gif" alt="" class="img-circle">
+                                        <img  src="__PUBLIC__/Home/img/avatar2.gif" alt="" class="img-circle">
                                     </div>
                                     <div class="message-info">
                                         <span class="sender">John Douey</span>
@@ -92,7 +92,11 @@
 
                     </li>
                     <li class="profile-photo">
+                    <if condition="session('photo')">
+                         <img style="width: 50px;"  src="{:session('photo')}" alt="" class="img-circle">
+                    <else/>
                         <img src="__PUBLIC__/Home/img/avatar.png" alt="" class="img-circle">
+                    </if>
                     </li>
                     <li class="dropdown settings">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -113,13 +117,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                <!--     <li>
                         <div class="toggle-navigation toggle-right">
                             <button type="button" class="btn btn-default" id="toggle-right">
                                 <i class="fa fa-comment"></i>
                             </button>
                         </div>
-                    </li>
+                    </li> -->
 
                 </ul>
             </div>

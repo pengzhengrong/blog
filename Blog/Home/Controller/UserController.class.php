@@ -69,5 +69,25 @@ Class UserController extends CommonController {
 		$this->rest = M('user')->field(array('id','username'))->find();
 		$this->display();
 	}
+
+	//设置个人信息
+	Public function profile() {
+		if( IS_POST ) {
+			$extra = I('extra');
+			$data = array(
+				'extra' => json_encode($extra),
+				'id' => I('id')
+				);
+			if( !empty( I('password') ) ) {
+				$data['password'] = I('password');
+			}
+			$rest = M('user')->save($data);
+			$this->ajaxReturn( setAjaxReturn( $rest ) );
+		}
+		$user_id = session('user_id');
+		$this->rest = M('user')->field(array('id','password','extra'))->find($user_id);
+		// P($this->rest);
+		$this->display();
+	}
 }
 
