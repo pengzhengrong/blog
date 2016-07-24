@@ -35,8 +35,8 @@ class LoginController extends Controller {
 				if( isset($rest['extra']) ) {
 					$extra = json_decode($rest['extra'],true);
 					session('photo',$extra['photo']);
-					session('name',$extra['name']);
 				}
+				session('name',$rest['name']);
 				session( 'username' , $rest['username']);
 				session( 'user_id', $rest['id'] );
 				session('role_id',$rest['role_id'] );
@@ -49,6 +49,16 @@ class LoginController extends Controller {
 		}
 
 		Public function logout() {
+			$data = array(
+				'id' => session('user_id'),
+				'last_login' => session('last_login'),
+				'last_ip' => session('last_ip')
+				);
+			$rest = M('user')->fetchSql(false)->save($data);
+			/*logger( $rest );
+			if( !$rest ) {
+				$this->ajaxReturn( setAjaxReturn( $rest, '最后登入时间和IP保存失败！' ) );
+			}*/
 			$_SESSION = array();
 			session_unset();
 			session_destroy();

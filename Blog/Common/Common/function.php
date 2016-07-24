@@ -60,14 +60,23 @@ function getParents( $rest, $id ) {
 * 将存在id和pid的一维乱序数组组合成树状有序的数组
 * $rest 一维数组，必须包含又字段id和pid
 * $pid 父类id
+* $root 当pid !=0 的时候，$root=true 即获取当前查询的根节点
 */
-function tree($rest , $pid=0) {
+function tree($rest , $pid=0 , $root=false) {
 	static $arr = array();
 	static $count=0; //当前遍历树的深度
 	static $depth = 0; //树的最大深度
 	static $node = 0; //子节点的个数
 	static $node_temp = 0; //在子节点的个数设置为0前，临时存储子节点的个数
 	$space = str_repeat('&nbsp;',6);
+	if( $root ) {
+		foreach ($rest as $key => $value) {
+			if( $value['id'] == $pid ) {
+				$arr[] = $value;
+				break;
+			}
+		}
+	}
 	foreach ($rest as $key => $value) {
 		if( $value['pid'] == $pid) {
 			if( $pid == 0 ) {
@@ -111,6 +120,9 @@ function tree($rest , $pid=0) {
 	return $arr;
 }
 
+/*
+用来解决
+*/
 function tree2($rest , $pid=0 , $checkbox=false , $node_ids = array() ) {
 	static $arr = array();
 	static $count=0; //当前遍历树的深度

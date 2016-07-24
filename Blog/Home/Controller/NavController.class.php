@@ -13,7 +13,7 @@ Class NavController extends CommonController {
 			//只显示根菜单
 			$this->options = options( $rest , 'id', 'title', 'pid', '0');
 			$this->selected = I('id');
-			$this->rest = tree($rest,I('id',0,'intval'));
+			$this->rest = tree($rest,I('id',0,'intval'),true);
 			$this->display();
 			exit;
 		}

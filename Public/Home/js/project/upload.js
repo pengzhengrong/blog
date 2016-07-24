@@ -7,12 +7,14 @@ $(function() {
 
 /* 提交表单，上传文件 */
 function fileUpLoad() {
+	// console.log(window.location.host);
+	var host = window.location.host;
 	$("#needHide").ajaxSubmit({
 		type : 'post',
 		url : '/Home/Upload/index.html',
 		success : function(data) {
 			if (data.code == 200) {
-				var url = "http://blog.com:8890/uploadfile/"+data.data.savepath
+				var url = "http://"+host+"/uploadfile/"+data.data.savepath
 				+ data.data.savename;
 						var divPic = $("#uploadPic");// 所点击div对象
 						divPic.text("").append(

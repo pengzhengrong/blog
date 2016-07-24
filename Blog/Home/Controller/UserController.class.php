@@ -4,7 +4,7 @@ use Think\Controller;
 Class UserController extends CommonController {
 
 	Public function index() {
-		$field = array('id','username','status','role','extra');
+		$field = array('id','username','status','role','extra','name','email','last_login','last_ip');
 		$this->rest = M('user')->field($field)->fetchSql(false)->select();
 		$this->display();
 	}
@@ -14,7 +14,7 @@ Class UserController extends CommonController {
 			$data = I('post.');
 			$data['created'] = time();
 			$data['password'] = '123456';
-			$data['extra'] = json_encode( $data['extra'] );
+			// $data['extra'] = json_encode( $data['extra'] );
 			$rest = M('user')->add($data);
 			$this->ajaxReturn( setAjaxReturn( $rest ) );
 		}
@@ -27,13 +27,13 @@ Class UserController extends CommonController {
 	Public function edit() {
 		if( IS_POST ) {
 			$data = I('post.');
-			$data['extra'] = json_encode( $data['extra'] );
+			// $data['extra'] = json_encode( $data['extra'] );
 			$rest = M('user')->save($data);
 			$this->ajaxReturn( setAjaxReturn( $rest ) );
 		}
-		$field = array('id','username','extra','status','role_id');
+		$field = array('id','username','name','status','role_id');
 		$this->rest  = M('user')->field($field)->find(I('id'));
-		$this->extra = json_decode($this->rest['extra'],true);
+		// $this->extra = json_decode($this->rest['extra'],true);
 		$this->selected = $this->rest['role_id'];
 		//角色选项
 		$role = M('role')->field( array('id','name') )->where('status=0')->order('id')->select();

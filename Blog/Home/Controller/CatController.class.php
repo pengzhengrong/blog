@@ -11,7 +11,7 @@ Class CatController extends CommonController {
 			$rest = $this->getCache();
 			$this->options = options( $rest , 'id', 'title', 'pid', '0');
 			$this->selected = I('id');
-			$this->rest = tree($rest,I('id',0,'intval'));
+			$this->rest = tree($rest,I('id',0,'intval'),true);
 			$this->display();
 			exit;
 		}
@@ -56,6 +56,7 @@ Class CatController extends CommonController {
 		$this->options = options($this->rest);
 		$field = array('pid','id','title','isdisplay','sort');
 		$this->rest = M('category')->field($field)->find( I('id') );
+		// P($this->rest);die;
 		$this->display();
 	}
 

@@ -36,6 +36,11 @@ create table `think_category`(
   key(`title`)
 )engine=myisam default charset=utf8 auto_increment=1;
 
+-- alter table think_user add column `last_login` int(11) not null default 0;
+-- alter table think_user add column `last_ip` varchar(16) not null default '';
+-- alter table think_user add column `name` varchar(20) not null default '';
+-- alter table think_user add column `email` varchar(20) not null default '';
+
 create table `think_navigation`(
  `id` int(11) unsigned primary key auto_increment,
  `pid` int(11) unsigned not null default 0,
@@ -67,8 +72,9 @@ create table `think_user`(
   `id` int(11) unsigned auto_increment primary key,
   `username` varchar(20) not null default '',
   `password` varchar(100) not null default '',
-  -- `last_login` int(11) not null default 0,
-  -- `last_ip` varchar(16) not null default '',
+  `last_login` int(11) not null default 0,
+  `last_ip` varchar(16) not null default '',
+  `name` varchar(20) not null default '',
   `extra` text ,
   `status` tinyint(1) not null default 0,
   `role` varchar(50) not null default '',

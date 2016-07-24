@@ -57,10 +57,8 @@ function save() {
 		status : $("#status").val(),
 		role : $("#role option:selected").text(),
 		role_id : $('#role').val(),
-		extra:{
-			name : $("#name").val(),
-			email : $("#email").val(),
-		}
+		name : $("#name").val(),
+		email : $("#email").val()
 	};
 	console.log(pars);
 	$.post(url, pars, function(data) {
@@ -88,10 +86,8 @@ function saveModify() {
 		status : $("#status").val(),
 		role : $("#role option:selected").text(),
 		role_id : $('#role').val(),
-		extra:{
-			name : $("#name").val(),
-			email : $("#email").val(),
-		}
+		name : $("#name").val(),
+		email : $("#email").val()
 	};
 	// console.log(pars);
 	$.post(url, pars, function(data) {

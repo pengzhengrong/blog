@@ -3,47 +3,46 @@
 namespace Home\Controller;
 use Think\Controller;
 use Library;
-require_once('Blog/Library/vendor/autoload.php');
+
 Class SearchController extends Controller {
-	public $client;
+
 	public $elastic;
 	public function _initialize(){
-		$param = C('DEFAULT_HOST');
-		$this->client = new \Elasticsearch\Client($param);
-		$this->elastic = new \Library\Elastic($param);
+		
 	}
 
 	public function index() {
-		$this->module_name = MODULE_NAME;
+
+
+		$this->search();
 		$this->display();
 	}
 
 	public function search(){
-		//Elastic search php client
-		$search_key = I('search_key');
+		$pageSize = C('PAGE_SIZE');
 
-		$params = array(
-			'index' => 'test',
-			'type' => 'think_blog',
-			'body' => array(
-				'fields' => array('_id','title'),
-				'query' => array(
-					'match_phrase_prefix' => array(
-						'content' => array(
-							'query' => $search_key,
-							'operator' => 'and'
-							)
-						)
-					)
-				/*,'highlight' => array(
-					'fields' => array( 'content' => (object)array() )
-					)*/
-					)
+		vendor('Elastic.Elastic','','.class.php');
+		$param = C('DEFAULT_HOST');
+		$elastic = new \Elastic($param);
+
+		$searchCount = $elastic->search( $this->search_count() );
+		$totalRows = $searchCount['hits']['total'];
+		$page = new \Think\Page(intval($totalRows) , $pageSize);
+		$page->url = '/'.ACTION_NAME.'?p='.urlencode('[PAGE]');
+		$firstRow = $page->firstRow;
+		$params = $this->query_string($firstRow);
+
+		$rtn = $elastic->search($params);
+		$fields = array(
+			'id' => '_id',
+			'score' => '_score',
+			'title' => 'title',
+			'cat_id' => 'cat_id',
+			'created' => 'created',
+			'status' => 'status'
 			);
-
-		$rtn = $this->client->search($params);
-		// var_dump($rtn);
-		return $rtn;
+		$this->rest = getSearch( $rtn , $fields);
+		$this->page = $page->showPage();
 	}
 
 	/**
@@ -66,7 +65,7 @@ Class SearchController extends Controller {
 		}
 		// p($rest);die;
 		$fields[] = 'content';
-		$this->elastic->create_index_by_rest( $rest , $fields );
+		$rest = $this->elastic->create_index_by_rest( $rest , $fields );
 	}
 
 	public function syncBlog(){
@@ -109,6 +108,44 @@ Class SearchController extends Controller {
 		//trim html&php tags
 		// $temp = strip_tags($temp);
 		return $temp;
+	}
+
+
+
+
+
+
+
+
+	Private function query_string($firstRow) {
+		$param = array(
+			'index' => C('DEFAULT_INDEX'),
+			'type' => C('DEFAULT_TYPE'),
+			'from' => $firstRow,
+			'size' => C('ELASTIC_PAGE_SIZE'),
+			'body' => array(
+				'query' =>  array(
+					'match_all' => array()
+					),
+				'fields' => array('title','id','cat_id','created')
+				)
+			);
+		return $param;
+	}
+
+	Private function search_count() {
+		$param = array(
+			'index' => 'test',
+			'type' => 'think_blog',
+			'search_type' => 'count',
+			'body' => array(
+				'query' =>array(
+					'match_all' => array()
+					)
+
+				)
+			);
+		return $param;
 	}
 
 

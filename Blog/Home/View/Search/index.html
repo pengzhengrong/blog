@@ -1,4 +1,4 @@
-<include file="Blog/Home/View/Common/html_head.html" title="用户" />
+<include file="Blog/Home/View/Common/html_head.html" title="博客搜索引擎" />
 <!-- Custom styles for this theme -->
 <link rel="stylesheet" href="__PUBLIC__/Home/css/main.css">
 <!-- DataTables-->
@@ -24,7 +24,7 @@
           </div>
 
           <div class="col-md-6">
-            <button type="button" id="add" class="btn btn-default" style="float:right;">添加用户</button>
+            <button type="button" id="syncBlog" class="btn btn-default" style="float:right;">同步博客搜索引擎</button>
           </div>
         </div>
 
@@ -32,7 +32,7 @@
           <div class="col-md-12">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">用户列表</h3>
+                <h3 class="panel-title">博客引擎列表</h3>
                 <div class="actions pull-right">
                   <i class="fa fa-chevron-down"></i>
                   <i class="fa fa-times"></i>
@@ -43,14 +43,10 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>用户名称</th>
-                      <th>所属角色</th>
-                      <th>最后登入时间</th>
-                      <th>最后登入IP</th>
-                      <th>真实姓名</th>
-                      <th>E-mail</th>
+                      <th>名称</th>
+                      <th>发布时间</th>
                       <th>状态</th>
-                      <th>操作管理</th>
+                      <th>所属栏目</th>
                     </tr>
                   </thead>
 
@@ -58,17 +54,11 @@
                     <foreach name="rest" item="v">
                       <tr>
                         <td>{$v.id}</td>
-                        <td>{$v.username}</td>
-                        <td>{$v.role}</td>
-                        <td>{$v.last_login|date='Y-m-d H:i',###}</td>
-                        <td>{$v.last_ip}</td>
-                          <td>{$v.name}</td>
-                          <td>{$v.email}</td>
-                          <td>{:status($v['status'])}</td>
+                        <td>{$v.title}</td>
+                        <td>{$v.created|date='Y-m-d H:i',###}</td>
+                        <td>{:status($v['status'])}</td>
                           <td>
-                            <a href="javascript:" onclick="modify({$v.id})">修改</a>
-                            <a href="javascript:" onclick="del({$v.id});">删除</a>
-                            <a href="javascript:" onclick="card({$v.id});">口令</a>
+                            {:W('Blog/ParentDir',array($v['cat_id']))}
                           </td>
                         </tr>
                       </foreach>
@@ -84,7 +74,7 @@
       <!--main content end-->
     </section>
     <include file="Blog/Home/View/Common/js.html" />
-    <script type="text/javascript" src="__PUBLIC__/Home/js/project/user.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/js/project/search.js"></script>
   </body>
 
   </html>
