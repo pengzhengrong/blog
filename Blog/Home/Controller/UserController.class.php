@@ -4,8 +4,13 @@ use Think\Controller;
 Class UserController extends CommonController {
 
 	Public function index() {
+		if( I('role_id') != null ) {
+			$where = array(
+				'role_id' => I('role_id')
+				);
+		}
 		$field = array('id','username','status','role','extra','name','email','last_login','last_ip');
-		$this->rest = M('user')->field($field)->fetchSql(false)->select();
+		$this->rest = M('user')->field($field)->where($where)->fetchSql(false)->select();
 		$this->display();
 	}
 

@@ -158,3 +158,7 @@ function role(id,name) {
 	var url = '/Home/Rbac/access.html?id='+id;
 	/*window.top.*/art.dialog({title:'设置《'+name+'》',id:'edit',iframe:url,width:'700',height:'500'});
 }
+
+function user(id) {
+	window.location = '/Home/User/index.html?role_id='+id;
+}

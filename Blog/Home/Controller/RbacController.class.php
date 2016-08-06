@@ -45,9 +45,10 @@ Class RbacController extends CommonController {
 			$where = array('status'=>0);
 			$rest = A('Nav')->getCache();
 			//只显示根菜单
-			// $this->options = options( $rest , 'id', 'title', 'pid', '0');
-			// $this->selected = I('id');
-			$this->rest = tree2($rest,I('id',0,'intval'),true);
+			$this->options = options( $rest , 'id', 'title', 'pid', '0');
+			$this->selected = I('id');
+			$this->rest = tree2($rest,I('id',0,'intval'),true,$node_ids,true);
+			$this->role_id = I('id');
 			$this->display();
 			exit;
 		}
@@ -58,8 +59,9 @@ Class RbacController extends CommonController {
 		//获取菜单列表
 		$this->role_id = I('id');
 		$nav = A('Nav')->getCache();
+		$this->options = options($nav, 'id', 'title', 'pid', '0');
 		$this->rest = tree2($nav,0,true,$node_ids);
-		// $this->options = options($this->rest, 'id', 'title', 'pid', '0');
+		
 
 		$this->display();
 	}

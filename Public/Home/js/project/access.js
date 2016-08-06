@@ -14,10 +14,13 @@ $(function(){
 
 function save() {
 	var ids = [];
-	$(':checked').each(function(){
-		ids.push($(this).val());
+	$('input:checked').each(function(){
+		if( $(this).val() != '' ) {
+			ids.push($(this).val());
+		}
+		
 	});
-	// console.log(ids);
+	console.log(ids);
 	var url = '/Home/Rbac/access_node.html';
 	var pars = {
 		node_id:ids,

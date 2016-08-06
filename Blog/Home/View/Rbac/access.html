@@ -18,7 +18,19 @@
         <!--main content start-->
         <section class="main-content-wrapper">
             <section id="main-content">
-            <div class="row">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                            <form action="/Home/Rbac/access.html" method="post" id="form">
+                                <div class="col-sm-2">
+                                    <!-- 开始使用select标签 -->
+                                    <taglib name="html" />
+                                    <html:select name="id" id="id" first="全部菜单" selected="selected" style="form-control" options="options" change="optionsChange(this)" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -63,6 +75,26 @@
 </section>
 <include file="Blog/Home/View/Common/js.html" />
 <script type="text/javascript" src="__PUBLIC__/Home/js/project/access.js"></script>
+<script type="text/javascript">
+/*  $(function(){
+    var pid = 0;
+    $('input[name="node_id[]"]').click(function(event){
+        var _this = event.currentTarget;
+        pid = $(_this).val();
+        if( $(_this).attr('checked') == 'checked' ) {
+            alert(1);
+           var input = 'input[level=child_of_'+pid+']';
+           $(input).attr('checked','checked');
+       } else {
+        alert($(_this).attr('checked'));
+         var input = 'input[level=child_of_'+pid+']';
+         $(input).attr('checked','');
+     }
+   // console.log(event);
+});
+})*/
+
+</script>
 </body>
 
 </html>

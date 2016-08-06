@@ -8,7 +8,9 @@ Class SearchController extends Controller {
 
 	public $elastic;
 	public function _initialize(){
-		
+		vendor('Elastic.Elastic','','.class.php');
+		$param = C('DEFAULT_HOST');
+		$this->elastic = new \Elastic($param);
 	}
 
 	public function index() {
@@ -20,19 +22,14 @@ Class SearchController extends Controller {
 
 	public function search(){
 		$pageSize = C('PAGE_SIZE');
-
-		vendor('Elastic.Elastic','','.class.php');
-		$param = C('DEFAULT_HOST');
-		$elastic = new \Elastic($param);
-
-		$searchCount = $elastic->search( $this->search_count() );
+		$searchCount = $this->elastic->search( $this->search_count() );
 		$totalRows = $searchCount['hits']['total'];
 		$page = new \Think\Page(intval($totalRows) , $pageSize);
-		$page->url = '/'.ACTION_NAME.'?p='.urlencode('[PAGE]');
+		$page->url = '/'.MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME.'?p='.urlencode('[PAGE]');
 		$firstRow = $page->firstRow;
 		$params = $this->query_string($firstRow);
 
-		$rtn = $elastic->search($params);
+		$rtn = $this->elastic->search($params);
 		$fields = array(
 			'id' => '_id',
 			'score' => '_score',

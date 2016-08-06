@@ -68,6 +68,7 @@ function tree($rest , $pid=0 , $root=false) {
 	static $depth = 0; //树的最大深度
 	static $node = 0; //子节点的个数
 	static $node_temp = 0; //在子节点的个数设置为0前，临时存储子节点的个数
+	static $depth_temp = 0; //临时存储深度的数量，防止一直遍历子节点而深度加深的情况
 	$space = str_repeat('&nbsp;',6);
 	if( $root ) {
 		foreach ($rest as $key => $value) {
@@ -99,7 +100,12 @@ function tree($rest , $pid=0 , $root=false) {
 		$arr[$len-1]['title'] = str_replace('├─', '└─', $arr[$len-1]['title']);
 	}
 
-	if( $depth == $count ) {
+	if( $depth_temp != $depth ) {
+		$node = 0;
+	}
+
+	if( $depth == $count && $count != 0 ) {
+		$depth_temp = $depth;
 		$node++;
 		$node_temp = $node;
 	} else {
@@ -109,7 +115,6 @@ function tree($rest , $pid=0 , $root=false) {
 	//替换最后节点上的树枝
 	if( $count == 0 && $depth > 0 ) {
 		$len = count($arr);
-		// echo $len;
 		for( $i=0;$i<$node_temp;$i++ ) {
 			$arr[$len-1-$i]['title'] = str_replace('│', ' ', $arr[$len-1-$i]['title']);
 		}
@@ -121,17 +126,29 @@ function tree($rest , $pid=0 , $root=false) {
 }
 
 /*
-用来解决
+用来解决树形结构含有复选框的情况
 */
-function tree2($rest , $pid=0 , $checkbox=false , $node_ids = array() ) {
+function tree2($rest , $pid=0 , $checkbox=false , $node_ids = array(), $root=false) {
 	static $arr = array();
 	static $count=0; //当前遍历树的深度
 	static $depth = 0; //树的最大深度
 	static $node = 0; //子节点的个数
 	static $node_temp = 0; //在子节点的个数设置为0前，临时存储子节点的个数
 	$space = str_repeat('&nbsp;',6);
+	if( $root ) {
+		foreach ($rest as $key => $value) {
+			if( $value['id'] == $pid ) {
+				if( $checkbox ) {
+					$value['title'] = '<input type="checkbox" '.$checked.' level=child_of_'.$pid.' name="node_id[]" value="'.$value['id'].'" />'.$value['title'];
+				}
+				$arr[] = $value;
+				break;
+			}
+		}
+	}
 	foreach ($rest as $value) {
 		if( $value['pid'] == $pid) {
+			//判断该用户是否已经添加此节点
 			if( in_array( $value['id'] , $node_ids) ) {
 				$checked = 'checked';
 			} else {
@@ -141,14 +158,14 @@ function tree2($rest , $pid=0 , $checkbox=false , $node_ids = array() ) {
 				$count = 0;
 				$depth = 0;
 				if( $checkbox ) {
-					$value['title'] = '<input type="checkbox" '.$checked.' level='.$count.' name="node_id[]" value="'.$value['id'].'" />'.$value['title'];
+					$value['title'] = '<input type="checkbox" '.$checked.' level=child_of_'.$pid.' name="node_id[]" value="'.$value['id'].'" />'.$value['title'];
 				}
 			} else {
 				$count++;
 				$depth = $count;
 				$title = str_repeat($space.'│',$count-1);
 				if( $checkbox ) {
-					$value['title'] = '<input type="checkbox" '.$checked.' level='.$count.' name="node_id[]" value="'.$value['id'].'" />'.$value['title'];
+					$value['title'] = '<input type="checkbox" '.$checked.' level=child_of_'.$pid.' name="node_id[]" value="'.$value['id'].'" />'.$value['title'];
 				}
 				$title .= $space.'├─ '.$value['title'];
 				$value['title'] = $title;

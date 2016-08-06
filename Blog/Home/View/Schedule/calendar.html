@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<include file="Blog/Home/View/Common/html_head.html" title="日程安排" />
+<!-- Calendar -->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/fullcalendar/css/fullcalendar.css">
+<!-- <link rel="stylesheet" type="text/css" href="http://www.helloweba.com/demo/css/main.css"> -->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/js/plugins/css/fullcalendar.css">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/js/plugins/css/fancybox.css">
+<style type="text/css">
+/*#calendar{width:960px; margin:20px auto 10px auto}*/
+.fancy{width:450px; height:auto;overflow: hidden;}
+.fancy h3{height:30px; line-height:30px; border-bottom:1px solid #d3d3d3; font-size:14px}
+.fancy form{padding:10px}
+.fancy p{height:28px; line-height:28px; padding:4px; color:#999}
+.input{height:20px; line-height:20px; padding:2px; border:1px solid #d3d3d3; width:100px}
+.btn{ -webkit-border-radius: 3px;-moz-border-radius:3px;padding:5px 12px; cursor:pointer}
+.btn_ok{background: #360;border: 1px solid #390;color:#fff}
+.btn_cancel{background:#f0f0f0;border: 1px solid #d3d3d3; color:#666 }
+.btn_del{background:#f90;border: 1px solid #f80; color:#fff }
+.sub_btn{height:32px; line-height:32px; padding-top:6px; border-top:1px solid #f0f0f0; text-align:right; position:relative}
+.sub_btn .del{position:absolute; left:2px}
+</style>
+<style type="text/css">
+    #events {
+        background: #1ABC9C;
+        color: #fff;
+        height: 660px;
+        -webkit-border-radius: 3px 0 0 3px;
+        -moz-border-radius: 3px 0 0 3px;
+        -ms-border-radius: 3px 0 0 3px;
+        -o-border-radius: 3px 0 0 3px;
+        border-radius: 3px 0 0 3px;
+    }
+</style>
+</head>
+<body>
+    <section id="container">
+        <header id="header">
+
+            <!--main content start-->
+            <section class="main-content-wrapper">
+                <section id="main-content">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-md-offset-1 col-md-2" id="events">
+                                <h2 id="calender-current-day"></h2>
+                                <h3 id="calender-current-date"></h3>
+                                <!-- <form id="form" action="/Home/Schedule/event.html" method="post"> -->
+                                    <input type="text" id="title" name="title" class="form-control" placeholder="添加新的事件">
+                                <!-- </form> -->
+                                <div id="external-events">
+                                <div class="events-heading">&nbsp;可拖动事件</div>
+                                  <!--   <div class='external-event'>My Event 1</div>-->
+                                    {:W('Blog/event')}
+                                    <div class="checkbox">
+                                        <input type="checkbox" value="1" id='drop-remove'>
+                                        <label for="drop-remove">Remove after drop</label>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-md-8" id="cal">
+                                <div class="full-cal-header">
+                                   <!--  <div class="pull-left">
+                                        <div class="btn-group ">
+                                            <button class="btn btn-info" id="cal-prev"><i class="fa fa-angle-left"></i>
+                                            </button>
+                                            <button class="btn btn-info" id="cal-next"><i class="fa fa-angle-right"></i>
+                                            </button>
+                                        </div>
+                                        <button class="btn" type="button" id="cal-today">today</button>
+                                    </div>
+                                    <div class="pull-right">
+                                        <div data-toggle="buttons-radio" class="btn-group">
+                                            <button class="btn btn-primary active" type="button" id="change-view-month">month</button>
+                                            <button class="btn btn-primary " type="button" id="change-view-week">week</button>
+                                            <button class="btn btn-primary" type="button" id="change-view-day">day</button>
+                                        </div>
+                                    </div> -->
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div id='calendar'></div>
+
+                            </div>
+
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <!--main content end-->
+</section>
+
+<!--Global JS-->
+<include file="Blog/Home/View/Common/js.html" />
+<!--Page Level JS-->
+<!-- <script type="text/javascript" src="__PUBLIC__/Home/js/project/dialog.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/project/dialog.css"> -->
+<script src='__PUBLIC__/Home/js/plugins/js/jquery.fancybox-1.3.1.pack.js'></script>
+<script src="__PUBLIC__/Home/plugins/fullcalendar/js/fullcalendar.min.js"></script>
+<script src="__PUBLIC__/Home/plugins/fullcalendar/js/calendar.js"></script>
+<script src="__PUBLIC__/Home/js/project/calendar.js"></script>
+<!-- ToDo List  -->
+<script src="__PUBLIC__/Home/plugins/todo/js/todos.js"></script>
+
+</body>
+
+</html>

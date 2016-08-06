@@ -83,6 +83,24 @@ create table `think_user`(
   key(`username`,`password`)
 )engine=myisam default charset=utf8;
 
+create table think_calendar (
+  `id` int(11) unsigned primary key auto_increment,
+  `title` varchar(100) not null default '',
+  `starttime` int(11) not null default 0,
+  `endtime` int(11) not null default 0,
+  `isallday` tinyint(1) not null default 0,
+  `color` varchar(10) not null default '',
+  key(`title`),
+  key(`starttime`,`endtime`)
+)engine=myisam default charset=utf8 auto_increment=1;
+
+create table think_event (
+  `id` int(11) unsigned primary key auto_increment,
+  `title` varchar(100) not null default '',
+  unique(`title`)
+)engine=MyISAM default charset=utf8 auto_increment=1;
+-- alter table think_event add unique key(`title`)
+
 CREATE TABLE IF NOT EXISTS `think_role` (
   `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
