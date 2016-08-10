@@ -31,6 +31,7 @@ class IndexController extends CommonController {
 		Public function page_blog() {
 			$where = array(
 				'status' => 0,
+				'isdisplay' => 0
 				);
 			$fields = array('id','title','created');
 
