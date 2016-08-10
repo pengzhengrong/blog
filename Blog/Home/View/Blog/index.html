@@ -57,7 +57,8 @@
                     <foreach name="rest" item="v">
                       <tr>
                         <td>{$v.id}</td>
-                        <td>{$v.title}</td>
+                        <!-- <td onclick="detailContent({$v.id})" >{$v.title}</td> -->
+                        <td><a href="/Home/Blog/detail.html?id={$v.id}" target="_blank">{$v.title}</a></td> 
                         <td>{$v.click}</td>
                         <td>{$v.created|date='Y-m-d H:i',###}</td>
                         <td>{$v.update_time|date='Y-m-d H:i',###}</td>

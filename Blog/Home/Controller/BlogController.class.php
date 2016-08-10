@@ -49,7 +49,7 @@ Class BlogController extends CommonController {
 				'content' => $data['content']
 				);
 			$rest2 = M('blog_data')->save($blog_data);
-			logger($rest.'_'.$rest2);
+			// logger($rest.'_'.$rest2);
 			$rest =  ($rest||$rest2);
 			$this->ajaxReturn( setAjaxReturn( $rest ));
 		}
@@ -93,6 +93,12 @@ Class BlogController extends CommonController {
 		$limit = $page->firstRow.','.$page->listRows;
 		$this->rest = M('blog')->field($field)->where($where)->order('created desc')->limit($limit)->select();
 		$this->page = $page->showPage();
+		$this->display();
+	}
+
+	Public function detail() {
+		$id = I('id');
+		$this->rest = M('blog_data')->cache(true,60)->find($id);
 		$this->display();
 	}
 

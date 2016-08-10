@@ -148,3 +148,7 @@ function optionsChange(_this) {
 	var form = $('#form');
 	form.submit();
 }
+//详情页
+function detailContent(id) {
+	window.location = '/Home/Blog/detail.html?id='+id;
+}
