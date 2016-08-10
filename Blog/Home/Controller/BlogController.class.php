@@ -6,7 +6,7 @@ Class BlogController extends CommonController {
 
 	Public function index() {
 
-		$field = array('id','cat_id','title','click','created','update_time');
+		$field = array('id','cat_id','title','click','created','update_time','isdisplay');
 		$where = array('status'=>0);
 		$totalRows = M('blog')->where($where)->count();
 		$page = new \Think\Page( $totalRows , C('PAGE_SIZE') );
