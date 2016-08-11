@@ -68,18 +68,21 @@ class IndexController extends CommonController {
 	 Public function category() {
 	 	// P($_SERVER);
 	 	$id= I('id',0,'intval');
-	 	$cate = M('category')->cache(true,C('CACHE_TIME'))->field(array('id','pid'))->where('status=0')->select();
+	 	$cate = M('category')->cache(true,C('CACHE_TIME'))->field(array('id','pid'))->where('status=0 AND isdisplay=0')->select();
 	 	// P($cate);
 	 	$ids = getChildrens($cate,$id);
 	 	// P($ids);
-	 	$count = M('blog')->where("status=0 AND cat_id in ($ids)")->count();
+	 	$where = "status=0 AND isdisplay=0 AND cat_id in ($ids)";
+	 	$count = M('blog')->where($where)->count();
 	 	$pageSize = I('size',C('PAGE_SIZE'),'intval');
 	 	$url = '/'.ACTION_NAME."_$id".'?p='.urlencode('[PAGE]');
 	 	$limit = $this->page($count ,$pageSize, $url);
 
-	 	$rest = M('blog')->cache(true,C('CACHE_TIME'))->field(array('id','title','created'))->where("status=0 AND cat_id in ($ids)")->order('created desc')->limit($limit)->select();
+	 	$rest = M('blog')->cache(true,C('CACHE_TIME'))->field(array('id','title','created'))->where($where)->order('created desc')->limit($limit)->select();
 	 	$this->rest = $this->getContent($rest);
+	 	//记录当前浏览博客的类型是从栏目跳转过去，默认的是列表页跳转
 	 	cookie('READ_BLOG_TYPE','category');
+	 	//记录上下文章的栏目id，以此作为上下翻页的依据
 	 	cookie('CATEGORY_IDS',$ids);
 	 	$this->display();
 	 }
@@ -101,6 +104,7 @@ class IndexController extends CommonController {
 	 	}
 	 	$where = array(
 	 		'status' => 0,
+	 		'isdisplay' => 0,
 	 		'pid' => 0
 	 		);
 	 	$fields = array('id','title');

@@ -7,7 +7,6 @@ Class CatController extends CommonController {
 	Public function index() {
 		/*条件搜索*/
 		if( IS_POST ) {
-			$where = array('status'=>0);
 			$rest = $this->getCache();
 			$this->options = options( $rest , 'id', 'title', 'pid', '0');
 			$this->selected = I('id');
@@ -73,7 +72,7 @@ Class CatController extends CommonController {
 		if( F( $CACHE_KEY ) ) {
 			$rest = F($CACHE_KEY);
 		} else {
-			$field = array('id','pid','title','sort');
+			$field = array('id','pid','title','sort','isdisplay');
 			$rest = M('category')->field( $field )->where('status=0')->order( 'sort' )->select();
 			F( $CACHE_KEY , $rest );
 		}
