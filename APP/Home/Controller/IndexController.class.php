@@ -158,10 +158,10 @@ class IndexController extends CommonController {
 	 	switch ($type) {
 	 		case 'category':
 	 		$ids = cookie('CATEGORY_IDS');
-	 		$rest = M('blog')->cache(true,C('CACHE_TIME'))->field(array('id','title'))->where("status=0 AND cat_id in ($ids)")->order('created desc')->select();
+	 		$rest = M('blog')->cache(true,C('CACHE_TIME'))->field(array('id','title'))->where("status=0 AND isdisplay=0 AND cat_id in ($ids)")->order('created desc')->select();
 	 		break;
 	 		default:
-	 		$rest = M('blog')->cache(true,C('CACHE_TIME'))->field(array('id','title'))->where('status=0')->order('created desc')->select();
+	 		$rest = M('blog')->cache(true,C('CACHE_TIME'))->field(array('id','title'))->where('status=0 AND isdisplay=0')->order('created desc')->select();
 	 		break;
 	 	}
 	 	// P($rest);
