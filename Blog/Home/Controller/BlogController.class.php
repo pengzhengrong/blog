@@ -25,7 +25,7 @@ Class BlogController extends CommonController {
 			$rest = M('blog')->add( $data );
 			if( $rest ) {
 				$data = array(
-					'content' => $data['content'],
+					'content' => htmlspecialchars($data['content']),
 					'id' => $rest
 					);
 				$rest = M('blog_data')->add($data);
@@ -46,7 +46,7 @@ Class BlogController extends CommonController {
 			$rest = M('blog')->save($data);
 			$blog_data = array(
 				'id' => $data['id'],
-				'content' => $data['content']
+				'content' => htmlspecialchars($data['content'])
 				);
 			$rest2 = M('blog_data')->save($blog_data);
 			// logger($rest.'_'.$rest2);

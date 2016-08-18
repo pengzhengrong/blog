@@ -40,6 +40,9 @@ Class RbacController extends CommonController {
 
 	//权限设置  > 角色绑定节点模块
 	Public function access () {
+		$role_id = I('role_id',0,'intval')===0?I('id',0,'intval'):I('role_id');
+		$node_ids = M('access')->field(array('node_id'))->where('role_id='.$role_id)->select();
+		$node_ids = array_column($node_ids,'node_id');
 		/*条件搜索*/
 		if( IS_POST ) {
 			$where = array('status'=>0);
@@ -47,20 +50,16 @@ Class RbacController extends CommonController {
 			//只显示根菜单
 			$this->options = options( $rest , 'id', 'title', 'pid', '0');
 			$this->selected = I('id');
-			$this->rest = tree2($rest,I('id',0,'intval'),true,$node_ids,true);
-			$this->role_id = I('id');
+			$this->rest = tree($rest,I('id',0,'intval'),true,true,$node_ids);
+			$this->role_id = I('role_id');
 			$this->display();
 			exit;
 		}
-
-		$node_ids = M('access')->field(array('node_id'))->where('role_id='.I('id'))->select();
-		$node_ids = array_column($node_ids,'node_id');
-		// P($node_ids);die;
 		//获取菜单列表
 		$this->role_id = I('id');
 		$nav = A('Nav')->getCache();
 		$this->options = options($nav, 'id', 'title', 'pid', '0');
-		$this->rest = tree2($nav,0,true,$node_ids);
+		$this->rest = tree($nav,0,false,true,$node_ids);
 		
 
 		$this->display();
