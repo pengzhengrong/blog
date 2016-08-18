@@ -16,7 +16,7 @@
             <!--breadcrumbs start -->
             <ul class="breadcrumb">
               <foreach name="navigation" item="v">
-                <li><a href="/{$v.m}/{$v.c}/{$v.a}">{$v.title}</a></li>
+                <li>{$v.title}</li>
               </foreach>
             </ul>
             <!--breadcrumbs end -->
@@ -58,7 +58,7 @@
                       <tr>
                         <td>{$v.id}</td>
                         <!-- <td onclick="detailContent({$v.id})" >{$v.title}</td> -->
-                        <td><a href="/Home/Blog/detail.html?id={$v.id}" target="_blank">{$v.title}</a></td> 
+                        <td><a href="/Home/Blog/detail.html?id={$v.id}&title={$v.title}" target="_blank">{$v.title}</a></td> 
                         <td>{$v.click}</td>
                         <td>{$v.created|date='Y-m-d H:i',###}</td>
                         <td>{$v.update_time|date='Y-m-d H:i',###}</td>

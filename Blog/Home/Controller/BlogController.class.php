@@ -33,7 +33,7 @@ Class BlogController extends CommonController {
 			$this->ajaxReturn( setAjaxReturn($rest) );
 		}
 		//博客栏目
-		$cat = A('Cat')->getCache();
+		$cat = F('CAT_TREE');
 		$this->category = tree($cat);
 		$this->options = options( $this->category);
 		$this->display();
@@ -58,7 +58,8 @@ Class BlogController extends CommonController {
 		$rest['content'] = $blog_data['content'];
 		$this->rest = $rest;
 		//博客栏目
-		$cat = A('Cat')->getCache();
+		// $cat = A('Cat')->getCache();
+		$cat = F('CAT_TREE');
 		$this->category = tree($cat);
 		$this->options = options( $this->category);
 
@@ -98,6 +99,7 @@ Class BlogController extends CommonController {
 
 	Public function detail() {
 		$id = I('id');
+		$this->title = I('title');
 		$this->rest = M('blog_data')->cache(true,60)->find($id);
 		$this->display();
 	}

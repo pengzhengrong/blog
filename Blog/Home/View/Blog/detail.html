@@ -1,4 +1,4 @@
-<include file="Blog/Home/View/Common/html_head.html" title="{$rest.title}" />
+<include file="Blog/Home/View/Common/html_head.html" title="{$title}" />
 <!-- iCheck-->
 <link rel="stylesheet" href="__PUBLIC__/Home/plugins/icheck/css/_all.css">
  <base target="_blannk"/>
@@ -16,7 +16,7 @@
                         <!--breadcrumbs start -->
                         <ul class="breadcrumb">
                            <foreach name="navigation" item="v">
-                            <li><a href="/{$v.m}/{$v.c}/{$v.a}">{$v.title}</a></li>
+                            <li>{$v.title}</li>
                         </foreach>
                     </ul>
                     <!--breadcrumbs end -->
@@ -27,7 +27,7 @@
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">查看博客</h3>
+                            <h3 class="panel-title">{$title}</h3>
                             <div class="actions pull-right">
                                 <i class="fa fa-chevron-down"></i>
                                 <i class="fa fa-times"></i>

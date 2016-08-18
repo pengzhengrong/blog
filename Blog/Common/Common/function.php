@@ -41,7 +41,12 @@ function rest_merge($rest , $pid=0) {
 	return $arr;
 }
 
-/*获取栏目导航*/
+/** 
+ * 获取栏目导航
+ * @param  array $rest 栏目数组
+ * @param  int $id   栏目id
+ * @return array 栏目id的父集
+ */
 function getParents( $rest, $id ) {
 	if( !is_array($rest) ) {
 		return;

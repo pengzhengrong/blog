@@ -49,13 +49,13 @@ class IndexController extends CommonController {
 		Public function getContent( $rest , $flag=false ) {
 			if( $flag ) {
 				$content = M('blog_data')->where('id='.$rest['id'])->fetchSql(false)->getField('content');
-				$rest['content'] = $content;
+				$rest['content'] = htmlspecialchars_decode($content);
 				return $rest;
 			}
 			$databack = array();
 			foreach ($rest as $v) {
 				$content = M('blog_data')->where('id='.$v['id'])->fetchSql(false)->getField('content');
-				$v['content'] = $content;
+				$v['content'] = htmlspecialchars_decode($content);
 				$databack[] = $v;
 			}
 			return $databack;
