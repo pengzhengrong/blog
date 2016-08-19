@@ -75,7 +75,7 @@ Class CatController extends CommonController {
 		}
 		$rest = M('blog')->where("cat_id=".I('id'))->fetchSql(false)->select();
 		foreach ($rest as $key => $value) {
-			P($value['id']);
+			// P($value['id']);
 			$content = M('blog_data')->where('id='.$value['id'])->getField('content');
 			$value['content'] = htmlspecialchars_decode($content);
 			$rest[$key] = $value;

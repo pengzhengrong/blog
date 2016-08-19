@@ -132,6 +132,12 @@ function blog(id, title) {
 	var pars = {
 		id:id
 	};
+	var regex = '.*[├─|└─](.*)';
+	var temp = title.match(regex);
+	if (temp != null ) {
+		// console.log(temp[1]+'===');
+		title = temp[1];
+	}
 	$.post('/Home/Cat/blog.html',pars, function(data){
 		if (data.code != 200) {
 			$.showTips(data.msg,"提示");
