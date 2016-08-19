@@ -90,14 +90,21 @@ create table think_calendar (
   `endtime` int(11) not null default 0,
   `isallday` tinyint(1) not null default 0,
   `color` varchar(10) not null default '',
+  `role_id` int(11) not null default 0,
   key(`title`),
+  key(`role_id`),
   key(`starttime`,`endtime`)
 )engine=myisam default charset=utf8 auto_increment=1;
+
+-- alter table think_calendar add `role_id` int(11) not null default 0;
+-- alter table think_calendar add index|key (`role_id`);
 
 create table think_event (
   `id` int(11) unsigned primary key auto_increment,
   `title` varchar(100) not null default '',
-  unique(`title`)
+  `role_id` int(11) not null default 0,
+  unique(`title`),
+  key(`role_id`)
 )engine=MyISAM default charset=utf8 auto_increment=1;
 -- alter table think_event add unique key(`title`)
 

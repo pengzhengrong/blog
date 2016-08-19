@@ -16,7 +16,8 @@ Class ScheduleController extends CommonController {
 		// 在调用fullcalendar 时，会自动加上start和end参数，不错。
 		$where = array(
 			'starttime' => array('gt', I('start',0,'intval') ),
-			'endtime' => array('lt', I('end',0,'intval'))
+			'endtime' => array('lt', I('end',0,'intval')),
+			'role_id' => session('role_id')
 			);
 		$rest = M('calendar')->where($where)->fetchSql(false)->select();
 		$data = array();
@@ -37,9 +38,17 @@ Class ScheduleController extends CommonController {
 
 	// 添加可拖动的事件
 	Public function event() {
-		logger( json_encode( I('post.')  ) );
-		$rest = M('event')->add(I('post.'));
+		// logger( json_encode( I('post.')  ) );
+		$data = I('post.');
+		$data['role_id'] = session('role_id');
+		$rest = M('event')->add($data);
 		$this->ajaxReturn( setAjaxReturn( $rest,'添加事件失败！' ) );
+	}
+
+	Public function event_del() {
+		$id = I('id');
+		$rest = M('event')->fetchSql(false)->delete($id);
+		$this->ajaxReturn( setAjaxReturn( $rest,'删除事件失败！' ) );
 	}
 
 	//添加日程事件
@@ -54,7 +63,8 @@ Class ScheduleController extends CommonController {
 				'starttime' => strtotime( I('startdate').' '.I('s_hour',0,'intval').':'.I('s_minute',0,'intval') ),
 				//'endtime' => strtotime( I('enddate').' '.I('e_hour').':'.I('e_minute') ),
 				'isallday' => I('isallday',0,'intval'),
-				'color' => $color
+				'color' => $color,
+				'role_id' => session('role_id')
 				);
 			if( I('isend',0,'intval') == 1 ) {
 				$data['endtime'] = strtotime( I('enddate').' '.I('e_hour').':'.I('e_minute') );
@@ -68,7 +78,7 @@ Class ScheduleController extends CommonController {
 			exit;
 		}
 		$this->date = I('date');
-		logger($this->date);
+		// logger($this->date);
 		$this->display();
 	}
 

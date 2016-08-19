@@ -12,10 +12,13 @@ Class BlogWidget extends Controller {
 
 	Public function event() {
 		// <div class='external-event'>My Event 2</div>
-		$rest = M('event')->select();
+		$where = array(
+			'role_id' => session('role_id')
+			);
+		$rest = M('event')->where($where)->select();
 		$data = '';
 		foreach ($rest as $v) {
-			$data .= "<div class='external-event'>".$v['title']."</div>";
+			$data .= "<div id='{$v['id']}' class='external-event'>".$v['title']."</div>";
 		}
 		return $data;
 	}

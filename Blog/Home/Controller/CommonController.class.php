@@ -42,7 +42,7 @@ class CommonController extends Controller {
 		if( $not_auth_page ) {
 			return $not_auth_page;
 		}
-		logger( json_encode($node_ids) );
+		// logger( json_encode($node_ids) );
 		$where = array(
 			'm' => MODULE_NAME,
 			'c' => CONTROLLER_NAME,
@@ -67,7 +67,7 @@ class CommonController extends Controller {
 	}
 
 	Public function isLogin() {
-		logger(session('user_id'));
+		// logger(session('user_id'));
 		if( session('user_id') == null ) {
 			redirect('/login.html');
 		}
