@@ -127,6 +127,21 @@ function del(id) {
         });
 };
 
+/*查看博客*/
+function blog(id, title) {
+	var pars = {
+		id:id
+	};
+	$.post('/Home/Cat/blog.html',pars, function(data){
+		if (data.code != 200) {
+			$.showTips(data.msg,"提示");
+			return;
+		} else {
+			window.open('/Home/Cat/blog.html?id='+id+'&title='+title,'_blank');
+		}
+	});
+};
+
 /*select改变选项时调用函数*/
 function optionsChange(_this) {
 	var id = $(_this).val();

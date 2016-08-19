@@ -67,6 +67,25 @@ Class CatController extends CommonController {
 		$this->ajaxReturn( setAjaxReturn($rest) );
 	}
 
+	//从栏目跳转到对应的博客
+	Public function blog() {
+		if ( IS_POST ) {
+			$rest = M('blog')->where("cat_id=".I('id'))->count();
+			$this->ajaxReturn( setAjaxReturn($rest, '没有对应的文章，请添加！') );
+		}
+		$rest = M('blog')->where("cat_id=".I('id'))->fetchSql(false)->select();
+		foreach ($rest as $key => $value) {
+			P($value['id']);
+			$content = M('blog_data')->where('id='.$value['id'])->getField('content');
+			$value['content'] = htmlspecialchars_decode($content);
+			$rest[$key] = $value;
+		}
+		// P($rest);
+		$this->title = I('title');
+		$this->rest = $rest ;
+		$this->display();
+	}
+
 	Public function getCache() {
 		$CACHE_KEY = 'CAT_TREE';
 		if( F( $CACHE_KEY ) ) {

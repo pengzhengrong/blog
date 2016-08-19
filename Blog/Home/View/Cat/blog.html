@@ -1,0 +1,66 @@
+<include file="Blog/Home/View/Common/html_head.html" title="{$title}栏目" />
+<!-- iCheck-->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/icheck/css/_all.css">
+ <base target="_blannk"/>
+
+</head>
+
+<body>
+    <section id="container">
+
+        <!--main content start-->
+        <section class="main-content-wrapper">
+            <section id="main-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--breadcrumbs start -->
+                        <ul class="breadcrumb">
+                           <foreach name="navigation" item="v">
+                            <li>{$v.title}</li>
+                        </foreach>
+                    </ul>
+                    <!--breadcrumbs end -->
+                    <!-- <h1 class="h1">Form Validation</h1> -->
+                </div>
+            </div>
+        <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">正文</h3>
+                                <div class="actions pull-right">
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="tab-wrapper tab-primary">
+                                    <ul class="nav nav-tabs">
+                                        <foreach name="rest" item="blog" key="key">
+                                            <li class="{$key==0?'active':''}"><a  href="#{$blog.id}" data-toggle="tab">{$blog.title}</a>
+                                        </foreach>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <foreach name="rest" item="blog" key="key">
+                                        <div class="tab-pane {$key==0?'active':''}" id="{$blog.id}">
+                                            <p>{$blog.content}</p>
+                                        </div>
+                                        </foreach>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    </div>
+
+</section>
+</section>
+<!--main content end-->
+</section>
+
+<include file="Blog/Home/View/Common/js.html" />
+<script type="text/javascript" src="__PUBLIC__/Home/js/project/blog.js"></script>
+
+</body>
+
+</html>
