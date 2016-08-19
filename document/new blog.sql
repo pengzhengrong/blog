@@ -99,6 +99,8 @@ create table think_calendar (
 -- alter table think_calendar add `user_id` int(11) not null default 0;
 -- alter table think_calendar add index|key (`user_id`);
 -- alter table think_event change column role_id  user_id int(11) not null default 0;
+-- alter table think_calendar change column role_id  user_id int(11) not null default 0;
+-- update think_event set user_id=6 where 1=1 and id>0; update think_calendar set user_id=6 where 1=1 and id>0; 
 
 create table think_event (
   `id` int(11) unsigned primary key auto_increment,
