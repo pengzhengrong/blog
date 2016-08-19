@@ -17,7 +17,7 @@ Class ScheduleController extends CommonController {
 		$where = array(
 			'starttime' => array('gt', I('start',0,'intval') ),
 			'endtime' => array('lt', I('end',0,'intval')),
-			'role_id' => session('role_id')
+			'user_id' => session('user_id')
 			);
 		$rest = M('calendar')->where($where)->fetchSql(false)->select();
 		$data = array();
@@ -40,7 +40,7 @@ Class ScheduleController extends CommonController {
 	Public function event() {
 		// logger( json_encode( I('post.')  ) );
 		$data = I('post.');
-		$data['role_id'] = session('role_id');
+		$data['user_id'] = session('user_id');
 		$rest = M('event')->add($data);
 		$this->ajaxReturn( setAjaxReturn( $rest,'添加事件失败！' ) );
 	}
@@ -64,7 +64,7 @@ Class ScheduleController extends CommonController {
 				//'endtime' => strtotime( I('enddate').' '.I('e_hour').':'.I('e_minute') ),
 				'isallday' => I('isallday',0,'intval'),
 				'color' => $color,
-				'role_id' => session('role_id')
+				'user_id' => session('user_id')
 				);
 			if( I('isend',0,'intval') == 1 ) {
 				$data['endtime'] = strtotime( I('enddate').' '.I('e_hour').':'.I('e_minute') );

@@ -13,7 +13,7 @@ Class BlogWidget extends Controller {
 	Public function event() {
 		// <div class='external-event'>My Event 2</div>
 		$where = array(
-			'role_id' => session('role_id')
+			'user_id' => session('user_id')
 			);
 		$rest = M('event')->where($where)->select();
 		$data = '';
