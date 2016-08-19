@@ -5,9 +5,33 @@ use Think\Controller;
 Class BlogController extends CommonController {
 
 	Public function index() {
+		$where = array('status'=>0);
+		//条件搜索
+		$cat = F('CAT_TREE');
+		//只获取根栏目
+		$this->options = options( $cat,'id','title','pid','0'); 
+		if ( I('cat_id') == 'default' ) {
+			$_POST['cat_id'] = null;
+			cookie('cat_id', null);
+		}
+		// P(I('cat_id'));
+		// P(cookie('cat_id'));
+		if ( I('cat_id') != null || cookie('cat_id') != null ) {
+			I('cat_id') != null && cookie('cat_id', I('cat_id'), 60);
+			$cat_id = I('cat_id') == null ? cookie('cat_id') : I('cat_id');
+			$cat_ids = $this->getChildrens($cat, $cat_id); // is string like 1,2,3,4
+			$where['cat_id'] = array('in', $cat_ids );
+			$this->selected = $cat_id;
+		}
+		//-----博客名称
+		if ( I('title') != null ) {
+			$where['title'] = array('like', I('title').'%');
+			$this->title = I('title');
+		}
+		
 
 		$field = array('id','cat_id','title','click','created','update_time','isdisplay');
-		$where = array('status'=>0);
+		
 		$totalRows = M('blog')->where($where)->count();
 		$page = new \Think\Page( $totalRows , C('PAGE_SIZE') );
 		$limit = $page->firstRow.','.$page->listRows;
@@ -102,6 +126,16 @@ Class BlogController extends CommonController {
 		$this->title = I('title');
 		$this->rest = M('blog_data')->cache(true,60)->find($id);
 		$this->display();
+	}
+
+	Private function getChildrens( $arr , $id ){
+		$databack = $id;
+		foreach ($arr as $key => $value) {
+			if( $value['pid'] == $id ){
+				$databack .=  ','.getChildrens( $arr , $value['id'] );
+			}
+		}
+		return $databack;
 	}
 
 }

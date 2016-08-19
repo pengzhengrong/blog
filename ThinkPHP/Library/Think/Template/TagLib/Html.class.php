@@ -140,7 +140,7 @@ class Html extends TagLib{
         	$parseStr = '<select id="'.$id.'" name="'.$name.'" onchange="'.$onchange.'" ondblclick="'.$ondblclick.'" class="'.$style.'" >';
         }
         if(!empty($first)) {
-            $parseStr .= '<option value="" >'.$first.'</option>';
+            $parseStr .= '<option value="default" >'.$first.'</option>';
         }
         if(!empty($options)) {
             $parseStr   .= '<?php  foreach($'.$options.' as $key=>$val) { ?>';

@@ -67,7 +67,7 @@ Class SearchController extends Controller {
 
 	public function syncBlog(){
 		$fields = array('id','cat_id','status','title','created');
-		$rest = M('blog')->field($fields)->where('status=0')->select();
+		$rest = M('blog')->field($fields)->where('status=0 AND isdisplay=0')->select();
 		$rest = $this->getContent($rest);
 		for( $i=0;$i<count($rest);$i++ ){
 			$temp = dataclean( $rest[$i]['content'] );

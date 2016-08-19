@@ -13,7 +13,7 @@ class CommonController extends Controller {
 			// $this->redirect('/Home/Index/404');
 		}
 		//获取栏目缓存
-		$field = array('id','pid','title','sort','m','c','a');
+		$field = array('id','pid','title','sort'/*,'m','c','a'*/);
 		$nav = M('navigation')->cache(true,60)->field( $field )->where('status=0')->order( 'sort' )->select();
 		$where = array(
 			'm' => MODULE_NAME,

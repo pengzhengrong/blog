@@ -24,9 +24,29 @@
           </div>
 
           <div class="col-md-6">
-            <button type="button" id="add" class="btn btn-default" style="float:right;">添加文章</button>
+            <button type="button" id="add" class="btn btn-success" style="float:right;">添加文章</button>
           </div>
         </div>
+
+        <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                        <form action="/Home/Blog/index.html" method="post" id="form">
+                                <div class="col-sm-2">
+                                    <!-- 开始使用select标签 -->
+                                    <taglib name="html" />
+                                    <html:select name="cat_id" id="cat_id" first="全部栏目" selected="selected" style="form-control" options="options"  /> <!-- change="optionsChange(this)" -->
+                                </div>
+                                <div class="col-sm-2">
+                                   <input type="text" name="title" value="{$title}" id="title" class="form-control" placeholder="请输入博客名称">
+                                </div>
+                                 <div class="col-sm-2">
+                                   <button type="submit"  id="searchBtn" class="btn btn-default" style="float:right;">搜索</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
         <div class="row">
           <div class="col-md-12">
