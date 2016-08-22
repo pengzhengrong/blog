@@ -70,7 +70,7 @@ Class Elastic {
 		// return $rtnCount;
 		$databack = array(
 			'status'=>200,
-			'msg' => 'ok',
+			'msg' => '操作成功！',
 			'data' => $rtnCount
 			);
 		 header('Content-Type:application/json; charset=utf-8');
@@ -132,7 +132,7 @@ Class Elastic {
 		logger('---------------------------------------------------------------------------------------','blog_click.log');
 		$databack = array(
 			'status'=>200,
-			'msg' => 'ok',
+			'msg' => '操作成功！',
 			'data' => $rtnCount
 			);
 		 header('Content-Type:application/json; charset=utf-8');
@@ -314,7 +314,7 @@ Class Elastic {
 		F('UPDATE_TIME',$max['time']);
 		$databack = array(
 			'status'=>200,
-			'msg' => 'ok',
+			'msg' => '操作成功！',
 			'data' => $rtnCount
 			);
 		 header('Content-Type:application/json; charset=utf-8');

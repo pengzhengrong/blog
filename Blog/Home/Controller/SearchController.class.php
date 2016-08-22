@@ -53,6 +53,7 @@ Class SearchController extends Controller {
 	}*/
 
 	public function create(){
+		$this->elastic->delete();
 		$fields = array('id','cat_id','status','title','created');
 		$rest = M('blog')->field($fields)->where('status=0 AND isdisplay=0')->select();
 		$rest = $this->getContent($rest);
@@ -109,7 +110,9 @@ Class SearchController extends Controller {
 
 
 
+	Public function delete() {
 
+	}
 
 
 

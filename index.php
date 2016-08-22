@@ -15,7 +15,7 @@
 if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
 
 // 开启调试模式 建议开发阶段开启 部署阶段注释或者设为false
-define('APP_DEBUG',true);
+// define('APP_DEBUG',true);
 
 // phpinfo();die;
 
@@ -37,9 +37,11 @@ define('HTTP_HOST',$_SERVER['HTTP_HOST']);
 // $_SERVER['HTTP_USER_AGENT'] = 'android';
 if( preg_match('/(android)|(iphone)/i', $_SERVER['HTTP_USER_AGENT']) ) {
 	define('APP_PATH','./APP/');
+	define('APP_DEBUG',false);
 	define('__PUBLIC__','/Public/App/Home');
 } else {
 	define('APP_PATH','./Blog/');
+	define('APP_DEBUG',true);
 }
 
 // 引入ThinkPHP入口文件
