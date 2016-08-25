@@ -138,9 +138,23 @@ function blog(id, title) {
 		// console.log(temp[1]+'===');
 		title = temp[1];
 	}
+	title = $.trim(title);
 	$.post('/Home/Cat/blog.html',pars, function(data){
 		if (data.code != 200) {
-			$.showTips(data.msg,"提示");
+			// $.showTips(data.msg,"提示");
+			$.showDialog({
+				"msgContent":"没有对应的文章，现在是否去创建？",
+				"btns":[
+				{text:"确认",className:"",act: function(){
+               			 // 隐藏提示框
+               			 $(".dialog-frm").css("display", "none");
+               			 $(".dialog-mask").css("display", "none");
+               			 var url = '/Home/Blog/add.html?cat_id='+id+'&title='+title;
+               			 window.open(url, '_blank');
+               			}},
+               			{text:"取消",className:"",act:"_hide"}
+               			]
+               		});
 			return;
 		} else {
 			window.open('/Home/Cat/blog.html?id='+id+'&title='+title,'_blank');

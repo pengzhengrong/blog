@@ -60,6 +60,8 @@ Class BlogController extends CommonController {
 		$cat = F('CAT_TREE');
 		$this->category = tree($cat);
 		$this->options = options( $this->category);
+		$this->selected = isset($_GET['cat_id'])?$_GET['cat_id']:0; //从栏目跳入增加博客
+		$this->title = isset($_GET['title'])?$_GET['title']:'世界那么大,Title想去逛逛!';
 		$this->display();
 	}
 

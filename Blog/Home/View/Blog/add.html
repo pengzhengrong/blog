@@ -1,4 +1,4 @@
-<include file="Blog/Home/View/Common/html_head.html" title="{$rest.title}" />
+<include file="Blog/Home/View/Common/html_head.html" title="{$title}" />
 <!-- iCheck-->
 <link rel="stylesheet" href="__PUBLIC__/Home/plugins/icheck/css/_all.css">
 
@@ -40,7 +40,7 @@
                                         <div class="col-sm-4">
                                             <!-- 开始使用select标签 -->
                                             <taglib name="html" />
-                                            <html:select name="cat_id" id="cat_id" style="form-control" options="options" />
+                                            <html:select name="cat_id" id="cat_id" selected="selected" style="form-control" options="options" />
                                         </div>
                                     </div>
                                     <div class="form-group">
