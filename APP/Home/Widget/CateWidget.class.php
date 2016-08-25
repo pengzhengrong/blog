@@ -17,6 +17,7 @@ Class CateWidget extends Controller {
 			}
 		}
 echo '<div class="widget container">
+                    <a id="Categories"></a>
                     <h4>Categories</h4>
                     <div class="one-half">
                         <ul class="blog-category">'

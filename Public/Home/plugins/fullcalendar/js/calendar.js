@@ -114,7 +114,7 @@
 
         //修改日程
         function editCalendar(calEvent) {
-             console.log(calEvent.end);
+             // console.log(calEvent.end);
                 var startdate =$.fullCalendar.formatDate(calEvent.start,'yyyy-MM-dd');
                 var enddate = 0,e_hour=0,e_minute=0,isend=0;
                  //当截止时间和起始时间重叠的时候，end == null
