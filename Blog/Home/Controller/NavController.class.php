@@ -6,21 +6,30 @@ use Think\Controller;
 Class NavController extends CommonController {
 
 	Public function index() {
+		$cookieKey = 'COOKIE_'.__CLASS__.__FUNCTION__;
 		/*条件搜索*/
 		if( IS_POST ) {
 			$where = array('status'=>0);
 			$rest = $this->getCache();
 			//只显示根菜单
 			$this->options = options( $rest , 'id', 'title', 'pid', '0');
-			$this->selected = I('id');
-			$this->rest = tree($rest,I('id',0,'intval'),true);
+			I('id') == 'default' ? cookie($cookieKey, null) :cookie($cookieKey, I('id'));
+			$id = cookie($cookieKey)==null?I('id',0,'intval'):cookie($cookieKey);
+			$this->selected = $id;
+			$this->rest = tree($rest, $id, true);
 			$this->display();
 			exit;
 		}
 		$rest = $this->getCache();
 		//只显示根菜单
 		$this->options = options( $rest , 'id', 'title', 'pid', '0');
-		$this->rest = tree($rest);
+		$id = cookie($cookieKey);
+		if ( $id == null ) {
+			$this->rest= tree($rest);
+		} else {
+			$this->rest = tree($rest, $id, true);
+			$this->selected = $id;
+		}
 		// p($this->rest); die;
 		$this->display();
 	}
