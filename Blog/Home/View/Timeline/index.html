@@ -75,7 +75,7 @@
                         <td>{$v.updated|date='Y-m-d H:i',###}</td>
                           <td>{:status($v['isdisplay'])}</td>
                           <td>
-                            <a href="javascript:" onclick="detail({$v.id})">查看</a>
+                            <a target="_blank" href="/Home/Timeline/detail.html?id={$v.id}">查看</a>
                             <a href="javascript:" onclick="del({$v.id});">删除</a>
                           </td>
                         </tr>

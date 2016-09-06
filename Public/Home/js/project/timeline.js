@@ -101,7 +101,7 @@ function callback(event) {
 		htmlTag = '<input id="'+className+'" style="color:#1abc9c;" value="'+temp+'">';
 		break;
 		case 'desc':
-		htmlTag = '<textarea maxlength="100" style="width:430px;height:160px;overflow:auto;" id="'+className+'">'+temp+'</textarea>';
+		htmlTag = '<textarea maxlength="150" style="width:430px;height:160px;overflow:auto;" id="'+className+'">'+temp+'</textarea>';
 		break;
 		default:
 		className = 'content';
@@ -178,7 +178,7 @@ function detail(id) {
 }
 
 function addPage() {
-	window.location = '/Home/Timeline/detail.html';
+	window.open('/Home/Timeline/detail.html','_blank');
 }
 
 function del(id) {
