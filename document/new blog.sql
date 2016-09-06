@@ -138,10 +138,16 @@ CREATE TABLE IF NOT EXISTS `think_access` (
   KEY `nodeId` (`node_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
-
-
-
+create table `think_timeline`(
+  `id` int(11) unsigned auto_increment primary key,
+  `title` varchar(50) not null default '',
+  `extra` text,
+  `status` tinyint(1) not null default 0,
+  `isdisplay` tinyint(1) not null default 0,
+  `created` int(11) not null default 0,
+  `updated` int(11) not null default 0,
+  key(`title`) 
+)engine=myisam default charset=utf8;
 
 
 

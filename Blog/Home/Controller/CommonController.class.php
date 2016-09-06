@@ -56,9 +56,10 @@ class CommonController extends Controller {
 		return false;
 	}
 
-	//无需验证页面
+	//无需验证页面,不过必须是后台的用户
 	Public function notAuthPage() {
 		$page = MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME;
+
 		$not_auth_page = C('NOT_AUTH_PAGE');
 		if( in_array($page, $not_auth_page) ) {
 			return true;
@@ -68,9 +69,22 @@ class CommonController extends Controller {
 
 	Public function isLogin() {
 		// logger(session('user_id'));
-		if( session('user_id') == null ) {
-			redirect('/login.html');
+		$page = MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME;
+
+		$toAllpersonPage = C('TO_ALL_PERSON_PAGE');
+		if ( in_array($page, $toAllpersonPage) ) {
+			// 如果是允许用户访问的页面那么不做任何处理，但是如果触发提交按钮什么的，那么立即阻止
+			if ( session('user_id') == null && IS_POST ) {
+				// exit('没有提交的权利！');
+				$this->ajaxReturn( setAjaxReturn(false, '没有提交的权利！') );
+			}
+		}else {
+			if( session('user_id') == null ) {
+				redirect('/login.html');
+			}
 		}
+
+		
 	}
 
 

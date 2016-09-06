@@ -1,0 +1,146 @@
+<include file="Blog/Home/View/Common/html_head.html" title="博客" />
+<!-- Custom styles for this theme -->
+<link rel="stylesheet" href="__PUBLIC__/Home/css/main.css">
+<!-- DataTables-->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/dataTables/css/dataTables.css">
+
+</head>
+
+<body>
+    <section id="container">
+        <!--main content start-->
+        <section class="main-content-wrapper">
+
+<section id="main-content">
+    <div class="row">
+      <div class="col-md-6">
+        <!--breadcrumbs start -->
+        <ul class="breadcrumb">
+          <foreach name="navigation" item="v">
+            <li>{$v.title}</li>
+        </foreach>
+    </ul>
+    <!--breadcrumbs end -->
+    <!-- <h1 class="h1">Date Tables</h1> -->
+</div>
+
+            <div class="col-md-6" style="position:fixed;left:300px;top:50px;z-index:999;">
+             <button type="button" id="save" class="btn btn-default" style="float:left;">提交</button>
+             <input type="hidden" name="id" id="id" value={$id==null?0:$id}>
+         </div>
+     </div>
+     <div class="row">
+        <div class="col-sm-12">
+            <div class="timeline" id="timeline">
+                <article class="timeline-item left" id="firstArticle">
+                    <div class="text-right">
+                        <div class="time-layer">
+                            <span class="label label-primary"><span class="title">标题</span> </span>
+                        </div>
+                    </div>
+                </article>
+                <article class="timeline-item" id="init">
+                    <div class="timeline-layer">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h1 class="panel-title"><div class="subTitle">双击文字</div><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#scrollingModal">查看更多</button></h1>
+                            </div>
+                            <div class="panel-body">
+                                <span class="arrow"></span>
+                                <div class="timeline-icon addNode" title="双击添加节点"><i class="fa fa-arrow-down"></i>
+                                </div>
+                                <p class="desc">100字内...</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+           <!-- 模板内容初始化 -->
+  <div id="modal-contain">
+               <!--  scrolling -->
+                   <div class="modal fade" id="scrollingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                  <h4 class="modal-title" id="scrollingModalTitle">Scrolling Modal</h4>
+                              </div>
+                              <div class="modal-body modal-scroll content">500字内...</div>
+                          </div>
+                      </div>
+                  </div>
+                <!-- scrolling end -->
+               </div>   
+
+
+            </div>
+        </div>
+    </div>
+</section>
+</section>
+<!--main content end-->
+</section>
+
+
+
+<!-- 动态添加模板 -->
+<div style="display:none">
+<div id="model1">
+<!-- article -->
+  <article class="timeline-item #LEFTORRIGHT#">
+                    <div class="timeline-layer">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h1 class="panel-title"><div class="subTitle">双击文字</div><button  class="btn btn-primary btn-lg" data-toggle="modal" style="float:#LEFTORRIGHT#" data-target="##SCROLLING_MODAL_ID#">查看更多</button></h1>
+                            </div>
+                            <div class="panel-body">
+                                <span class="arrow#LEFTORRIGHT#"></span>
+                                <div class="timeline-icon addNode" title="双击添加节点"><i class="fa fa-arrow-down"></i>
+                                </div>
+                                
+                                <p class="desc" style="float:left;">100字内...</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            <!-- article end -->
+       </div>
+
+                <div id="model2">
+                <!-- Scrolling Modal -->
+                <div class="modal fade" id="#SCROLLING_MODAL_ID#" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="#SCROLLING_MODEL_TITLE_ID#">#SCROLLING_MODEL_TITLE#</h4>
+                            </div>
+                            <div class="modal-body modal-scroll content">500字内...</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Scrolling Modal -->
+                </div>
+</div>
+
+<!--Global JS-->
+<include file="Blog/Home/View/Common/js.html" />
+<script type="text/javascript" src="__PUBLIC__/Home/js/project/timeline.js"></script>
+</body>
+<style type="text/css">
+    .btn-lg {
+        padding: 0.5px;
+        font-size: 10px;
+        line-height: 1.33;
+        margin-top: -17px;
+        float:right;
+    }
+</style>
+<script type="text/javascript">
+var id = {$id==null?0:$id};
+var rest = {$rest?$rest:''};
+  if(id > 0) {
+    init(rest);
+  } 
+</script>
+</html>
