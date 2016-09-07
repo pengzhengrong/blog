@@ -153,7 +153,11 @@ function addTimeline() {
 		var item = fields[v];
 		var temp = document.getElementsByClassName(item);
 		for( var i=0, len = temp.length; i < len-1; i++) {
-			info[item].push( $(temp[i]).text() );
+			if ( item == 'content' ) {
+				info[item].push( $(temp[i]).val() );
+			} else {
+				info[item].push( $(temp[i]).text() );
+			}
 		}
 	}
 	info.title = title;
