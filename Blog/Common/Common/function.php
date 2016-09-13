@@ -199,7 +199,11 @@ function options($rest , $key='id', $value='title' , $filter_key='',$filter_valu
 	return array_combine($keys, $values);
 }
 
-function  p( $param ) {
+function  p( $param, $var_dump=false ) {
+
+	if ($var_dump) {
+		var_dump($param);
+	}
 
 	if( is_array( $param )){
 		dump( $param );

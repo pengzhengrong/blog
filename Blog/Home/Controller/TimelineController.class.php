@@ -5,11 +5,16 @@ use Think\Controller;
 Class TimelineController extends CommonController {
 
 	Public function index() {
+		$where = array();
+		if (I('title') != null) {
+			$where['title'] = array('like', I('title').'%' );
+		}
+
 		$field = array('id','title','created','updated','isdisplay');
 		$totalRows = M('timeline')->count();
 		$page = new \Think\Page( $totalRows , C('PAGE_SIZE') );
 		$limit = $page->firstRow.','.$page->listRows;
-		$this->rest = M('timeline')->cache(false,3600)->field($field)->fetchSql(false)->order('id desc')->limit($limit)->select();
+		$this->rest = M('timeline')->cache(true,60)->where($where)->field($field)->fetchSql(false)->order('id desc')->limit($limit)->select();
 		$this->page = $page->showPage();
 		$this->display();
 	}
@@ -41,13 +46,13 @@ Class TimelineController extends CommonController {
 				$data = array(
 					'title' => $title,
 					'extra' => json_encode($timeline),
-					'created' => time(),
 					'updated' => time()
 					);
 				if ( $info['id'] > 0 ) {
 					$data['id'] = $info['id'];
 					$rest = M('timeline')->save($data);
 				} else {
+					$data['created'] = time();
 					$rest = M('timeline')->add($data);
 				}
 				
@@ -57,7 +62,9 @@ Class TimelineController extends CommonController {
 			$id = I('id',0,'intval');
 			if ( $id > 0 ) {
 				$this->id = $id;
-				$rest = M('timeline')->find($id);
+				$where = array('id'=>$id);
+				!IS_LOGIN?$where['isdisplay']=0:'';
+				$rest = M('timeline')->where($where)->find();
 				$this->rest = json_encode($rest);
 			}
 			$this->display();
@@ -68,6 +75,11 @@ Class TimelineController extends CommonController {
 			$id = I('id',0,'intval');
 			$rest = M('timeline')->delete($id);
 			$this->ajaxReturn( setAjaxReturn($rest) );
+		}
+
+		Public function show() {
+			$rest = M('timeline')->save(I('post.'));
+			$this->ajaxReturn(setAjaxReturn($rest));
 		}
 
 	}

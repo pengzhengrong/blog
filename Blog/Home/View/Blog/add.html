@@ -131,6 +131,9 @@
 
         // CKEDITOR.replace('content');
         CKEDITOR.replace('content', { height: '500px'});
+        window.onbeforeunload = function () {
+            return ('确定离开页面？您输入的数据可能不被保留！');
+        }
     });
 </script>
 </body>

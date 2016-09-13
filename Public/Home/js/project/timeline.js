@@ -210,4 +210,17 @@ function del(id) {
         });
 }
 
+function display(id, isdisplay) {
+	var pars = {id: id,isdisplay:1-isdisplay};
+                $.post("/Home/Timeline/show.html",pars,
+                	function(data) {
+                		if( data.code == 200 ) {
+                			$.showTips("操作完成", "提示");
+                			window.location.reload();
+                		} else {
+                			$.showTips( data.msg , "提示");
+                		}
+                	});
+}
+
 

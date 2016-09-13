@@ -21,6 +21,7 @@ create table `think_blog_data`(
  `id` int(11) unsigned not null,
  `content` text,
  `extra` text,
+ `isdisplay` tinyint(1) not null default 0 comment'和blog的isdisplay数据保持一致',
  unique(`id`)
 )engine=myisam default charset=utf8 auto_increment=1;
 

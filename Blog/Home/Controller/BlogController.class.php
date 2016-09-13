@@ -50,7 +50,8 @@ Class BlogController extends CommonController {
 			if( $rest ) {
 				$data = array(
 					'content' => htmlspecialchars($data['content']),
-					'id' => $rest
+					'id' => $rest,
+					'isdisplay' => $data['isdisplay']
 					);
 				$rest = M('blog_data')->add($data);
 			}
@@ -72,7 +73,8 @@ Class BlogController extends CommonController {
 			$rest = M('blog')->save($data);
 			$blog_data = array(
 				'id' => $data['id'],
-				'content' => htmlspecialchars($data['content'])
+				'content' => htmlspecialchars($data['content']),
+				'isdisplay' => $data['isdisplay']
 				);
 			$rest2 = M('blog_data')->save($blog_data);
 			// logger($rest.'_'.$rest2);
@@ -126,7 +128,9 @@ Class BlogController extends CommonController {
 	Public function detail() {
 		$id = I('id');
 		$this->title = I('title');
-		$this->rest = M('blog_data')->cache(true,60)->find($id);
+		$where = array('id' => $id);
+		!IS_LOGIN?$where['isdisplay']=0:'';
+		$this->rest = M('blog_data')->cache(true,60)->where($where)->find();
 		$this->display();
 	}
 

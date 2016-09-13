@@ -139,5 +139,8 @@ var rest = {$rest?$rest:''};
   if(id > 0) {
     init(rest);
   } 
+      window.onbeforeunload = function () {
+        return ('确定离开页面？您输入的数据可能不被保留！');
+    }
 </script>
 </html>

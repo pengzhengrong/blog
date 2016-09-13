@@ -78,6 +78,10 @@ Class CatController extends CommonController {
 
 	//从栏目跳转到对应的博客
 	Public function blog() {
+		$fetchSql = false;
+		if ( I('fetchSql')==1 ) {
+			$fetchSql = true;
+		}
 		if ( IS_POST ) {
 			$rest = M('blog')->where("cat_id=".I('id'))->count();
 			$this->ajaxReturn( setAjaxReturn($rest, '没有对应的文章，请添加！') );
@@ -86,10 +90,15 @@ Class CatController extends CommonController {
 		foreach ($rest as $key => $value) {
 			// P($value['id']);
 			$where = array(
-				'id' => $value['id'],
-				'isdisplay' => 0
+				'id' => $value['id']
 				);
-			$content = M('blog_data')->where($where)->getField('content');
+			if (!IS_LOGIN) {
+				$where['isdisplay'] = 0;
+			}
+			$content = M('blog_data')->cache(true,60)->where($where)->fetchSql($fetchSql)->getField('content');
+			if ($fetchSql) {
+				P(IS_LOGIN,true);P($content);
+			}
 			$value['content'] = htmlspecialchars_decode($content);
 			$rest[$key] = $value;
 		}
