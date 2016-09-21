@@ -37,7 +37,7 @@ $(function() {
 var fields = {
 	title:'栏目名称',
 	// click:'点击量'
-	contentSource:'正文'
+	// contentSource:'正文'
 };
 function validate() {
 	for( v in fields  ) {
