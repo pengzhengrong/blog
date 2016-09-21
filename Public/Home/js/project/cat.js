@@ -149,7 +149,7 @@ function blog(id, title) {
                			 // 隐藏提示框
                			 $(".dialog-frm").css("display", "none");
                			 $(".dialog-mask").css("display", "none");
-               			 var url = '/Home/Blog/add.html?cat_id='+id+'&title='+title;
+               			 var url = '/Home/Blog/add.html?editor=markdown&cat_id='+id+'&title='+title;
                			 window.open(url, '_blank');
                			}},
                			{text:"取消",className:"",act:"_hide"}
