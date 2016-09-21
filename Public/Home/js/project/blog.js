@@ -3,9 +3,17 @@ $(function() {
 	$("#add").click(function() {
 		addPage();
 	});
+	/*添加页面 MarkDown*/
+	$("#add2").click(function() {
+		addPage2();
+	});
 	/*保存添加内容*/
 	$("#save").click(function() {
 		save();
+	});
+	/*Markdown 编辑器*/
+	$("#save2").click(function() {
+		save2();
 	});
 	/*保存添加内容并且继续添加*/
 	$("#savemore").click(function() {
@@ -14,6 +22,10 @@ $(function() {
 	/*保存修改内容*/
 	$("#saveModify").click(function() {
 		saveModify();
+	});
+	/*保存修改内容 Markdown*/
+	$("#saveModify2").click(function() {
+		saveModify2();
 	});
 	/*取消*/
 	$("#cancle").click(function() {
@@ -24,8 +36,8 @@ $(function() {
 /*校验表单输入*/
 var fields = {
 	title:'栏目名称',
-	click:'点击量'
-	// content:'正文'
+	// click:'点击量'
+	contentSource:'正文'
 };
 function validate() {
 	for( v in fields  ) {
@@ -64,6 +76,40 @@ function save() {
 	});
 }
 
+/* 保存添加内容 MarkDown */
+function save2() {
+	var flag = validate();
+	if( !flag ) {
+		return;
+	}
+	var content=$('#content').html(); //取得html文本
+	var contentSource = $('#contentSource').val();
+	var from = $('#from').val();
+	var url = '/Home/Blog/add.html';
+	var pars = {
+		title : $("#title").val(),
+		cat_id : $("#cat_id").val(),
+		isdisplay : $("#isdisplay").val(),
+		click : $("#click").val(),
+		content :content,
+		extra:{
+			source: contentSource,
+			from:from
+		}
+	};
+	// console.log(pars);
+	$.post(url, pars, function(data) {
+		if (data.code != 200) {
+			$.showTips(data.msg, "提示");
+		} else {
+			$.showTips("添加完成", "提示");
+			setTimeout(function() {
+				window.location = "/Home/Blog/index.html";
+			}, 1000);
+		}
+	});
+}
+
 /* 保存修改栏目 */
 function saveModify() {
 	var flag = validate();
@@ -81,7 +127,41 @@ function saveModify() {
 		click : $("#click").val(),
 		content : content
 	};
-	console.log(pars);
+	// console.log(pars);
+	$.post(url, pars, function(data) {
+		if ( data.code != 200 ) {
+			$.showTips(data.msg, "提示");
+		} else {
+			$.showTips("修改完成", "提示");
+			setTimeout(function() {
+				window.location = "/Home/Blog/index.html";
+			}, 1000);
+		}
+	});
+}
+/* 保存修改栏目 Markdown */
+function saveModify2() {
+	var flag = validate();
+	if( !flag ) {
+		return;
+	}
+	var content=$('#content').html(); //取得html文本
+	var contentSource = $('#contentSource').val();
+	var from = $('#from').val();
+	var url = '/Home/Blog/edit.html';
+	var pars = {
+		id : $("#id").val(),
+		title : $("#title").val(),
+		cat_id : $("#cat_id").val(),
+		isdisplay : $("#isdisplay").val(),
+		click : $("#click").val(),
+		content : content,
+		extra:{
+			source: contentSource,
+			from:from
+		}
+	};
+	// console.log(pars);
 	$.post(url, pars, function(data) {
 		if ( data.code != 200 ) {
 			$.showTips(data.msg, "提示");
@@ -97,6 +177,11 @@ function saveModify() {
 /*添加一级菜单页面*/
 function addPage() {
 	window.location = '/Home/Blog/add.html';
+}
+
+/*添加一级菜单页面 Markdown*/
+function addPage2() {
+	window.location = '/Home/Blog/add.html?editor=Markdown';
 }
 
 /*添加子菜单页面*/

@@ -38,8 +38,7 @@ class IndexController extends CommonController {
 	}
 
 	Public function test() {
-		$image = new \Home\Library\Image();
-		$image->imageHandler();
+		$this->display();
 	}
 
 }

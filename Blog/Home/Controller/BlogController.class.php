@@ -51,7 +51,8 @@ Class BlogController extends CommonController {
 				$data = array(
 					'content' => htmlspecialchars($data['content']),
 					'id' => $rest,
-					'isdisplay' => $data['isdisplay']
+					'isdisplay' => $data['isdisplay'],
+					'extra' => json_encode($data['extra'])
 					);
 				$rest = M('blog_data')->add($data);
 			}
@@ -63,7 +64,17 @@ Class BlogController extends CommonController {
 		$this->options = options( $this->category);
 		$this->selected = isset($_GET['cat_id'])?$_GET['cat_id']:0; //从栏目跳入增加博客
 		$this->title = isset($_GET['title'])?$_GET['title']:'世界那么大,Title想去逛逛!';
-		$this->display();
+		$this->view();
+	}
+
+	public function view($from='') {
+		if (I('editor') != null) {
+			$this->display('add_markdown');
+		} elseif ($from=='markdown') {
+			$this->display('edit_markdown');
+		} else {
+			$this->display();
+		}
 	}
 
 	Public function edit() {
@@ -74,7 +85,8 @@ Class BlogController extends CommonController {
 			$blog_data = array(
 				'id' => $data['id'],
 				'content' => htmlspecialchars($data['content']),
-				'isdisplay' => $data['isdisplay']
+				'isdisplay' => $data['isdisplay'],
+				'extra' => json_encode($data['extra'])
 				);
 			$rest2 = M('blog_data')->save($blog_data);
 			// logger($rest.'_'.$rest2);
@@ -84,6 +96,15 @@ Class BlogController extends CommonController {
 		$rest = M('blog')->find(I('id'));
 		$blog_data = M('blog_data')->find(I('id'));
 		$rest['content'] = $blog_data['content'];
+		$extraJson = json_decode($blog_data['extra'], true);
+		if ($extraJson) {
+			$from = $extraJson['from'];
+			if ($from == 'markdown') {
+				$source = $extraJson['source'];
+				$rest['contentSource'] = $source;
+			}
+		}
+
 		$this->rest = $rest;
 		//博客栏目
 		// $cat = A('Cat')->getCache();
@@ -91,7 +112,7 @@ Class BlogController extends CommonController {
 		$this->category = tree($cat);
 		$this->options = options( $this->category);
 
-		$this->display();
+		$this->view($from);
 	}
 
 	/**
