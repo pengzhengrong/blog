@@ -35,7 +35,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="tab-wrapper tab-primary">
-                                    <ul class="nav nav-tabs">
+                                    <ul id="nav" class="nav nav-tabs">
                                         <foreach name="rest" item="blog" key="key">
                                             <li class="{$key==0?'active':''}"><a  href="#{$blog.id}" data-toggle="tab">{$blog.title}</a>
                                         </foreach>
@@ -60,7 +60,26 @@
 
 <include file="Blog/Home/View/Common/js.html" />
 <script type="text/javascript" src="__PUBLIC__/Home/js/project/blog.js"></script>
+<script type="text/javascript">
+window.onload=function(){ 
+    // window.attachEvent("onmousewheel", naviga_stay_top); 
+    // window.attachEvent("onscroll", naviga_stay_top); 
 
+    window.addEventListener("mousewheel", naviga_stay_top,false); 
+    window.addEventListener("scroll", naviga_stay_top,false); 
+}
+    function naviga_stay_top() {
+        var navigaOffsetTop = 115;
+        var nav = $('#nav');
+        var scrollTop = document.body.scrollTop || document.documentElement.scrollTop; 
+        if (scrollTop > navigaOffsetTop) {
+           var top = (scrollTop-navigaOffsetTop)+"px";
+           nav.css({"margin-top":top,"position":"absolute","background-color":"#f1f2f7"});
+        } else {
+             nav.css({"margin-top":"0px","position":"relative","background-color":""});
+        }
+    }
+</script>
 </body>
 
 </html>

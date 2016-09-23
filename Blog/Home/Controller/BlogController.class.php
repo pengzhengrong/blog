@@ -165,4 +165,10 @@ Class BlogController extends CommonController {
 		return $databack;
 	}
 
+	Public function show() {
+		$rest = M('blog')->save(I('post.'));
+		$rest2 = M('blog_data')->save(I('post.'));
+		$this->ajaxReturn(setAjaxReturn($rest && $rest2));
+	}
+
 }

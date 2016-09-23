@@ -237,3 +237,16 @@ function optionsChange(_this) {
 function detailContent(id) {
 	window.location = '/Home/Blog/detail.html?id='+id;
 }
+
+function display(id, isdisplay) {
+	var pars = {id: id,isdisplay:1-isdisplay};
+                $.post("/Home/Blog/show.html",pars,
+                	function(data) {
+                		if( data.code == 200 ) {
+                			$.showTips("操作完成", "提示");
+                			window.location.reload();
+                		} else {
+                			$.showTips( data.msg , "提示");
+                		}
+                	});
+}
