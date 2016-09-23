@@ -61,8 +61,9 @@
                                             </div>
                                             <div class="panel-body">
                                             <button type="button" onclick="change()"><i class="fa fa-file-o">源码</i></button>
-                                               <textarea id="contentSource" style="height:400px;width:925px;" onkeyup="compile()"></textarea>
-                                               <div style="display: none;" id="content"></div>
+                                            <button type="button" onclick="javascript:window.open('http://hello2world.top/Home/Blog/detail.html?id=67&title=Markdown%E9%80%9A%E7%94%A8%E6%89%8B%E5%86%8C','_blank')"><i class="fa fa-question-circle">手册</i></button>
+                                               <textarea id="contentSource" style="height:400px;width:925px;" onkeyup="compile()" onblur="change()"></textarea>
+                                               <div style="display: none;" ondblclick="change()" id="content"></div>
                                             </div>
                                         </div>
                                     </div>
