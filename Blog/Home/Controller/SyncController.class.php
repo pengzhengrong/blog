@@ -23,14 +23,14 @@ Class SyncController extends Controller{
 
 	Public function syncBlogClink() {
 		set_time_limit(0);
-		\Think\Log::write('每2H执行一次','INFO','File','/home/pzr/workspace/blog/log/blog_click.log');
+		// \Think\Log::write('每2H执行一次','INFO','File','/home/pzr/workspace/blog/log/blog_click.log');
 		$rest = M('blog')->field(array('id'))->where('status=0')->select();
 		foreach ($rest as $k => $v) {
 			$cacheKey = "BLOG_ID_".$v['id'];
 			if( S($cacheKey) ) {
 				$value = S($cacheKey);
 				$rest = M('blog')->where('id='.$v['id'])->setInc('click',$value);
-				\Think\Log::write($cacheKey.':'.$value,'INFO','File','/home/pzr/workspace/blog/log/blog_click.log');
+				\Think\Log::write($cacheKey.':'.$value,'INFO','File','/data0/log/blog_click.log');
 				S($cacheKey,null);
 			}
 		}
@@ -41,7 +41,7 @@ Class SyncController extends Controller{
 	 * @return [type] [description]
 	 */
 	Public function syncBlog() {
-		logger('每2H执行一次','blog_click.log');
+		// logger('每2H执行一次','blog_click.log');
 		$fields = array('id' ,'title','content','created','cat_id','status');
 		if( F('UPDATE_TIME') ) {
 			$update_time = F('UPDATE_TIME');
@@ -52,7 +52,7 @@ Class SyncController extends Controller{
 		if( empty($update_time) ) {
 			$update_time =  strtotime('2016-06-21 15:20');
 		}
-		logger('update_time:'.$update_time,'blog_click.log');
+		// logger('update_time:'.$update_time,'blog_click.log');
 		vendor('Elastic/Elastic','','.class.php');
 	 	$param = C('DEFAULT_HOST');
 	 	$elastic = new \Elastic($param);
@@ -67,7 +67,8 @@ Class SyncController extends Controller{
 				$sync_blog[] = $rest[$i];
 			} else {
 				$elastic->delete(array('id'=>$rest[$i]['id']));
-				logger('delete blog id:'.$rest[$i]['id'],'blog_click.log');
+				// logger('delete blog id:'.$rest[$i]['id'],'blog_click.log');
+				\Think\Log::write('delete blog id:'.$rest[$i]['id'],'INFO','File','/data0/log/blog_sync.log');
 			}
 		}
 		$max_time = M('blog')->field("max(update_time) as time")->fetchSql(false)->where('update_time>='.$update_time)->find();

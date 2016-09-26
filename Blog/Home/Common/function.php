@@ -32,16 +32,16 @@ function fixedSubmit(){
 
 function dataclean( $data ){
 		//trim &nbsp;
-		$temp = preg_replace('/&nbsp;/', ' ', $data);
-		$temp = preg_replace('/<br\/>/', '', $temp);
-		$temp = preg_replace('/(<\/pre>)|(<pre.*?[^>]>)/', ' ', $temp);
-		$temp = preg_replace('/(<\/p>)|(<p>)/', ' ', $temp);
+	$temp = preg_replace('/&nbsp;/', ' ', $data);
+	$temp = preg_replace('/<br\/>/', '', $temp);
+	$temp = preg_replace('/(<\/pre>)|(<pre.*?[^>]>)/', ' ', $temp);
+	$temp = preg_replace('/(<\/p>)|(<p>)/', ' ', $temp);
 		// $temp = htmlspecialchars_decode($temp , ENT_QUOTES);
-		$temp = html_entity_decode($temp,ENT_QUOTES);
+	$temp = html_entity_decode($temp,ENT_QUOTES);
 		//trim html&php tags
 		// $temp = strip_tags($temp);
-		return $temp;
-	}
+	return $temp;
+}
 
 function status( $status) {
 	if( $status == 1 ) {
@@ -49,5 +49,10 @@ function status( $status) {
 	} else {
 		return '<li class="fa fa-check">';
 	}
+}
+
+function increBlogClick($id) {
+	$cacheKey = "BLOG_ID_{$id}";
+	S($cacheKey,S($cacheKey)+1,24*3600);
 }
 

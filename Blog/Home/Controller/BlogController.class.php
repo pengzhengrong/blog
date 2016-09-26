@@ -2,9 +2,17 @@
 
 namespace Home\Controller;
 use Think\Controller;
+use Home\Model;
+use Think\Log;
+
 Class BlogController extends CommonController {
 
 	Public function index() {
+		/*$blog = new Model\BlogModel('blog');
+		$data = $blog->getBlogInfo();
+		// $data = D('Blog')->getBlogInfo();
+		P($data);
+		die;*/
 		$where = array('status'=>0);
 		//条件搜索
 		$cat = F('CAT_TREE');
@@ -152,6 +160,9 @@ Class BlogController extends CommonController {
 		$where = array('id' => $id);
 		!IS_LOGIN?$where['isdisplay']=0:'';
 		$this->rest = M('blog_data')->cache(true,60)->where($where)->find();
+
+		increBlogClick($id);
+
 		$this->display();
 	}
 

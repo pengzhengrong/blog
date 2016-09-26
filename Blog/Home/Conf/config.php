@@ -31,5 +31,6 @@ return array(
 		'Home/Timeline/detail',
 		'Home/Cat/blog',
 		),
+	'LOG_PATH' => '/data0/log/blog_',
 );
 
