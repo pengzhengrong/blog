@@ -13,6 +13,7 @@ function increBlogClick($id) {
 	$key = "BLOG_IDS_CACHE";
 	$value = S($key)==null?array():S($key);
 	$value[] = $id;
+	$value = array_unique($value);
 	S($key, $value, 300);
 	
 	$cacheKey = "BLOG_ID_{$id}";

@@ -41,7 +41,7 @@ if( preg_match('/(android)|(iphone)/i', $_SERVER['HTTP_USER_AGENT']) ) {
 	define('__PUBLIC__','/Public/App/Home');
 } else {
 	define('APP_PATH','./Blog/');
-	define('APP_DEBUG',true);
+	define('APP_DEBUG',false);
 }
 
 // 引入ThinkPHP入口文件

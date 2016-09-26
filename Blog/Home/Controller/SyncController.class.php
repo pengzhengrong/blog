@@ -24,16 +24,18 @@ Class SyncController extends Controller{
 		Public function syncBlogClink() {
 			set_time_limit(0);
 		// \Think\Log::write('每2H执行一次','INFO','File','/home/pzr/workspace/blog/log/blog_click.log');
-			if ($ids = S('BLOG_IDS_CACHE') != null) {
-				foreach ($ids as $k => $v) {
-					$cacheKey = "BLOG_ID_".$v['id'];
+			if (S('BLOG_IDS_CACHE') != null) {
+				$ids = S('BLOG_IDS_CACHE');
+				foreach ($ids as $k => $id) {
+					$cacheKey = "BLOG_ID_".$id;
 					if( S($cacheKey) ) {
 						$value = S($cacheKey);
-						$rest = M('blog')->where('id='.$v['id'])->setInc('click',$value);
+						$rest = M('blog')->where('id='.$id)->setInc('click',$value);
 						\Think\Log::write($cacheKey.':'.$value,'INFO','File','/data0/log/blog_click.log');
 						S($cacheKey,null);
 					}
 				}
+				S('BLOG_IDS_CACHE', null);
 			}
 		// 效率太低
 		/*$rest = M('blog')->field(array('id'))->where('status=0')->select();
