@@ -38,7 +38,7 @@ Class BlogController extends CommonController {
 		}
 		
 
-		$field = array('id','cat_id','title','click','created','update_time','isdisplay');
+		$field = array('id','cat_id','title','click','created','update_time','isdisplay','author');
 		
 		$totalRows = M('blog')->where($where)->count();
 		$page = new \Think\Page( $totalRows , C('PAGE_SIZE') );
@@ -54,6 +54,7 @@ Class BlogController extends CommonController {
 			$data['created'] = time();
 			$data['update_time'] = time();
 			$data['time'] = time();
+			$data['author'] = session('username');
 			$rest = M('blog')->add( $data );
 			if( $rest ) {
 				$data = array(

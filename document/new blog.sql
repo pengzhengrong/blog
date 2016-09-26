@@ -11,11 +11,13 @@ create  table `think_blog` (
   `time` int(11) not null default 0,
   `status` tinyint(1) not null default 0,
   `isdisplay` tinyint(1) not null default 0,
+  `author` varchar(30) not null default '',
   primary key(`id`),
   key(`title`) ,
   key(`cat_id`),
   key(`created`)
 )engine=myisam default charset=utf8 auto_increment=1;
+-- alter table think_blog add `author` varchar(30) not null default '';
 
 create table `think_blog_data`(
  `id` int(11) unsigned not null,

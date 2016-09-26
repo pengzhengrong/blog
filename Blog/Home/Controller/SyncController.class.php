@@ -12,19 +12,31 @@ Class SyncController extends Controller{
 			'prefix'=>'App_',
 			'expire'=>60
 			)
-		);*/
+			);*/
 		// $Log = new \Think\Log();
 		// $config = array(
 		// 	'log_path' => '/home/pzr/workspace/blog/log/blog_click.log',
 		// 	);
 		// $Log::init($config);
 		// $this->Log = $Log;
-	}
+		}
 
-	Public function syncBlogClink() {
-		set_time_limit(0);
+		Public function syncBlogClink() {
+			set_time_limit(0);
 		// \Think\Log::write('每2H执行一次','INFO','File','/home/pzr/workspace/blog/log/blog_click.log');
-		$rest = M('blog')->field(array('id'))->where('status=0')->select();
+			if ($ids = S('BLOG_IDS_CACHE') != null) {
+				foreach ($ids as $k => $v) {
+					$cacheKey = "BLOG_ID_".$v['id'];
+					if( S($cacheKey) ) {
+						$value = S($cacheKey);
+						$rest = M('blog')->where('id='.$v['id'])->setInc('click',$value);
+						\Think\Log::write($cacheKey.':'.$value,'INFO','File','/data0/log/blog_click.log');
+						S($cacheKey,null);
+					}
+				}
+			}
+		// 效率太低
+		/*$rest = M('blog')->field(array('id'))->where('status=0')->select();
 		foreach ($rest as $k => $v) {
 			$cacheKey = "BLOG_ID_".$v['id'];
 			if( S($cacheKey) ) {
@@ -33,7 +45,7 @@ Class SyncController extends Controller{
 				\Think\Log::write($cacheKey.':'.$value,'INFO','File','/data0/log/blog_click.log');
 				S($cacheKey,null);
 			}
-		}
+		}*/
 	}
 
 	/**
@@ -54,8 +66,8 @@ Class SyncController extends Controller{
 		}
 		// logger('update_time:'.$update_time,'blog_click.log');
 		vendor('Elastic/Elastic','','.class.php');
-	 	$param = C('DEFAULT_HOST');
-	 	$elastic = new \Elastic($param);
+		$param = C('DEFAULT_HOST');
+		$elastic = new \Elastic($param);
 
 		$fields = array('id' ,'title','content','created','cat_id','status');
 		$rest = M('blog')->field($fields)->where('update_time>'.$update_time)->select();
@@ -75,7 +87,7 @@ Class SyncController extends Controller{
 		$time = $max_time['time'];
 		F('UPDATE_TIME',$time);
 
-	 	$elastic->create_index_by_rest($sync_blog , $fields );
+		$elastic->create_index_by_rest($sync_blog , $fields );
 	}
 
 	Public function test() {

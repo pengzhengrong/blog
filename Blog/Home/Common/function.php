@@ -52,7 +52,12 @@ function status( $status) {
 }
 
 function increBlogClick($id) {
+	$key = "BLOG_IDS_CACHE";
+	$value = S($key)==null?array():S($key);
+	$value[] = $id;
+	S($key, $value, 300);
+	
 	$cacheKey = "BLOG_ID_{$id}";
-	S($cacheKey,S($cacheKey)+1,24*3600);
+	S($cacheKey,S($cacheKey)+1,300);
 }
 

@@ -91,8 +91,7 @@ class IndexController extends CommonController {
 	 	$id = I('id',0,'intval');
 	 	$rest = M('blog')->find($id);
 	 	$this->rest = $this->getContent($rest, true);
-	 	$cacheKey = "BLOG_ID_{$id}";
-	 	S($cacheKey,S($cacheKey)+1,24*3600);
+	 	increBlogClick($id);
 	 	$this->get_next_prev($id , cookie('READ_BLOG_TYPE'));
 	 	$this->display();
 	 }
