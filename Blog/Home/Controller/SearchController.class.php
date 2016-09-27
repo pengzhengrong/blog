@@ -61,7 +61,7 @@ Class SearchController extends Controller {
 		$model = new Model\BlogDataModel();
 		$databack = array();
 		foreach ($rest as $v) {
-			$content = $model->getFieldsCache('content', array('id'=>$v['id']));
+			$content = $model->getFieldsCache('content', array('id'=>$v['id']), 300);
 			$v['content'] = $content;
 			$databack[] = $v;
 		}

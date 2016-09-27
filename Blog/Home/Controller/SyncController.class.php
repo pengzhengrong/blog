@@ -43,7 +43,7 @@ Class SyncController extends Controller{
 
 		$fields = array('id' ,'title','created','cat_id','isdisplay','status');
 		$where = array('time'=>array('gt',$update_time));
-		$rest = $blog->getDataCache($fields, $where);
+		$rest = $blog->getDataCache($fields, $where, 300);
 		// P($rest);die;
 		if (!$rest) {
 			exit("time>='{$update_time}'数据为空！");
