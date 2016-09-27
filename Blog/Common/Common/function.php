@@ -236,7 +236,6 @@ function getSearch( $rest ,$fields, $key='hits'){
 
 	$databack = array();
 	$rest = $rest[$key];
-	// P($rest);die;
 	if( $key == 'hits' ){
 		foreach ($rest['hits'] as  $k=>$v) {
 			foreach ($fields as $kk=>$vv) {

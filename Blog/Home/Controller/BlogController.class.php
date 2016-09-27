@@ -9,7 +9,8 @@ Class BlogController extends CommonController {
 
 	Public function index() {
 		/*$blog = new Model\BlogModel('blog');
-		$data = $blog->getBlogInfo();
+		// $data = $blog->getBlogInfo();
+		$data = $blog->getRow(array(), array('id'=>2));
 		// $data = D('Blog')->getBlogInfo();
 		P($data);
 		die;*/
@@ -178,9 +179,11 @@ Class BlogController extends CommonController {
 	}
 
 	Public function show() {
-		$rest = M('blog')->save(I('post.'));
+		$data = I('post.');
+		$data['time'] = time();
+		$rest = M('blog')->save($data);
 		$rest2 = M('blog_data')->save(I('post.'));
-		$this->ajaxReturn(setAjaxReturn($rest && $rest2));
+		$this->ajaxReturn(setAjaxReturn($rest));
 	}
 
 }

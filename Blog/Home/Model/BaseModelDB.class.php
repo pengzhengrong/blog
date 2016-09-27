@@ -2,8 +2,29 @@
 
 namespace Home\Model;
 
-class BaseModelDB extends \Think\Model {
+abstract class BaseModelDB extends \Think\Model {
 
+	private $fetch = false;
+
+	public function __construct($tableName, $tablePrefix='think_') {
+		parent::__construct($tableName, $tablePrefix);
+		$this->fetch = I('_fetch_sql') == 1?true:false;
+	}
+
+	public function getData(array $field=array(), array $where=array(), $sort='order by id') {
+		$data = $this->field($field)->where($where)->fetchSql($this->fetch)->select();
+		return $data;
+	}
+
+	public function getRow($field=array(), $where=array()) {
+		$data = $this->field($field)->where($where)->fetchSql($this->fetch)->find();
+		return $data;
+	}
+
+	public function getFields($field='', $where=array()) {
+		$data = $this->where($where)->fetchSql($this->fetch)->getField($field);
+		return $data;
+	}
 
 	public function __call($name, $args) {
 		if ( substr($name,-5) == 'Cache' ) {

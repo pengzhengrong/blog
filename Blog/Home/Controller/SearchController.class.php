@@ -3,10 +3,12 @@
 namespace Home\Controller;
 use Think\Controller;
 use Library;
+use Home\Model;
 
 Class SearchController extends Controller {
 
 	public $elastic;
+
 	public function _initialize(){
 		vendor('Elastic.Elastic','','.class.php');
 		$param = C('DEFAULT_HOST');
@@ -14,8 +16,6 @@ Class SearchController extends Controller {
 	}
 
 	public function index() {
-
-
 		$this->search();
 		$this->display();
 	}
@@ -30,6 +30,7 @@ Class SearchController extends Controller {
 		$params = $this->query_string($firstRow);
 
 		$rtn = $this->elastic->search($params);
+		// logger(json_encode($rtn));
 		$fields = array(
 			'id' => '_id',
 			'score' => '_score',
@@ -39,21 +40,12 @@ Class SearchController extends Controller {
 			'status' => 'status'
 			);
 		$this->rest = getSearch( $rtn , $fields);
+		// P($this->rest);die;
 		$this->page = $page->showPage();
 	}
 
-	/**
-	 * @return 创建索引
-	 */
-	/*public function create(){
-		$sql =  'select id ,cat_id,status,title,content from test.think_blog where status=0';
-		$fields = array('id','cat_id','status','title','content');
-		$params = array('index'=>'test','type'=>'think_blog');
-		$this->elastic->create_index($sql , $fields , $params);
-	}*/
-
 	public function create(){
-		$this->elastic->delete();
+		$this->delete();
 		$fields = array('id','cat_id','status','title','created');
 		$rest = M('blog')->field($fields)->where('status=0 AND isdisplay=0')->select();
 		$rest = $this->getContent($rest);
@@ -61,33 +53,15 @@ Class SearchController extends Controller {
 			$temp = $this->dataclean( $rest[$i]['content'] );
 			$rest[$i]['content'] = $temp;
 		}
-		// p($rest);die;
 		$fields[] = 'content';
 		$rest = $this->elastic->create_index_by_rest( $rest , $fields );
 	}
 
-	public function syncBlog(){
-		$fields = array('id','cat_id','status','title','created');
-		$rest = M('blog')->field($fields)->where('status=0 AND isdisplay=0')->select();
-		$rest = $this->getContent($rest);
-		for( $i=0;$i<count($rest);$i++ ){
-			$temp = dataclean( $rest[$i]['content'] );
-			$rest[$i]['content'] = $temp;
-		}
-		// p($rest);die;
-		$fields[] = 'content';
-		$this->elastic->create_index_by_rest( $rest , $fields );
-	}
-
-	Public function getContent( $rest , $flag=false ) {
-		if( $flag ) {
-			$content = M('blog_data')->where('id='.$rest['id'])->fetchSql(false)->getField('content');
-			$rest['content'] = $content;
-			return $rest;
-		}
+	Public function getContent($rest) {
+		$model = new Model\BlogDataModel();
 		$databack = array();
 		foreach ($rest as $v) {
-			$content = M('blog_data')->where('id='.$v['id'])->fetchSql(false)->getField('content');
+			$content = $model->getFieldsCache('content', array('id'=>$v['id']));
 			$v['content'] = $content;
 			$databack[] = $v;
 		}
@@ -110,8 +84,23 @@ Class SearchController extends Controller {
 
 
 
-	Public function delete() {
-
+	Private function delete() {
+		$param = array(
+			'index' => C('DEFAULT_INDEX'),
+			'type' => C('DEFAULT_TYPE'),
+			'body' => array(
+				'query' =>  array(
+					'match_all' => array()
+					),
+				'fields' => array('id')
+				)
+			);
+		$data = $this->elastic->search($param);
+		// P($data);die;
+		$data = isset($data['hits']['hits'])?$data['hits']['hits']:array();
+		foreach ($data as $k => $v) {
+			$this->elastic->delete(array('id'=>$v['_id']));
+		}
 	}
 
 
@@ -127,7 +116,7 @@ Class SearchController extends Controller {
 				'query' =>  array(
 					'match_all' => array()
 					),
-				'fields' => array('title','id','cat_id','created')
+				'fields' => array('title','id','cat_id','created','status')
 				)
 			);
 		return $param;

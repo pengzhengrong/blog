@@ -127,6 +127,7 @@ Class Elastic {
 			// P($params); 
 		//Document will be indexed to log_index/log_type/autogenerate_id
 			logger('sync blog id:'.$params['id'],'blog_click.log');
+			// P($params,true);
 			$this->client->index($params);
 		}
 		logger('---------------------------------------------------------------------------------------','blog_click.log');
@@ -143,7 +144,7 @@ Class Elastic {
 		return $this->client->search($params);
 	}
 
-	public function delete($params){
+	public function delete($params=array()){
 		$params['type'] = empty($params['type'])?C('DEFAULT_TYPE'):$params['type'];
 		$params['index'] = empty($params['index'])?C('DEFAULT_INDEX'):$params['index'];
 		return $this->client->delete($params);
