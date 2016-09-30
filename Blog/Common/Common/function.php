@@ -289,3 +289,8 @@ function setAjaxReturn( $rest ,$msg='操作失败!',$data='') {
 	return $databack;
 }
 
+
+function debug($msg, $level='debug', $logo='') {
+	vendor('FirePHPCore.fb');
+	fb($msg, $level, $logo);
+}

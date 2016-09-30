@@ -1,4 +1,7 @@
 {include file="Common/header.html" title="简单的博客,不简单的内容"}
+<!-- iCheck-->
+<link rel="stylesheet" href="/Public/Home/plugins/icheck/css/_all.css">
+<link rel="stylesheet" href="/Public/Home/plugins/bootstrap/css/bootstrap.min.css">
 <style type="text/css">
     pre {
         border-left: 2px solid #DD4B39;
@@ -21,6 +24,14 @@
          margin-left: 10px; 
         margin-right: 10px;
     }
+/*     code {
+padding: 2px 4px;
+font-size: 90%;
+color: #c7254e;
+background-color: #f9f2f4;
+white-space: nowrap;
+border-radius: 4px;
+} */
 </style>
 </head>
 <body>
@@ -39,9 +50,11 @@
                     <div class="blog-post">
                         <!-- <a class="blog-post-image" href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/3ww.jpg" alt="img"></a> -->
                         <h3 class="blog-post-title">{$rest['title']}</h3>
-                        <p class="blog-post-text">
+                        <!-- <p class="blog-post-text"> -->
+                        <div>
                          {$rest['content']}
-                     </p>
+                         </div>
+                     <!-- </p> -->
                      <p class="blog-post-date"><i class="fa fa-calendar"></i>{$rest['created']|date_format:"
                         %m/%d/%G %T"}</p>
                     </div>

@@ -107,7 +107,7 @@ a:hover{
 	color: #000;
 }
 
-div, a ,p, img, blockquote, form, fieldset, textarea, input, label, iframe, code, pre {
+div, a ,p, img, blockquote, form, fieldset, textarea, input, label, iframe, /* code, */ pre {
 	display: block;
 	position:relative;
 	overflow:hidden;
@@ -670,11 +670,11 @@ a{
 
 /*	6. Code Highlight  */ 
 
-.code{
+/* .code{
 	border:solid 1px #cacaca;
 	font-size:12px;
 	margin-bottom:30px;
-}
+} */
 
 .wline{
 	font-size:11px;

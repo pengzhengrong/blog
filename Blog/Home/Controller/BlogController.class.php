@@ -6,14 +6,20 @@ use Home\Model;
 use Think\Log;
 
 Class BlogController extends CommonController {
+	public function debug($msg, $level='debug', $logo='') {
+		vendor('FirePHPCore.fb');
+		fb($msg, $level, $logo);
+	}
 
 	Public function index() {
-		/*$blog = new Model\BlogModel('blog');
+		// $blog = new Model\BlogModel('blog');
 		// $data = $blog->getBlogInfo();
-		$data = $blog->getRow(array(), array('id'=>2));
+		// $data = $blog->getRow(array(), array('id'=>1));
 		// $data = D('Blog')->getBlogInfo();
-		P($data);
-		die;*/
+		/*vendor('FirePHPCore.fb');
+		fb('test'); */		
+		$this->debug('test');
+		// P($data);die;
 		$where = array('status'=>0);
 		//条件搜索
 		$cat = F('CAT_TREE');
@@ -90,7 +96,7 @@ Class BlogController extends CommonController {
 	Public function edit() {
 		if( IS_POST ){
 			$data = $_POST;
-			$data['update_time'] = time();
+			$data['time'] = time();
 			$rest = M('blog')->save($data);
 			$blog_data = array(
 				'id' => $data['id'],
@@ -183,7 +189,7 @@ Class BlogController extends CommonController {
 		$data['time'] = time();
 		$rest = M('blog')->save($data);
 		$rest2 = M('blog_data')->save(I('post.'));
-		$this->ajaxReturn(setAjaxReturn($rest));
+		$this->ajaxReturn(setAjaxReturn($rest&&$rest2));
 	}
 
 }
