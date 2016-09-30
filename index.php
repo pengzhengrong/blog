@@ -34,8 +34,8 @@ define('HTTP_HOST',$_SERVER['HTTP_HOST']);
 // print_r($_SERVER);
 
 
-$_SERVER['HTTP_USER_AGENT'] = 'android';
-if( preg_match('/(android)|(iphone)/i', $_SERVER['HTTP_USER_AGENT']) ) {
+// $_SERVER['HTTP_USER_AGENT'] = 'android';
+if( preg_match('/(android)|(iphone)/i', strtolower($_SERVER['HTTP_USER_AGENT']) ) ) {
 	define('APP_PATH','./APP/');
 	define('APP_DEBUG',false);
 	define('__PUBLIC__','/Public/App/Home');
