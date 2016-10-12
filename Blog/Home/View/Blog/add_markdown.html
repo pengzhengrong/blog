@@ -49,7 +49,7 @@
                                             <input type="text" class="form-control" name="title" id="title" required="" placeholder="Required input">
                                         </div>
                                     </div>
-                                  
+
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
@@ -59,15 +59,17 @@
                                                     <i class="fa fa-times"></i>
                                                 </div>
                                             </div>
+                                            <div id="picsUrl"></div>
                                             <div class="panel-body">
-                                            <button type="button" onclick="change()"><i class="fa fa-file-o">源码</i></button>
-                                            <button type="button" onclick="javascript:window.open('http://hello2world.top/Home/Blog/detail.html?id=67&title=Markdown%E9%80%9A%E7%94%A8%E6%89%8B%E5%86%8C','_blank')"><i class="fa fa-question-circle">手册</i></button>
-                                               <textarea id="contentSource" style="height:400px;width:925px;" onkeyup="compile()" onblur="change()"></textarea>
-                                               <div style="display: none;" ondblclick="change()" id="content"></div>
+                                                <button type="button" onclick="change()"><i class="fa fa-file-o">源码</i></button>
+                                                <button type="button" onclick="javascript:window.open('http://hello2world.top/Home/Blog/detail.html?id=67&title=Markdown%E9%80%9A%E7%94%A8%E6%89%8B%E5%86%8C','_blank')"><i class="fa fa-question-circle">手册</i></button>
+                                                <button type="button" class="upload_div"><i class="fa fa-cloud-upload">上传图片</i></button>
+                                                <textarea id="contentSource" style="height:400px;width:925px;" onkeyup="compile()" onblur="change()"></textarea>
+                                                <div style="display: none;" ondblclick="change()" id="content"></div>
                                             </div>
                                         </div>
                                     </div>
-                                      <div class="form-group">
+                                    <div class="form-group">
                                         <label class="col-sm-3 control-label">点击次数</label>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control"  name="click" id="click" required="" placeholder="Required input">
@@ -105,7 +107,9 @@
                         </div>
 
                     </form>
-
+                    <form id="needHide" action="#" method="post" enctype="multipart/form-data">
+                        <input type="file" id="file" name="file" onchange="fileUpLoad('picsUrl')" style="display: none;" />
+                    </form>
 
                 </div>
             </div>
@@ -128,6 +132,7 @@
 <!--Page Level JS-->
 <script src="__PUBLIC__/Home/plugins/bootstrap-wysihtml5/js/wysihtml5-0.3.0.js"></script>
 <script src="__PUBLIC__/Home/plugins/bootstrap-wysihtml5/js/bootstrap3-wysihtml5.js"></script>
+<script src="__PUBLIC__/Home/js/project/upload.js"></script>
 <!-- <script src="__PUBLIC__/Home/plugins/ckeditor/ckeditor.js"></script> -->
 <script type="text/javascript" src="http://cdn.uedsc.com/showdown/0.5.0/showdown.min.js"></script>
 <script>
@@ -141,21 +146,21 @@
             return ('确定离开页面？您输入的数据可能不被保留！');
         }
     });
-      function compile(){
-            var text = document.getElementById("contentSource").value;
-            var converter = new Showdown.converter();
-            var html = converter.makeHtml(text);
-            document.getElementById("content").innerHTML = html;
+    function compile(){
+        var text = document.getElementById("contentSource").value;
+        var converter = new Showdown.converter();
+        var html = converter.makeHtml(text);
+        document.getElementById("content").innerHTML = html;
 
             // $('#contentSource').toggle();
             // $('#content').toggle();
         }
 
-    function change() {
-         $('#contentSource').toggle();
-         $('#content').toggle();
-    }
-</script>
+        function change() {
+           $('#contentSource').toggle();
+           $('#content').toggle();
+       }
+   </script>
 </body>
 <style>
     body {

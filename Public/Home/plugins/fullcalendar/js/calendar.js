@@ -108,6 +108,8 @@
                     // if so, remove the element from the "Draggable Events" list
                     $(this).remove();
                 }
+
+                window.reload();
                 
             }
         });
