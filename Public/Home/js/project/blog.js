@@ -78,22 +78,20 @@ function save() {
 
 /* 保存添加内容 MarkDown */
 function save2() {
-	// var flag = validate();
-	// if( !flag ) {
-	// 	return;
-	// }
+	var flag = validate();
+	if( !flag ) {
+		return;
+	}
 	var content=$('#content').html(); //取得html文本
 	var contentSource = $('#contentSource').val();
 	var from = $('#from').val();
 	var url = '/Home/Blog/add.html';
-	var inputPics = $('input[name=pics]');
-	var pics = [];
-	for(var i=0; i<inputPics.length; i++){
-		// console.log($(pics[i]).val());
-		pics.push($(inputPics[i]).val());
-	}
-	console.log(pics);
-	// return;
+	// var inputPics = $('input[name=pics]');
+	// var pics = [];
+	// for(var i=0; i<inputPics.length; i++){
+	// 	// console.log($(pics[i]).val());
+	// 	pics.push($(inputPics[i]).val());
+	// }
 	var pars = {
 		title : $("#title").val(),
 		cat_id : $("#cat_id").val(),
@@ -103,7 +101,7 @@ function save2() {
 		extra:{
 			source: contentSource,
 			from:from,
-			pics:pics
+			// pics:pics
 		}
 	};
 	// console.log(pars);

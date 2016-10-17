@@ -1,6 +1,13 @@
 <include file="Blog/Home/View/Common/html_head.html" title="{$title}" />
 <!-- iCheck-->
-<link rel="stylesheet" href="__PUBLIC__/Home/plugins/icheck/css/_all.css">
+<!-- <link rel="stylesheet" href="__PUBLIC__/Home/plugins/icheck/css/_all.css"> -->
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/bootstrap-responsive.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown//bootstrap.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/bootstrap-responsive.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/syntaxhighlighting.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/main.css">
+
+
 
 
 </head>
@@ -64,57 +71,75 @@
                                                 <button type="button" onclick="change()"><i class="fa fa-file-o">源码</i></button>
                                                 <button type="button" onclick="javascript:window.open('http://hello2world.top/Home/Blog/detail.html?id=67&title=Markdown%E9%80%9A%E7%94%A8%E6%89%8B%E5%86%8C','_blank')"><i class="fa fa-question-circle">手册</i></button>
                                                 <button type="button" class="upload_div"><i class="fa fa-cloud-upload">上传图片</i></button>
-                                                <textarea id="contentSource" style="height:400px;width:925px;" onkeyup="compile()" onblur="change()"></textarea>
-                                                <div style="display: none;" ondblclick="change()" id="content"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">点击次数</label>
-                                        <div class="col-sm-6">
-                                            <input type="text" class="form-control"  name="click" id="click" required="" placeholder="Required input">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">是否显示</label>
-                                        <div class="col-sm-2">
-                                            <select name="isdisplay" id="isdisplay" class="form-control">
-                                                <option value="0">是</option>
-                                                <option value="1">否</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="from" name="from" value="markdown">
-                                </div>
+                                                <!-- First Markdown Editor Start -->
+                                                <!-- <textarea id="contentSource" style="height:400px;width:925px;" onkeyup="compile()" onblur="change()"></textarea>
+                                                <div style="display: none;" ondblclick="change()" id="content"></div> -->
+                                                <!-- First Markdown Editor End -->
 
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="col-md-4">
-                                            <div class="panel-body">
-                                                <button type="button" id="save2" class="btn btn-success btn-block">添加</button>
+                                                <!-- Second Markdown Editor Start -->
+                                                <div class="well row-fluid livedemo">
+                                                  <div class="span6">
+                                                    <div class="livedemo-raw livedemo-elem">
+                                                        <textarea id="contentSource"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="span6">
+                                                    <div class="livedemo-rendered livedemo-elem" id="content"></div>
+                                                </div>
                                             </div>
+                                            <!-- Second Markdown Editor End -->
+
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="panel-body">
-                                                <button type="button" id="cancle" class="btn btn-default btn-block">取消</button>
-                                            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">点击次数</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control"  name="click" id="click" required="" placeholder="Required input">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">是否显示</label>
+                                    <div class="col-sm-2">
+                                        <select name="isdisplay" id="isdisplay" class="form-control">
+                                            <option value="0">是</option>
+                                            <option value="1">否</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="from" name="from" value="markdown">
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="col-md-4">
+                                        <div class="panel-body">
+                                            <button type="button" id="save2" class="btn btn-success btn-block">添加</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="panel-body">
+                                            <button type="button" id="cancle" class="btn btn-default btn-block">取消</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                    </form>
-                    <form id="needHide" action="#" method="post" enctype="multipart/form-data">
-                        <input type="file" id="file" name="file" onchange="fileUpLoad('picsUrl')" style="display: none;" />
-                    </form>
 
-                </div>
+
+                </form>
+                <form id="needHide" action="#" method="post" enctype="multipart/form-data">
+                    <input type="file" id="file" name="file" onchange="fileUpLoad('picsUrl')" style="display: none;" />
+                </form>
+
             </div>
         </div>
     </div>
+</div>
 
 </section>
 </section>
@@ -123,63 +148,37 @@
 
 <include file="Blog/Home/View/Common/js.html" />
 <script type="text/javascript" src="__PUBLIC__/Home/js/project/blog.js"></script>
-<!--Page Level JS-->
-<script src="__PUBLIC__/Home/plugins/icheck/js/icheck.min.js"></script>
-<script src="__PUBLIC__/Home/plugins/validation/js/jquery.validate.min.js"></script>
-<script src="__PUBLIC__/Home/plugins/validation/js/jquery.validate.min.js"></script>
 
 
 <!--Page Level JS-->
-<script src="__PUBLIC__/Home/plugins/bootstrap-wysihtml5/js/wysihtml5-0.3.0.js"></script>
-<script src="__PUBLIC__/Home/plugins/bootstrap-wysihtml5/js/bootstrap3-wysihtml5.js"></script>
 <script src="__PUBLIC__/Home/js/project/upload.js"></script>
-<!-- <script src="__PUBLIC__/Home/plugins/ckeditor/ckeditor.js"></script> -->
-<script type="text/javascript" src="http://cdn.uedsc.com/showdown/0.5.0/showdown.min.js"></script>
 <script>
     $(document).ready(function() {
-        // $('.textarea').wysihtml5();
-
-        // CKEDITOR.replace('content');
-        // CKEDITOR.replace('content', { height: '500px'});
-        // 
         window.onbeforeunload = function () {
             return ('确定离开页面？您输入的数据可能不被保留！');
         }
     });
-    function compile(){
+   /* function compile(){
         var text = document.getElementById("contentSource").value;
         var converter = new Showdown.converter();
         var html = converter.makeHtml(text);
         document.getElementById("content").innerHTML = html;
-
-            // $('#contentSource').toggle();
-            // $('#content').toggle();
         }
 
         function change() {
            $('#contentSource').toggle();
            $('#content').toggle();
-       }
+       }*/
    </script>
 </body>
-<style>
-    body {
-        font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
-        font-size: 16px;
-        line-height: 1.42857143;
-        color: #333;
-        /*background-color: #fff;*/
-    }
-    ul li {
-        line-height: 24px;
-    }
-    blockquote {
-        border-left:#eee solid 5px;
-        padding-left:20px;
-    }
-    code {
-        color:#D34B62;
-        background: #F9F2F4;
-    }
-</style>
-</html>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+
+<script src="__PUBLIC__/Common/js/markdown/vendor/bootstrap.min.js"></script>
+<script src="__PUBLIC__/Common/js/markdown/plugins.js"></script>
+<script src="__PUBLIC__/Common/js/markdown/marked.js"></script>
+<script src="__PUBLIC__/Common/js/markdown/highlight.js"></script>
+<script src="__PUBLIC__/Common/js/markdown/main.js"></script>
+
+
+ </html>

@@ -14,7 +14,7 @@ Class TimelineController extends CommonController {
 		$totalRows = M('timeline')->count();
 		$page = new \Think\Page( $totalRows , C('PAGE_SIZE') );
 		$limit = $page->firstRow.','.$page->listRows;
-		$this->rest = M('timeline')->cache(true,60)->where($where)->field($field)->fetchSql(false)->order('id desc')->limit($limit)->select();
+		$this->rest = M('timeline')->cache(false,60)->where($where)->field($field)->fetchSql(false)->order('id desc')->limit($limit)->select();
 		$this->page = $page->showPage();
 		$this->display();
 	}
@@ -78,7 +78,8 @@ Class TimelineController extends CommonController {
 		}
 
 		Public function show() {
-			$rest = M('timeline')->save(I('post.'));
+			$rest = M('timeline')->fetchSql(false)->save(I('post.'));
+			debug($rest);
 			$this->ajaxReturn(setAjaxReturn($rest));
 		}
 

@@ -211,7 +211,9 @@ function del(id) {
 }
 
 function display(id, isdisplay) {
-	var pars = {id: id,isdisplay:1-isdisplay};
+	var tmp = 1-isdisplay;
+	var pars = {id: id,isdisplay:tmp};
+	console.log(pars);
                 $.post("/Home/Timeline/show.html",pars,
                 	function(data) {
                 		if( data.code == 200 ) {

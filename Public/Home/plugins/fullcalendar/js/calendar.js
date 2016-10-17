@@ -109,7 +109,7 @@
                     $(this).remove();
                 }
 
-                window.reload();
+                window.location.reload();
                 
             }
         });
