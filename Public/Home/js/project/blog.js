@@ -61,7 +61,7 @@ function save() {
 		title : $("#title").val(),
 		cat_id : $("#cat_id").val(),
 		isdisplay : $("#isdisplay").val(),
-		click : $("#click").val(),
+		// click : $("#click").val(),
 		content :content
 	};
 	$.post(url, pars, function(data) {
@@ -96,7 +96,7 @@ function save2() {
 		title : $("#title").val(),
 		cat_id : $("#cat_id").val(),
 		isdisplay : $("#isdisplay").val(),
-		click : $("#click").val(),
+		// click : $("#click").val(),
 		content :content,
 		extra:{
 			source: contentSource,
@@ -131,7 +131,7 @@ function saveModify() {
 		title : $("#title").val(),
 		cat_id : $("#cat_id").val(),
 		isdisplay : $("#isdisplay").val(),
-		click : $("#click").val(),
+		// click : $("#click").val(),
 		content : content
 	};
 	// console.log(pars);
@@ -161,7 +161,7 @@ function saveModify2() {
 		title : $("#title").val(),
 		cat_id : $("#cat_id").val(),
 		isdisplay : $("#isdisplay").val(),
-		click : $("#click").val(),
+		// click : $("#click").val(),
 		content : content,
 		extra:{
 			source: contentSource,
