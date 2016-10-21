@@ -1,7 +1,9 @@
 <?php 
 
 namespace Home\Library\Weixin\MyMenu;
-use \Home\Library\Weixin\Basic\Common;
+use Home\Library\Weixin\Basic\Common;
+include('Blog/Library/FirePHPCore/fb.php');
+
 
 class MyMenu {
 
@@ -27,15 +29,16 @@ class MyMenu {
 			$data['button'][] = $this->btn3->getButton();
 		}
 
-		$jsonBtn = json_encode($data);
-
-		if ( isset($_GET['test']) && $_GET['test'] == 1 ) {
-			return $jsonBtn;
-		}
+		$jsonBtn = json_encode($data, JSON_UNESCAPED_UNICODE);
+		fb($jsonBtn, 'menu');
 
 		$accessToken = Common::getAccessToken();
 		$url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$accessToken;
+		fb($url, '请求地址');
+
 		$rest = Common::curl($url, $jsonBtn);
+		
+		fb($rest);
 
 		if ($rest['errcode'] == 0) {
 			return 0;

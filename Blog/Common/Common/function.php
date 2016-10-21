@@ -288,9 +288,3 @@ function setAjaxReturn( $rest ,$msg='操作失败!',$data='') {
 	// logger(json_encode($databack));
 	return $databack;
 }
-
-
-function debug($msg, $level='debug', $logo='') {
-	vendor('FirePHPCore.fb');
-	fb($msg, $level, $logo);
-}

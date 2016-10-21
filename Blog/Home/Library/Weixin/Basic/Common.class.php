@@ -30,8 +30,8 @@ class Common {
 		return $rs;
 	}
 
-	public function valid() {
-		if( $this->checkSignature() ) {
+	public static function valid() {
+		if( self::checkSignature() ) {
 			ob_clean();
 			$echoStr = $_GET['echostr'];
 			echo $echoStr;
@@ -39,7 +39,7 @@ class Common {
 		}
 	}
 
-	private function checkSignature() {
+	private static function checkSignature() {
 		$signature = $_GET["signature"];
 		$timestamp = $_GET["timestamp"];
 		$nonce = $_GET["nonce"];
