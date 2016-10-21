@@ -32,5 +32,8 @@ return array(
 		'Home/Cat/blog',
 		),
 	'LOG_PATH' => '/data0/log/blog_',
-);
+	/*'AUTOLOAD_NAMESPACE' => array(
+		'Lib'     => APP_PATH.'Home/Library',
+		),*/
+	);
 

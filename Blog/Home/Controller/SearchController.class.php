@@ -114,7 +114,10 @@ Class SearchController extends Controller {
 			'size' => C('ELASTIC_PAGE_SIZE'),
 			'body' => array(
 				'query' =>  array(
-					'match_all' => array()
+					'match' => array(
+						'isdisplay' => 0,
+						'status' => 0
+						)
 					),
 				'fields' => array('title','id','cat_id','created','status')
 				)
