@@ -20,7 +20,7 @@ Class BlogController extends CommonController {
 		// P(I('cat_id'));
 		// P(cookie('cat_id'));
 		if ( I('cat_id') != null || cookie('cat_id') != null ) {
-			I('cat_id') != null && cookie('cat_id', I('cat_id'), 60);
+			I('cat_id') != null && cookie('cat_id', I('cat_id'));
 			$cat_id = I('cat_id') == null ? cookie('cat_id') : I('cat_id');
 			$cat_ids = $this->getChildrens($cat, $cat_id); // is string like 1,2,3,4
 			$where['cat_id'] = array('in', $cat_ids );

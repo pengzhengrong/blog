@@ -86,7 +86,8 @@ Class CatController extends CommonController {
 			$rest = M('blog')->where("cat_id=".I('id'))->count();
 			$this->ajaxReturn( setAjaxReturn($rest, '没有对应的文章，请添加！') );
 		}
-		$rest = M('blog')->where("cat_id=".I('id'))->fetchSql(false)->select();
+		$id = I('id');
+		$rest = M('blog')->where("cat_id={$id} AND `status`=0")->fetchSql(false)->select();
 		foreach ($rest as $key => $value) {
 			// P($value['id']);
 			$where = array(

@@ -2,14 +2,20 @@
 
 namespace Home\Library\Weixin\MyMenu;
 use Home\Library\Weixin\Basic\Common;
-include('Blog/Library/FirePHPCore/fb.php');
+// include('Blog/Library/FirePHPCore/fb.php');
 
 
+/**
+ * 个性化菜单请求接口: https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token=ACCESS_TOKEN
+ */
 class MyMenu {
 
 	protected $btn1 = null;
 	protected $btn2 = null;
 	protected $btn3 = null;
+	public $otherMenu = array();
+	protected $otherMenuUrl = 'https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token=';
+	protected $basicMenuUrl = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=';
 
 	public function __construct($btn1=null, $btn2=null, $btn3=null) {
 		$this->btn1 = $btn1;
@@ -28,12 +34,17 @@ class MyMenu {
 		if ($this->btn3) {
 			$data['button'][] = $this->btn3->getButton();
 		}
-
+		// 创建菜单请求接口
+		$accessToken = Common::getAccessToken();
+		$url = $this->basicMenuUrl.$accessToken;
+		// 个性化菜单
+		if ($this->otherMenu) {
+			$data['matchrule'] = $this->otherMenu;
+			$url = $this->otherMenuUrl.$accessToken;
+		}
+		// 如果存在中文, 不做unicode转码
 		$jsonBtn = json_encode($data, JSON_UNESCAPED_UNICODE);
 		fb($jsonBtn, 'menu');
-
-		$accessToken = Common::getAccessToken();
-		$url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$accessToken;
 		fb($url, '请求地址');
 
 		$rest = Common::curl($url, $jsonBtn);

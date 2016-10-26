@@ -44,6 +44,7 @@ if( preg_match('/(android)|(iphone)/i', strtolower($_SERVER['HTTP_USER_AGENT']) 
 	define('APP_DEBUG',true);
 }
 
+include('./Blog/Library/FirePHPCore/fb.php');
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
 

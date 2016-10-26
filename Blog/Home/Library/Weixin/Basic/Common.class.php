@@ -14,18 +14,22 @@ class Common {
 	}
 
 	public static function curl( $url  ,$post_data){
+		fb($url, 'curl_url');
+		fb($post_data, 'curl_post');
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		// curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 		// post数据
 		curl_setopt($ch, CURLOPT_POST, 1);
 		// post的变量
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
 		$rs = curl_exec($ch);
 		$errno	= curl_errno($ch);
+		fb($errno, 'curl_error_no');
+		fb($rs, 'curl_rs');
 		curl_close($ch);
 		return $rs;
 	}
