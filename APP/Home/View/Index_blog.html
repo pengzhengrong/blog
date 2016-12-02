@@ -1,25 +1,30 @@
 {include file="Common/header.html" title="简单的博客,不简单的内容"}
 <!-- iCheck-->
-<link rel="stylesheet" href="/Public/Home/plugins/icheck/css/_all.css">
-<link rel="stylesheet" href="/Public/Home/plugins/bootstrap/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="/Public/Home/plugins/icheck/css/_all.css"> -->
+<!-- <link rel="stylesheet" href="/Public/Home/plugins/bootstrap/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="/Public/Common/css/markdown/bootstrap-responsive.css">
+<link rel="stylesheet" href="/Public/Common/css/markdown//bootstrap.css">
+<link rel="stylesheet" href="/Public/Common/css/markdown/bootstrap-responsive.css">
+<link rel="stylesheet" href="/Public/Common/css/markdown/syntaxhighlighting.css">
+<link rel="stylesheet" href="/Public/Common/css/markdown/main.css">
 <style type="text/css">
-    pre {
-        border-left: 2px solid #DD4B39;
-        padding-left: 0px;
-        color: #DD4B39;
-        margin-top: 10px;
-        /*display: block;*/
-        /* padding: 9.5px; */
-        /* margin: 0 0 10px; */
-        font-size: 13px;
-        line-height: 1.42857143;
-        color: #333;
-        word-break: break-all;
-        word-wrap: break-word;
-        background-color: #f5f5f5;
-        /*border: 1px solid #ccc;*/
-        /*border-radius: 4px;*/
-    }
+/*     pre {
+    border-left: 2px solid #DD4B39;
+    padding-left: 0px;
+    color: #DD4B39;
+    margin-top: 10px;
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+} */
     .content {
          margin-left: 10px; 
         margin-right: 10px;
@@ -48,7 +53,7 @@ border-radius: 4px;
             <div class="content">
                 <div class="blog-posts">
                     <div class="blog-post">
-                        <!-- <a class="blog-post-image" href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/3ww.jpg" alt="img"></a> -->
+                        <!-- <a class="blog-post-image" href="#"><img src="{$smarty.const./Public}/images/pictures/3ww.jpg" alt="img"></a> -->
                         <h3 class="blog-post-title">{$rest['title']}</h3>
                         <!-- <p class="blog-post-text"> -->
                         <div>
@@ -74,10 +79,10 @@ border-radius: 4px;
                         to redirect your users to the specific post you want.
                     </p>
                     <ul class="gallery square-thumb blog-gallery">
-                        <li><a href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/1s.jpg" alt="img"/></a></li>
-                        <li><a href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/2s.jpg" alt="img"/></a></li>
-                        <li><a href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/3s.jpg" alt="img"/></a></li>
-                        <li><a href="#"><img src="{$smarty.const.__PUBLIC__}/images/pictures/4s.jpg" alt="img"/></a></li>
+                        <li><a href="#"><img src="{$smarty.const./Public}/images/pictures/1s.jpg" alt="img"/></a></li>
+                        <li><a href="#"><img src="{$smarty.const./Public}/images/pictures/2s.jpg" alt="img"/></a></li>
+                        <li><a href="#"><img src="{$smarty.const./Public}/images/pictures/3s.jpg" alt="img"/></a></li>
+                        <li><a href="#"><img src="{$smarty.const./Public}/images/pictures/4s.jpg" alt="img"/></a></li>
                     </ul>
                 </div> -->
                 <!-- category -->

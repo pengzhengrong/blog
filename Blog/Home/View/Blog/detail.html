@@ -1,11 +1,12 @@
 <include file="Blog/Home/View/Common/html_head.html" title="{$title?$title:$rest['title']}" />
 <!-- iCheck-->
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/main.css">
 <!-- <link rel="stylesheet" href="__PUBLIC__/Home/plugins/icheck/css/_all.css"> -->
 <link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/bootstrap-responsive.css">
 <link rel="stylesheet" href="__PUBLIC__/Common/css/markdown//bootstrap.css">
 <link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/bootstrap-responsive.css">
 <link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/syntaxhighlighting.css">
-<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/main.css">
+
  <base target="_blank"/>
 
 </head>
@@ -48,7 +49,8 @@
                                                 <i class="fa fa-times"></i>
                                             </div>
                                         </div>
-                                        <div class="panel-body">
+                                        <!-- <div class="panel-body"> -->
+                                        <div class="panel-body livedemo" id="content">
                                                 {:htmlspecialchars_decode($rest['content'])}
                                         </div>
                                     </div>
@@ -64,7 +66,13 @@
 </section>
 <!--main content end-->
 </section>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
 
+<script src="__PUBLIC__/Common/js/markdown/vendor/bootstrap.min.js"></script>
+<script src="__PUBLIC__/Common/js/markdown/plugins.js"></script>
+<script src="__PUBLIC__/Common/js/markdown/marked.js"></script>
+<script src="__PUBLIC__/Common/js/markdown/highlight.js"></script>
+<script src="__PUBLIC__/Common/js/markdown/main.js"></script>
 <include file="Blog/Home/View/Common/js.html" />
 <script type="text/javascript" src="__PUBLIC__/Home/js/project/blog.js"></script>
 

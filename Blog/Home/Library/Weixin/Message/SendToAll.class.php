@@ -8,14 +8,23 @@ use Home\Library\Weixin\Basic\Common;
  */
 class SendToAll{
 
-	// private $thumb_media_id = ''; // 图文消息缩略图的media_id
-	// private $author
 	protected static $baseNewsUpload = 'https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=';
-	protected static $baseMediaUpload = 'https://api.weixin.qq.com/cgi-bin/media/upload?type=thumb&access_token=';
-	protected static $baseImgUpload = 'https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=';
+	// 临时上传素材
+	protected static $baseMediaUpload = 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token='; //type=thumb|image|voice|video
+	// 获取临时上传素材
+	protected static $baseGetMedia = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token='; //&media_id=MEDIA_ID
+	// protected static $baseImgUpload = 'https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=';
+	
+	// 群发
 	protected static $baseSendMsg = 'https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=';
 
-	protected static $accessToken = '';
+	protected static $mediaType = array('thumb', 'image', 'voice', 'video');
+	protected static $contentType = array(
+		'image' => 'image/*',
+		'video' => 'video/mpeg4',
+		'thumb' => 'image/jpeg',
+		'voice' => 'audio/mp3'
+		);
 
 	public function __construct() {
 		// self::$accessToken = Common::getAccessToken();
@@ -25,99 +34,87 @@ class SendToAll{
 
 	}
 
-	public static function sendMpnews() {
-		$data = '{
-			"filter":{
-				"is_to_all":false,
-				"group_id":2
-			},
-			"mpnews":{
-				"media_id":"uPWDTrVFsG85RVQwllsFV7XGmMtI5R2AeJ85-zNcpj1XBI-Qx753Yyi6Kb0-47ex"
-			},
-			"msgtype":"mpnews"
-		}';
-		$url = self::$baseSendMsg.Common::getAccessToken();
-		$rs = Common::curl($url, $data);
-		P($rs);
-	}
-
-	public static function sendText() {
-		$data = '{
-			"filter":{
-				"is_to_all":true,
-				"group_id":2
-			},
-			"text":{
-				"content":"uPWDTrVFsG85RVQwllsFV7XGmMtI5R2AeJ85-zNcpj1XBI-Qx753Yyi6Kb0-47ex"
-			},
-			"msgtype":"text"
-		}';
-		$url = self::$baseSendMsg.Common::getAccessToken();
-		$rs = Common::curl($url, $data);
-		P($rs);
-	}
-
-	/*
-	* 上传本地图片到微平台, 仅支持jpg/png
-	* 上传的图片返回url作为图文消息素材的备用
-	* 返回 url: http://mmbiz.qpic.cn/mmbiz_png/A5iaQqyLC3hjjicGAVzDgk4ZVXIWCdk4ibop8dEx7c78LvndWdicicgeMic5B1F9uuT6M0yeJeBbfM30G0z6D4eIqOAg/0
-	* $url="https://api.weixin.qq.com/cgi-bin/material/add_material?access_token={$accessToken}&type=image";
-	 */ 
-	public static function uploadImg() {
-		$accessToken = Common::getAccessToken();
-		$url = self::$baseImgUpload.$accessToken;
-		
-		fb($url);
-		$fileInfo = array(
-			'filename' => '/uploadfile/2016-10-10/栏目.png',
-			'content-type' => 'image/png',
-			'filelength' => '11011'
-			);
-		$realPath = "{$_SERVER['DOCUMENT_ROOT']}{$fileInfo['filename']}";
-		fb($realPath);
-		$data = array(
-			'media' => "@{$realPath}",
-			'form-data' => $fileInfo
-			);
-		$data = Common::curl($url, $data);
-		fb($data);
-		P($data);
-	}
-
-	/*
-	*  返回 thumb_media_id : LsTjMzW0b33Brnz5EEwf57ST8q9mwM0_Lr6Ab-2ZPdjM8KmPkOBW_YuyHZ-Ild53
+	/**
+	 * 上传多媒体
+	 * image: 2M bmp/png/jpeg/jpg/gif
+	 * voice: 2M 60s amr\mp3
+	 * video: 10M mp4
+	 * thumb: 64k jpg
 	 */
-	public static function uploadThumb() {
+	public function upload($fileName, $type) {
+		if (!in_array($type, self::$mediaType)) {
+			exit('params is illegla');
+		}
 		$accessToken = Common::getAccessToken();
-		$url = self::$baseMediaUpload.$accessToken;
-		// $url="https://api.weixin.qq.com/cgi-bin/material/add_material?access_token={$accessToken}&type=image";
+		$url = self::$baseMediaUpload.$accessToken."&type={$type}";
+		$realPath = "{$_SERVER['DOCUMENT_ROOT']}{$filename}";
 		$fileInfo = array(
-			'filename' => '/uploadfile/2016-10-10/栏目.png',
-			'content-type' => 'image/png',
-			'filelength' => '11011'
+			'filename' => $filename,
+			'content-type' => self::$contentType[$type],
+			'filelength' => filesize($realPath)
 			);
-		$realPath = "{$_SERVER['DOCUMENT_ROOT']}{$fileInfo['filename']}";
-		fb($realPath);
-		$data = array(
+		$json = array(
 			'media' => "@{$realPath}",
 			'form-data' => $fileInfo
 			);
-		$data = Common::curl($url, $data);
-		P($data);
+		$data = Common::curl($url, $json);
+	}
+
+	// 群发
+	public function send2All(array $params, $type) {
+		$is_to_all = (boolean)$params['is_to_all'];
+		$group_id = $params['group_id'];
+		if ($type == 'mpnews') {
+			$media_id = $params['media_id'];
+			$jsonStr = $this->sendMpnews($is_to_all, $group_id, $media_id);
+		} elseif ($type == 'text') {
+			$content = $params['content'];
+			$jsonStr = $this->sendText($is_to_all, $group_id, $content);
+		}
+		$url = self::$baseSendMsg.Common::getAccessToken();
+		$rs = Common::curl($url, $data);
+		P($rs);
+	}
+
+	/*
+	'{"filter":{"is_to_all":false,"group_id":2},
+	"mpnews":{"media_id":"uPWDTrVFsG85RVQwllsFV7XGmMtI5R2AeJ85-zNcpj1XBI-Qx753Yyi6Kb0-47ex"},
+	"msgtype":"mpnews"}';
+	*/
+	public static function sendMpnews($is_to_all, $group_id, $media_id) {
+		$json['filter'] = array('is_to_all' => $is_to_all, 'group_id' => $group_id);
+		$json['mpnews'] = array('media_id' => $media_id);
+		$json['msgtype'] = 'mpnews'; 
+		$jsonStr = json_encode($json);
+		return $jsonStr;
+	}
+
+	/*
+	'{"filter":{"is_to_all":true,"group_id":2},
+	"text":{"content":"uPWDTrVFsG85RVQwllsFV7XGmMtI5R2AeJ85-zNcpj1XBI-Qx753Yyi6Kb0-47ex"},
+	"msgtype":"text"}'
+	 */
+	public static function sendText() {
+		$json['filter'] = array('is_to_all' => $is_to_all, 'group_id' => $group_id);
+		$json['text'] = array('content' => $content);
+		$json['msgtype'] = 'text'; 
+		$jsonStr = json_encode($json);
+		return $jsonStr;
 	}
 
 	/*
 	* 返回 media_id: lPs7vyT1FfFPHGwr8tvQZRi4x1qZjxwuMtJdg0hXLUloBuWEZeS-hGNxyDLYZHAc
 	 */
 	public static function createTpl(array $tplArr=array()) {
+		$tpl = array();
+		foreach ($tplArr as $k => $v) {
+			$tpl['articles'][] = $v;
+		}
 		$url = self::$baseNewsUpload.Common::getAccessToken();
+
 		$data = Common::curl($url, self::$article);
 		fb($data);
 		P($data);
-	}
-
-	public function respText() {
-
 	}
 
 	private static $article = '{

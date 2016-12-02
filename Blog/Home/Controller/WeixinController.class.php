@@ -82,12 +82,6 @@ CLass WeixinController extends Controller {
 		P($data);
 	}
 
-	public function createGroup() {
-		$user = new User();
-		$data = $user->createGroup();
-		P($data);
-	}
-
 	public function getResponseXml($res) {
 		$msgInfo = $res->msgInfo;
 		// 菜单点击发送事件
