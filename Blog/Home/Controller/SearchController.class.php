@@ -21,16 +21,15 @@ Class SearchController extends Controller {
 	}
 
 	public function search(){
-		$pageSize = C('PAGE_SIZE');
+		$pageSize = C('ELASTIC_PAGE_SIZE');
 		$searchCount = $this->elastic->search( $this->search_count() );
 		$totalRows = $searchCount['hits']['total'];
 		$page = new \Think\Page(intval($totalRows) , $pageSize);
 		$page->url = '/'.MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME.'?p='.urlencode('[PAGE]');
 		$firstRow = $page->firstRow;
 		$params = $this->query_string($firstRow);
-
+		fb($params, 'elastic params');
 		$rtn = $this->elastic->search($params);
-		// logger(json_encode($rtn));
 		$fields = array(
 			'id' => '_id',
 			'score' => '_score',
@@ -40,7 +39,7 @@ Class SearchController extends Controller {
 			'status' => 'status'
 			);
 		$this->rest = getSearch( $rtn , $fields);
-		// P($this->rest);die;
+		fb($this->rest, 'elastic data');
 		$this->page = $page->showPage();
 	}
 
@@ -114,10 +113,9 @@ Class SearchController extends Controller {
 			'size' => C('ELASTIC_PAGE_SIZE'),
 			'body' => array(
 				'query' =>  array(
-					'match' => array(
-						'isdisplay' => 0,
-						'status' => 0
-						)
+					'query_string' =>[
+						'query'=>"isdisplay:0 status:0"
+						]
 					),
 				'fields' => array('title','id','cat_id','created','status')
 				)

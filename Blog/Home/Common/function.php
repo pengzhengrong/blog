@@ -62,8 +62,3 @@ function increBlogClick($id) {
 	S($cacheKey,S($cacheKey)+1,300);
 }
 
-function myFb($msg, $desc='', $type='') {
-	include('Blog/Library/FirePHPCore/fb.php');
-	fb($msg, $desc, $type);
-}
-

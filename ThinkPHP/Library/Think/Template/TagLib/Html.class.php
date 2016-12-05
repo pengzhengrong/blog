@@ -131,6 +131,7 @@ class Html extends TagLib{
         $first      = $tag['first'];
         $selected   = $tag['selected'];
         $style      = $tag['style'];
+        $extra = $tag['extra'];
         $ondblclick = $tag['dblclick'];
 		$onchange	= $tag['change'];
 
@@ -140,28 +141,28 @@ class Html extends TagLib{
         	$parseStr = '<select id="'.$id.'" name="'.$name.'" onchange="'.$onchange.'" ondblclick="'.$ondblclick.'" class="'.$style.'" >';
         }
         if(!empty($first)) {
-            $parseStr .= '<option value="default" >'.$first.'</option>';
+            $parseStr .= '<option '.$extra.' value="default" >'.$first.'</option>';
         }
         if(!empty($options)) {
             $parseStr   .= '<?php  foreach($'.$options.' as $key=>$val) { ?>';
             if(!empty($selected)) {
                 $parseStr   .= '<?php if(!empty($'.$selected.') && ($'.$selected.' == $key || in_array($key,$'.$selected.'))) { ?>';
-                $parseStr   .= '<option selected="selected" value="<?php echo $key ?>"><?php echo $val ?></option>';
-                $parseStr   .= '<?php }else { ?><option value="<?php echo $key ?>"><?php echo $val ?></option>';
+                $parseStr   .= '<option '.$extra.' selected="selected" value="<?php echo $key ?>"><?php echo $val ?></option>';
+                $parseStr   .= '<?php }else { ?><option '.$extra.' value="<?php echo $key ?>"><?php echo $val ?></option>';
                 $parseStr   .= '<?php } ?>';
             }else {
-                $parseStr   .= '<option value="<?php echo $key ?>"><?php echo $val ?></option>';
+                $parseStr   .= '<option '.$extra.' value="<?php echo $key ?>"><?php echo $val ?></option>';
             }
             $parseStr   .= '<?php } ?>';
         }else if(!empty($values)) {
             $parseStr   .= '<?php  for($i=0;$i<count($'.$values.');$i++) { ?>';
             if(!empty($selected)) {
                 $parseStr   .= '<?php if(isset($'.$selected.') && ((is_string($'.$selected.') && $'.$selected.' == $'.$values.'[$i]) || (is_array($'.$selected.') && in_array($'.$values.'[$i],$'.$selected.')))) { ?>';
-                $parseStr   .= '<option selected="selected" value="<?php echo $'.$values.'[$i] ?>"><?php echo $'.$output.'[$i] ?></option>';
-                $parseStr   .= '<?php }else { ?><option value="<?php echo $'.$values.'[$i] ?>"><?php echo $'.$output.'[$i] ?></option>';
+                $parseStr   .= '<option '.$extra.' selected="selected" value="<?php echo $'.$values.'[$i] ?>"><?php echo $'.$output.'[$i] ?></option>';
+                $parseStr   .= '<?php }else { ?><option '.$extra.' value="<?php echo $'.$values.'[$i] ?>"><?php echo $'.$output.'[$i] ?></option>';
                 $parseStr   .= '<?php } ?>';
             }else {
-                $parseStr   .= '<option value="<?php echo $'.$values.'[$i] ?>"><?php echo $'.$output.'[$i] ?></option>';
+                $parseStr   .= '<option '.$extra.' value="<?php echo $'.$values.'[$i] ?>"><?php echo $'.$output.'[$i] ?></option>';
             }
             $parseStr   .= '<?php } ?>';
         }

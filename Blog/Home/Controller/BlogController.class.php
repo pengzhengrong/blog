@@ -28,7 +28,7 @@ Class BlogController extends CommonController {
 		}
 		//-----博客名称
 		if ( I('title') != null ) {
-			$where['title'] = array('like', I('title').'%');
+			$where['title'] = array('like', '%'.I('title').'%');
 			$this->title = I('title');
 		}
 		

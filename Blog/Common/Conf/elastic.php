@@ -6,4 +6,5 @@ return array(
 	'DEFAULT_HOST' => array('hosts' => array('127.0.0.1:9200')),
 	'MAX_EXPANSIONS' => 20,
 	'SLOP' => 3,
+	'ELASTIC_PAGE_SIZE' => 10,
 	);

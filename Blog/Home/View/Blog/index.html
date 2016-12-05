@@ -30,7 +30,7 @@
             <div class="btn-toolbar" style="float:right;" role="toolbar">
             <h6>添加文章</h6>
                                     <div class="btn-group">
-                                        <button type="button" id="add" class="btn btn-default">通用版</button>
+                                        <!-- <button type="button" id="add" class="btn btn-default">通用版</button> -->
                                         <button type="button" id="add2" class="btn btn-primary">MarkDown</button>
                                     </div>
                                 </div>
@@ -44,7 +44,12 @@
                                 <div class="col-sm-2">
                                     <!-- 开始使用select标签 -->
                                     <taglib name="html" />
-                                    <html:select name="cat_id" id="cat_id" first="全部栏目" selected="selected" style="form-control" options="options"  /> <!-- change="optionsChange(this)" -->
+                                    <html:select name="cat_id" id="cat_id" first="全部栏目" extra="" selected="selected" style="form-control" options="options"  /> <!-- change="optionsChange(this)" -->
+                                    <script type="text/javascript">
+                                      function test() {
+                                        alert('test');
+                                      }
+                                    </script>
                                 </div>
                                 <div class="col-sm-2">
                                    <input type="text" name="title" value="{$title}" id="title" class="form-control" placeholder="请输入博客名称">
