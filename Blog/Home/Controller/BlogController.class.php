@@ -7,18 +7,28 @@ use Think\Log;
 
 Class BlogController extends CommonController {
 
+	private $blogModel;
+	private $blogDataModel;
+	private $catResult;
+
+	public function _initialize() {
+		$this->blogModel = new Model\BlogModel();
+		$this->blogDataModel = new Model\BlogDataModel();
+		$catModel = new Model\CatModel();
+		$this->catResult = $catModel->getListCache();
+	}
+
 	Public function index() {
 		$where = array('status'=>0);
 		//条件搜索
-		$cat = F('CAT_TREE');
+		$cat = $this->catResult;
 		//只获取根栏目
 		$this->options = options( $cat,'id','title','pid','0'); 
 		if ( I('cat_id') == 'default' ) {
 			$_POST['cat_id'] = null;
 			cookie('cat_id', null);
 		}
-		// P(I('cat_id'));
-		// P(cookie('cat_id'));
+		
 		if ( I('cat_id') != null || cookie('cat_id') != null ) {
 			I('cat_id') != null && cookie('cat_id', I('cat_id'));
 			$cat_id = I('cat_id') == null ? cookie('cat_id') : I('cat_id');
@@ -35,11 +45,15 @@ Class BlogController extends CommonController {
 
 		$field = array('id','cat_id','title','click','created','update_time','isdisplay','author');
 		
-		$totalRows = M('blog')->where($where)->count();
+		/*$totalRows = M('blog')->where($where)->count();
 		$page = new \Think\Page( $totalRows , C('PAGE_SIZE') );
 		$limit = $page->firstRow.','.$page->listRows;
 		$this->rest = M('blog')->cache(false,3600)->field($field)->where($where)->order('created desc')->limit($limit)->select();
-		$this->page = $page->showPage();
+		$this->page = $page->showPage();*/
+		// $blogModel = new Model\BlogModel();
+		$rest = $this->blogModel->getDataByPage($field, $where, 'created desc');
+		$this->rest = $rest['data'];
+		$this->page = $rest['page'];
 		$this->display();
 	}
 
@@ -50,7 +64,7 @@ Class BlogController extends CommonController {
 			$data['update_time'] = time();
 			$data['time'] = time();
 			$data['author'] = session('username');
-			$rest = M('blog')->add( $data );
+			$rest = $this->model->add( $data );
 			if( $rest ) {
 				$data = array(
 					'content' => htmlspecialchars($data['content']),
@@ -58,12 +72,13 @@ Class BlogController extends CommonController {
 					'isdisplay' => $data['isdisplay'],
 					'extra' => json_encode($data['extra'])
 					);
-				$rest = M('blog_data')->add($data);
+				// $rest = M('blog_data')->add($data);
+				$rest = $this->blogDataModel->insert($data);
 			}
 			$this->ajaxReturn( setAjaxReturn($rest) );
 		}
 		//博客栏目
-		$cat = F('CAT_TREE');
+		$cat = $this->catResult;
 		$this->category = tree($cat);
 		$this->options = options( $this->category);
 		$this->selected = isset($_GET['cat_id'])?$_GET['cat_id']:0; //从栏目跳入增加博客
@@ -85,20 +100,24 @@ Class BlogController extends CommonController {
 		if( IS_POST ){
 			$data = $_POST;
 			$data['time'] = time();
-			$rest = M('blog')->save($data);
+			// $rest = M('blog')->save($data);
+			$rest = $this->blogModel->update($data);
 			$blog_data = array(
 				'id' => $data['id'],
 				'content' => htmlspecialchars($data['content']),
 				'isdisplay' => $data['isdisplay'],
 				'extra' => json_encode($data['extra'])
 				);
-			$rest2 = M('blog_data')->save($blog_data);
-			// logger($rest.'_'.$rest2);
+			$blogDataModel = new Model/BlogDataModel();
+			$rest2 = $blogDataModel->update($blog_data);
+			// $rest2 = M('blog_data')->save($blog_data);
 			$rest =  ($rest||$rest2);
 			$this->ajaxReturn( setAjaxReturn( $rest ));
 		}
-		$rest = M('blog')->find(I('id'));
-		$blog_data = M('blog_data')->find(I('id'));
+		// $rest = M('blog')->find(I('id'));
+		$rest = $this->model->getRow('*', ['id'=>I('id')]);
+		// $blog_data = M('blog_data')->find(I('id'));
+		$blog_data = $this->model->getRow('*', ['id'=>I('id')]);
 		$rest['content'] = $blog_data['content'];
 		$extraJson = json_decode($blog_data['extra'], true);
 		if ($extraJson) {
@@ -112,7 +131,7 @@ Class BlogController extends CommonController {
 		$this->rest = $rest;
 		//博客栏目
 		// $cat = A('Cat')->getCache();
-		$cat = F('CAT_TREE');
+		$cat = $this->catResult;
 		$this->category = tree($cat);
 		$this->options = options( $this->category);
 
@@ -126,27 +145,42 @@ Class BlogController extends CommonController {
 	Public function delete() {
 		//彻底删除
 		if( I('type') == 'delete' ){
-			$rest = M('blog')->delete(I('id'));
+			// $rest = M('blog')->delete(I('id'));
+			$rest = $this->blogModel->del(['id'=>I('id')]);
 			$this->ajaxReturn( setAjaxReturn($rest) );
 		}
 		//恢复删除
 		if( I('type') == 'reback' ){
-			$rest = M('blog')->save( array('id'=>I('id'),'status'=>0,'time'=>time()) );
+			// $rest = M('blog')->save( array('id'=>I('id'),'status'=>0,'time'=>time()) );
+			$data = [
+				'id' => I('id'),
+				'status' => 0,
+				'time' => time()
+			];
+			$rest = $this->blogModel->update( $data );
 			$this->ajaxReturn( setAjaxReturn($rest) );
 		}
 		//逻辑删除
-		$rest = M('blog')->save( array('id'=>I('id'),'status'=>1,'time'=>time()) );
+		// $rest = M('blog')->save( array('id'=>I('id'),'status'=>1,'time'=>time()) );
+		$data = [
+				'id' => I('id'),
+				'status' => 0,
+				'time' => time()
+			];
+		$rest = $this->blogModel->update($data);
 		$this->ajaxReturn( setAjaxReturn($rest) );
 	}
 
 	Public function gc() {
 		$field = array('id','cat_id','title','click','created','update_time');
 		$where = array('status'=>1);
-		$totalRows = M('blog')->where($where)->count();
+		/*$totalRows = M('blog')->where($where)->count();
 		$page = new \Think\Page( $totalRows , C('PAGE_SIZE') );
 		$limit = $page->firstRow.','.$page->listRows;
-		$this->rest = M('blog')->field($field)->where($where)->order('created desc')->limit($limit)->select();
-		$this->page = $page->showPage();
+		$this->rest = M('blog')->field($field)->where($where)->order('created desc')->limit($limit)->select();*/
+		$data = $this->blogModel->getDataByPage($field, $where);
+		$this->rest = $data['data'];
+		$this->page = $data['page'];
 		$this->display();
 	}
 
@@ -155,7 +189,8 @@ Class BlogController extends CommonController {
 		$this->title = I('title');
 		$where = array('id' => $id);
 		!IS_LOGIN?$where['isdisplay']=0:'';
-		$this->rest = M('blog_data')->cache(true,60)->where($where)->find();
+		// $this->rest = M('blog_data')->cache(true,60)->where($where)->find();
+		$this->rest = $this->blogDataModel->getRow('*', $where);
 
 		increBlogClick($id);
 
@@ -175,8 +210,10 @@ Class BlogController extends CommonController {
 	Public function show() {
 		$data = I('post.');
 		$data['time'] = time();
-		$rest = M('blog')->save($data);
-		$rest2 = M('blog_data')->save($data);
+		// $rest = M('blog')->save($data);
+		$rest = $this->blogModel->update($data);
+		// $rest2 = M('blog_data')->save($data);
+		$rest2 = $this->blogDataModel->update($data);
 		$this->ajaxReturn(setAjaxReturn($rest));
 	}
 

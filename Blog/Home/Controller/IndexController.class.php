@@ -1,7 +1,12 @@
 <?php
+
 namespace Home\Controller;
+
 use Think\Controller;
+use Home\Model;
+
 class IndexController extends CommonController {
+
 	public function index() {
 		$field = array('id','pid','title','m','c','a');
 		$where = array(
@@ -11,8 +16,8 @@ class IndexController extends CommonController {
 		if( session('role_id') != C('ADMIN_AUTH_ID') ) {
 			$where['id'] = array( 'in',session('node_ids') );
 		}
-		logger( json_encode($where) );
-		$rest = M('navigation')->cache(true,60)->field($field)->where($where)->order('sort')->fetchSql(false)->select();
+		$navModel = new Model\NavigationModel();
+		$rest = $navModel->getNavCache($field, $where, '`sort`');
 		$this->rest = node_merge( $rest );
 		$this->display();
 	}
@@ -21,7 +26,6 @@ class IndexController extends CommonController {
 		$this->username = session('username');
 		$uid = session(C('USER_AUTH_KEY'));
 		$rest = D('UserRelation')->relation( true )->where("id=$uid")->select();
-		// p($rest);
 		if( $rest ){
 			$role_desc = array();
 			foreach ($rest[0]['role'] as $key => $value) {

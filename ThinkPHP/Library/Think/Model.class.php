@@ -265,7 +265,6 @@ class Model {
                 $fields =   $this->fields;
             } 
 
-            // my_log( 'MODEL _facade' , $fields );       
             foreach ($data as $key=>$val){
                 if(!in_array($key,$fields,true)){
                     if(!empty($this->options['strict'])){
@@ -300,7 +299,6 @@ class Model {
      * @return mixed
      */
     public function add($data='',$options=array(),$replace=false) {
-        // my_log('MODEL  add', json_encode( $data ));
         if(empty($data)) {
             // 没有传递数据，获取当前数据对象的值
             if(!empty($this->data)) {
@@ -314,17 +312,13 @@ class Model {
         }
         // 数据处理
         $data       =   $this->_facade($data);
-        // my_log('MODEL  add', json_encode( $data ));  //no change
         // 分析表达式
         $options    =   $this->_parseOptions($options);
         if(false === $this->_before_insert($data,$options)) {
             return false;
         }
-        // my_log('MODEL  options', json_encode( $options ));  
-        // {"link":true,"table":"think_user","model":"UserRelation"}
         // 写入数据到数据库
         $result = $this->db->insert($data,$options,$replace);
-        // my_log('MODEL  result', $result);  
         if(false !== $result && is_numeric($result)) {
             $pk     =   $this->getPk();
               // 增加复合主键支持
@@ -543,7 +537,6 @@ class Model {
      * @return mixed
      */
     public function select($options=array()) {
-        // my_log( 'model select'  , json_encode( $options ));
         $pk   =  $this->getPk();
         if(is_string($options) || is_numeric($options)) {
             // 根据主键查询
@@ -1829,6 +1822,11 @@ class Model {
         
         return $this;
     }
+
+/*    public function order($order) {
+        $this->options['order'] = $order;
+        return $this;
+    }*/
 
     /**
      * 指定查询数量

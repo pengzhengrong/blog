@@ -800,8 +800,6 @@ abstract class Driver {
      * @return false | integer
      */
     public function insert($data,$options=array(),$replace=false) {
-        // my_log( json_encode( $data ) , json_encode( $options ) );
-        // {"user_id":3,"role":[2,12,8,6]} ,{"link":true,"table":"think_user","model":"UserRelation"}
         $values  =  $fields    = array();
         $this->model  =   $options['model'];
         $this->parseBind(!empty($options['bind'])?$options['bind']:array());
@@ -827,7 +825,6 @@ abstract class Driver {
         $replace= (is_numeric($replace) && $replace>0)?true:$replace;
         $sql    = (true===$replace?'REPLACE':'INSERT').' INTO '.$this->parseTable($options['table']).' ('.implode(',', $fields).') VALUES ('.implode(',', $values).')'.$this->parseDuplicate($replace);
         $sql    .= $this->parseComment(!empty($options['comment'])?$options['comment']:'');
-        // my_log( 'sql' , $sql );
         return $this->execute($sql,!empty($options['fetch_sql']) ? true : false);
     }
 
@@ -950,8 +947,8 @@ abstract class Driver {
         $this->model  =   $options['model'];
         $this->parseBind(!empty($options['bind'])?$options['bind']:array());
         $sql    = $this->buildSelectSql($options);
-        // my_log( 'sql',$sql );
         $result   = $this->query($sql,!empty($options['fetch_sql']) ? true : false);
+        // fb($result, 'sql result');
         return $result;
     }
 
@@ -971,6 +968,7 @@ abstract class Driver {
             $options['limit'] =  $offset.','.$listRows;
         }
         $sql  =   $this->parseSql($this->selectSql,$options);
+        fb($sql, 'sql string');
         return $sql;
     }
 
@@ -981,6 +979,7 @@ abstract class Driver {
      * @return string
      */
     public function parseSql($sql,$options=array()){
+        // fb($options, 'db_options');
         $sql   = str_replace(
             array('%TABLE%','%DISTINCT%','%FIELD%','%JOIN%','%WHERE%','%GROUP%','%HAVING%','%ORDER%','%LIMIT%','%UNION%','%LOCK%','%COMMENT%','%FORCE%'),
             array(

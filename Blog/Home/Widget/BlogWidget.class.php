@@ -2,11 +2,14 @@
 
 namespace Home\Widget;
 use Think\Controller;
+use Home\Model;
 
 Class BlogWidget extends Controller {
 
 	Public function parentDir($cat_id) {
-		$title = M('category')->cache(true,60)->where("id=$cat_id")->getField('title');
+		// $title = M('category')->cache(true,60)->where("id=$cat_id")->getField('title');
+		$catModel = new Model\CatModel();
+		$title = $catModel->getColumnCache('title', ['id'=>$cat_id]);
 		return $title;
 	}
 

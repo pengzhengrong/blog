@@ -129,6 +129,8 @@ function del(id) {
 
 /*查看博客*/
 function blog(id, title) {
+	// event.preventDefault();
+	this.event.preventDefault();
 	var pars = {
 		id:id
 	};

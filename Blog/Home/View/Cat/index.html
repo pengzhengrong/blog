@@ -70,7 +70,7 @@
 
                                     <tbody>
                                         <foreach name="rest" item="v">
-                                            <tr>
+                                            <tr id="{$v.pid}_{$v.id}" onclick="touchMe(this)">
                                                 <td>{$v.sort}</td>
                                                 <td>{$v.id}</td>
                                                 <td>{$v.title}</td>
@@ -96,6 +96,19 @@
     </section>
     <include file="Blog/Home/View/Common/js.html" />
     <script type="text/javascript" src="__PUBLIC__/Home/js/project/cat.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var nodeIds = $('tr').val('id');
+            console.log(nodeIds);
+
+        })
+
+        function touchMe(_this) {
+            var idStr = $(_this).attr('id');
+            console.log(idStr);
+        }
+
+    </script>
 </body>
 
 </html>
