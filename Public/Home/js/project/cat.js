@@ -135,7 +135,6 @@ function blog(id, title) {
 	var regex = '.*[├─|└─](.*)';
 	var temp = title.match(regex);
 	if (temp != null ) {
-		// console.log(temp[1]+'===');
 		title = temp[1];
 	}
 	title = $.trim(title);
@@ -150,7 +149,6 @@ function blog(id, title) {
                			 $(".dialog-frm").css("display", "none");
                			 $(".dialog-mask").css("display", "none");
                			 var url = '/Home/Blog/add.html?editor=markdown&cat_id='+id+'&title='+title;
-               			 alert(url); return;
                			 window.open(url, '_blank');
                			}},
                			{text:"取消",className:"",act:"_hide"}
@@ -158,8 +156,8 @@ function blog(id, title) {
                		});
 			return;
 		} else {
-			// window.open('/Home/Cat/blog.html?id='+id+'&title='+title,'_blank');
-			window.location.href = '/Home/Cat/blog.html?id='+id+'&title='+title;
+			window.open('/Home/Cat/blog.html?id='+id+'&title='+title,'_blank');
+			// window.location.href = '/Home/Cat/blog.html?id='+id+'&title='+title;
 		}
 	});
 };

@@ -64,7 +64,7 @@ Class BlogController extends CommonController {
 			$data['update_time'] = time();
 			$data['time'] = time();
 			$data['author'] = session('username');
-			$rest = $this->model->add( $data );
+			$rest = $this->blogModel->add( $data );
 			if( $rest ) {
 				$data = array(
 					'content' => htmlspecialchars($data['content']),
