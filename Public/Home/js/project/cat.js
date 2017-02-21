@@ -131,7 +131,6 @@ function del(id) {
 function blog(id, title) {
 	var pars = {
 		id:id,
-		args:blog
 	};
 	var regex = '.*[├─|└─](.*)';
 	var temp = title.match(regex);

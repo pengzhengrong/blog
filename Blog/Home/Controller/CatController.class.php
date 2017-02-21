@@ -136,25 +136,9 @@ Class CatController extends CommonController {
 
 	//从栏目跳转到对应的博客
 	Public function blog() {
-
-		$cookieKey = 'COOKIE_'.__CLASS__.__FUNCTION__;
-		$cats = $this->model->getListByIsDisplay();
-		if (IS_POST && I('args') == 'catSelect') {
-
-		}
-		//只获取根栏目
-		$this->options = options( $cats,'id','title','pid','0');
-		$catId = cookie($cookieKey);
-		if ( $catId == null ) {
-			$this->cats= tree($cats);
-		} else {
-			$this->cats = tree($cats, $catId, true);
-			$this->selected = $catId;
-		}
-
 		$blogModel = new Model\BlogModel();
 		$blogDataModel = new Model\BlogDataModel();
-		if ( IS_POST && I('args') == 'blog') {
+		if ( IS_POST ) {
 			$rest = $blogModel->getRow('*', ['cat_id'=>I('id')]);
 			$this->ajaxReturn( setAjaxReturn($rest, '没有对应的文章，请添加！') );
 		}
