@@ -30,6 +30,7 @@ return array(
 		'Home/Blog/detail',
 		'Home/Timeline/detail',
 		'Home/Cat/blog',
+		'Home/Cat/view',
 		),
 	'LOG_PATH' => '/data0/log/blog_',
 	/*'AUTOLOAD_NAMESPACE' => array(

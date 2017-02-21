@@ -37,7 +37,7 @@ abstract class BaseModelDB extends \Think\Model {
 	public function getData(array $field=array(), array $where=array(), $order='') {
 		$field = $this->getMyField($field);
 		$data = $this->field($field)->where($where)->order($order)->select();
-		fb($data, __FUNCTION__.':sql result');
+		// fb($data, __FUNCTION__.':sql result');
 		return $data;
 	}
 
@@ -49,32 +49,32 @@ abstract class BaseModelDB extends \Think\Model {
 		$rest =$this->field($field)->where($where)->order($order)->limit($limit)->select();
 		$page = $page->showPage();
 		$data = [ 'page' => $page, 'data' => $rest ];
-		fb($data, __FUNCTION__.':sql result');
+		// fb($data, __FUNCTION__.':sql result');
 		return $data;
 	}
 
 	public function getRow($field=array(), $where=array()) {
 		$field = $this->getMyField($field);
 		$data = $this->field($field)->where($where)->find();
-		fb($data, __FUNCTION__.':sql result');
+		// fb($data, __FUNCTION__.':sql result');
 		return $data;
 	}
 
 	public function getColumn($field, $where=[]) {
 		$data = $this->where($where)->getField($field);
-		fb([$data], __FUNCTION__.':sql result');
+		// fb([$data], __FUNCTION__.':sql result');
 		return $data;
 	}
 
 	public function update($data) {
 		$rest = $this->save($data);
-		fb($rest, 'sql update result');
+		// fb($rest, 'sql update result');
 		return $rest;
 	}
 
 	public function insert($data) {
 		$rest = $this->data($data)->add();
-		fb($rest, 'sql insert result');
+		// fb($rest, 'sql insert result');
 		return $rest;
 	}
 
@@ -86,12 +86,12 @@ abstract class BaseModelDB extends \Think\Model {
 	public function del($where) {
 		foreach ($where as $k => $v) {
 			if ( is_numeric($k) ) {
-				fb('查询条件的field不能为数字', 'warn');
+				// fb('查询条件的field不能为数字', 'warn');
 				return false;
 			}
 		}
 		$rest = $this->where($where)->delete();
-		fb($rest, 'sql delete result');
+		// fb($rest, 'sql delete result');
 		return $rest;
 	}
 
@@ -133,7 +133,7 @@ abstract class BaseModelDB extends \Think\Model {
         		S($key, null);
         	}
         	if( $data = S($key) ) {
-        		fb($data, 'From Cache Key:'.$key);
+        		// fb($data, 'From Cache Key:'.$key);
         		return $data;
         	}
         	$data = call_user_func_array( array($this, $method), $args);

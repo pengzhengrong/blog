@@ -1,0 +1,114 @@
+<include file="Blog/Home/View/Common/html_head.html" title="博客栏目" />
+<!-- Custom styles for this theme -->
+<link rel="stylesheet" href="__PUBLIC__/Home/css/main.css">
+<!-- DataTables-->
+<link rel="stylesheet" href="__PUBLIC__/Home/plugins/dataTables/css/dataTables.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/bootstrap-responsive.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown//bootstrap.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/bootstrap-responsive.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/syntaxhighlighting.css">
+<link rel="stylesheet" href="__PUBLIC__/Common/css/markdown/main.css">
+<style type="text/css">
+    table tbody tr:hover{
+        background: #fbffe4;
+    }
+</style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div id="leftside-navigation" class="nano">
+            <table id="example" class="table" style="font-size: 10px;border: 0;background-color:#293949;">
+                <tbody>
+                    <foreach name="rest" item="v">
+                        <tr id="{$v.pid}_{$v.id}" style="border-top:0px;">
+                            <td style="line-height: 0.5;border-top:0px;"><a href="/Home/cat/view.html?catId={$v.id}">{$v.title}</td>
+                        </tr>
+                    </foreach>
+                </tbody>
+            </table>
+        </div>
+
+    </aside>
+    <section id="container">
+        <!--main content start-->
+        <section class="main-content-wrapper">
+            <section id="main-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--breadcrumbs start -->
+                        <ul class="breadcrumb">
+                         <foreach name="navigation" item="v">
+                            <li>{$v.title}</li>
+                        </foreach>
+                    </ul>
+                    <!--breadcrumbs end -->
+                    <!-- <h1 class="h1">Date Tables</h1> -->
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel-body">
+                        <form action="/Home/Cat/view.html" method="post" id="form">
+                            <div class="col-sm-2">
+                                <!-- 开始使用select标签 -->
+                                <taglib name="html" />
+                                <html:select name="id" id="id" first="全部栏目" selected="selected" style="form-control" options="options" change="optionsChange(this)" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">博客内容</h3>
+                            <div class="actions pull-right">
+                                <i class="fa fa-chevron-down"></i>
+                                <i class="fa fa-times"></i>
+                            </div>
+                        </div>
+                        <div class="panel-body" livedemo" id="content">
+                                <div class="tab-wrapper tab-primary">
+                                    <ul id="nav" class="nav nav-tabs">
+                                        <foreach name="blog" item="e" key="key">
+                                            <li class="{$key==0?'active':''}"><a  href="#{$e.id}" data-toggle="tab">{$e.title}</a>
+                                        </foreach>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <foreach name="blog" item="e" key="key">
+                                        <div class="tab-pane {$key==0?'active':''}" id="{$e.id}">
+                                            <p>{$e.content}</p>
+                                        </div>
+                                        </foreach>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <!--main content end-->
+</section>
+<include file="Blog/Home/View/Common/js.html" />
+<script type="text/javascript" src="__PUBLIC__/Home/js/project/cat.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var nodeIds = $('tr').val('id');
+            // console.log(nodeIds);
+
+        })
+
+    function touchMe(_this) {
+        var idStr = $(_this).attr('id');
+            // console.log(idStr);
+        }
+
+    </script>
+</body>
+
+</html>

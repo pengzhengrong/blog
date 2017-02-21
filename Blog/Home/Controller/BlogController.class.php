@@ -108,16 +108,15 @@ Class BlogController extends CommonController {
 				'isdisplay' => $data['isdisplay'],
 				'extra' => json_encode($data['extra'])
 				);
-			$blogDataModel = new Model/BlogDataModel();
-			$rest2 = $blogDataModel->update($blog_data);
+			$rest2 = $this->blogDataModel->update($blog_data);
 			// $rest2 = M('blog_data')->save($blog_data);
 			$rest =  ($rest||$rest2);
 			$this->ajaxReturn( setAjaxReturn( $rest ));
 		}
 		// $rest = M('blog')->find(I('id'));
-		$rest = $this->model->getRow('*', ['id'=>I('id')]);
+		$rest = $this->blogModel->getRow('*', ['id'=>I('id')]);
 		// $blog_data = M('blog_data')->find(I('id'));
-		$blog_data = $this->model->getRow('*', ['id'=>I('id')]);
+		$blog_data = $this->blogDataModel->getRow('*', ['id'=>I('id')]);
 		$rest['content'] = $blog_data['content'];
 		$extraJson = json_decode($blog_data['extra'], true);
 		if ($extraJson) {
@@ -130,7 +129,6 @@ Class BlogController extends CommonController {
 
 		$this->rest = $rest;
 		//博客栏目
-		// $cat = A('Cat')->getCache();
 		$cat = $this->catResult;
 		$this->category = tree($cat);
 		$this->options = options( $this->category);

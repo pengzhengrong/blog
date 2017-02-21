@@ -1,9 +1,17 @@
 <?php
 
 namespace Home\Controller;
+
 use Think\Controller;
+use Home\Model\ScheduleModelDB;
 
 Class ScheduleController extends CommonController {
+
+	protected $db = null;
+
+	public function _initialize() {
+		$this->db = new ScheduleModelDB();
+	}
 
 	//日历首页
 	Public function calendar() {
@@ -19,7 +27,7 @@ Class ScheduleController extends CommonController {
 			'endtime' => array('lt', I('end',0,'intval')),
 			'user_id' => session('user_id')
 			);
-		$rest = M('calendar')->where($where)->fetchSql(false)->select();
+		$rest = $this->db->getData('*', $where);
 		$data = array();
 		foreach ($rest as $v) {
 			$data[] = array(
@@ -38,7 +46,6 @@ Class ScheduleController extends CommonController {
 
 	// 添加可拖动的事件
 	Public function event() {
-		// logger( json_encode( I('post.')  ) );
 		$data = I('post.');
 		$data['user_id'] = session('user_id');
 		$rest = M('event')->add($data);
@@ -69,7 +76,8 @@ Class ScheduleController extends CommonController {
 			if( I('isend',0,'intval') == 1 ) {
 				$data['endtime'] = strtotime( I('enddate').' '.I('e_hour').':'.I('e_minute') );
 			}
-			$rest = M('calendar')->add($data);
+			// $rest = M('calendar')->add($data);
+			$rest = $this->db->insert($data);
 			if( $rest ) {
 				echo 1;
 			} else {
@@ -98,7 +106,8 @@ Class ScheduleController extends CommonController {
 			} else {
 				$data['endtime'] = 0;
 			}
-			$rest = M('calendar')->fetchSql(false)->save($data);
+			// $rest = M('calendar')->fetchSql(false)->save($data);
+			$rest = $this->db->update($data);
 			if( $rest ) {
 				echo 1;
 			} else {
@@ -106,7 +115,8 @@ Class ScheduleController extends CommonController {
 			}
 			exit;
 		}
-		$rest = M('calendar')->find(I('id'));
+		// $rest = M('calendar')->find(I('id'));
+		$rest = $this->db->getRow('*', ['id'=>I('id')]);
 		if($rest){
 			$this->id = $rest['id'];
 			$this->title = $rest['title'];
@@ -142,7 +152,8 @@ Class ScheduleController extends CommonController {
 
 	//删除事件
 	Public function schedule_del() {
-		$rest = M('calendar')->delete(I('id'));
+		// $rest = M('calendar')->delete(I('id'));
+		$rest = $this->db->del(['id' => I('id')]);
 		if( $rest ) {
 			echo 1;
 		} else {

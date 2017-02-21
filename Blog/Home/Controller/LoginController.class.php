@@ -1,10 +1,18 @@
 <?php
+
+
 namespace Home\Controller;
 use Think\Controller;
+use \Home\Model\LoginModel;
+
 class LoginController extends Controller {
 
 
-	Public $flag = false;
+	protected $loginModel = null;
+
+	public function _initialize() {
+		$this->loginModel = new LoginModel();
+	}
 
 	Public function index(){
 
@@ -25,12 +33,11 @@ class LoginController extends Controller {
 			/*$verify = new \Think\Verify();
 			$check = $verify->check( I('code'));
 			$check || notice('验证码错误,数据库是否没有开启？!','/login',1);*/
-
 			$where = array(
 				'username' => I('username'),
 				'password' => I('password')
 				);
-			$rest = M('user')->where($where)->fetchSql(false)->find();
+			$rest = $this->loginModel->checkUser('*', $where);
 			if( $rest ) {
 				if( isset($rest['extra']) ) {
 					$extra = json_decode($rest['extra'],true);
@@ -54,11 +61,7 @@ class LoginController extends Controller {
 				'last_login' => session('last_login'),
 				'last_ip' => session('last_ip')
 				);
-			$rest = M('user')->fetchSql(false)->save($data);
-			/*logger( $rest );
-			if( !$rest ) {
-				$this->ajaxReturn( setAjaxReturn( $rest, '最后登入时间和IP保存失败！' ) );
-			}*/
+			$rest = $this->loginModel->update($data);
 			$_SESSION = array();
 			session_unset();
 			session_destroy();
