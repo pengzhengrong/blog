@@ -14,9 +14,9 @@ return array(
 	'DEFAULT_MODULE' => 'Home',
 	'PAGE_SIZE' => 10,
 
-	'DB_HOST' => '127.0.0.1',
-	'DB_USER' => 'root',
-	'DB_PWD' => '',
+	'DB_HOST' => $_SERVER['DB_HOST'],
+	'DB_USER' => $_SERVER['DB_USER'],
+	'DB_PWD' => $_SERVER['DB_PWD'],
 	'DB_NAME' => 'blog',
 	'DB_TYPE' => 'mysqli',
 	'DB_PREFIX' => 'think_',

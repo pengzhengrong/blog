@@ -9,6 +9,6 @@ return array(
 		'/^(\w+)$/' => 'Home/Index/:1',
 		),
 	'CACHE_TIME' => 60,
-	'ERROR_PAGE' => 'http://'.HTTP_HOST.'/page_error.html',
+	// 'ERROR_PAGE' => 'http://'.HTTP_HOST.'/page_error.html',
 	// 'SHOW_PAGE_TRACE' => true,
 );
